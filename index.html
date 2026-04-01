@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>OCR Comparison Reports</title>
+<style>
+body { font-family: -apple-system, sans-serif; max-width: 700px; margin: 60px auto; padding: 0 20px; color: #333; }
+h1 { color: #2c3e50; } a { color: #3498db; text-decoration: none; } a:hover { text-decoration: underline; }
+.card { background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 16px 0; border-left: 4px solid #3498db; }
+.card h2 { margin-top: 0; color: #2c3e50; font-size: 18px; } .card p { margin: 4px 0; font-size: 14px; color: #666; }
+.meta { color: #888; font-size: 14px; } .highlight { border-left-color: #e74c3c; } .green { border-left-color: #27ae60; }
+</style></head><body>
+<h1>OCR Comparison Platform</h1>
+<p>Self-hosted OCR engine comparison: PaddleOCR, Tesseract, Surya, docTR</p>
+<p class="meta">All services on GPU (g5.2xlarge, A10G 24GB VRAM)</p>
+<div class="card highlight">
+<h2><a href="saturation/">GPU Saturation &amp; RPS Report</a></h2>
+<p>Max RPS per service, cost/request, optimal concurrency, 500K pages/month pricing.</p>
+</div>
+<div class="card green">
+<h2><a href="resources/">Resource Consumption Report</a></h2>
+<p>GPU VRAM budget, CPU/RAM profiling, throughput under concurrency.</p>
+</div>
+<div class="card">
+<h2><a href="synthetic/visual-report.html">Synthetic Fixtures — Visual Report</a></h2>
+<p>10 generated test images with bbox overlays, extracted text, and raw JSON.</p>
+</div>
+<div class="card">
+<h2><a href="pdfs/visual-report.html">Real PDFs — Visual Report</a></h2>
+<p>6 real-world PDF documents with per-page overlays and comparison.</p>
+</div>
+</body></html>

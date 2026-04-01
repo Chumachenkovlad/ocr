@@ -1,0 +1,1948 @@
+{
+  "provider": "paddle",
+  "pages": [
+    {
+      "page_number": 0,
+      "width": 826.0,
+      "height": 1169.0,
+      "blocks": [
+        {
+          "block_type": "text",
+          "lines": [
+            {
+              "text": "Quarterly Business Report — Q3 2025",
+              "words": [
+                {
+                  "text": "Quarterly",
+                  "confidence": 0.9214,
+                  "bbox": {
+                    "x1": 66.0,
+                    "y1": 65.0,
+                    "x2": 131.0,
+                    "y2": 79.0
+                  }
+                },
+                {
+                  "text": "Business",
+                  "confidence": 0.9214,
+                  "bbox": {
+                    "x1": 136.0,
+                    "y1": 65.0,
+                    "x2": 194.0,
+                    "y2": 79.0
+                  }
+                },
+                {
+                  "text": "Report",
+                  "confidence": 0.9214,
+                  "bbox": {
+                    "x1": 199.0,
+                    "y1": 65.0,
+                    "x2": 242.0,
+                    "y2": 79.0
+                  }
+                },
+                {
+                  "text": "—",
+                  "confidence": 0.9214,
+                  "bbox": {
+                    "x1": 247.0,
+                    "y1": 65.0,
+                    "x2": 254.0,
+                    "y2": 79.0
+                  }
+                },
+                {
+                  "text": "Q3",
+                  "confidence": 0.9214,
+                  "bbox": {
+                    "x1": 259.0,
+                    "y1": 65.0,
+                    "x2": 273.0,
+                    "y2": 79.0
+                  }
+                },
+                {
+                  "text": "2025",
+                  "confidence": 0.9214,
+                  "bbox": {
+                    "x1": 278.0,
+                    "y1": 65.0,
+                    "x2": 307.0,
+                    "y2": 79.0
+                  }
+                }
+              ],
+              "bbox": {
+                "x1": 66.0,
+                "y1": 65.0,
+                "x2": 307.0,
+                "y2": 79.0
+              }
+            },
+            {
+              "text": "The quarterly revenue report shows a 15% increase compared to the previous period.This growth was primarily driven by expansion in the European",
+              "words": [
+                {
+                  "text": "The",
+                  "confidence": 0.9134,
+                  "bbox": {
+                    "x1": 65.0,
+                    "y1": 92.0,
+                    "x2": 74.0,
+                    "y2": 105.0
+                  }
+                },
+                {
+                  "text": "quarterly",
+                  "confidence": 0.9134,
+                  "bbox": {
+                    "x1": 88.0,
+                    "y1": 92.0,
+                    "x2": 116.0,
+                    "y2": 105.0
+                  }
+                },
+                {
+                  "text": "revenue",
+                  "confidence": 0.9134,
+                  "bbox": {
+                    "x1": 129.0,
+                    "y1": 92.0,
+                    "x2": 151.0,
+                    "y2": 105.0
+                  }
+                },
+                {
+                  "text": "report",
+                  "confidence": 0.9134,
+                  "bbox": {
+                    "x1": 165.0,
+                    "y1": 92.0,
+                    "x2": 184.0,
+                    "y2": 105.0
+                  }
+                },
+                {
+                  "text": "shows",
+                  "confidence": 0.9134,
+                  "bbox": {
+                    "x1": 197.0,
+                    "y1": 92.0,
+                    "x2": 213.0,
+                    "y2": 105.0
+                  }
+                },
+                {
+                  "text": "a",
+                  "confidence": 0.9134,
+                  "bbox": {
+                    "x1": 226.0,
+                    "y1": 92.0,
+                    "x2": 229.0,
+                    "y2": 105.0
+                  }
+                },
+                {
+                  "text": "15%",
+                  "confidence": 0.9134,
+                  "bbox": {
+                    "x1": 242.0,
+                    "y1": 92.0,
+                    "x2": 251.0,
+                    "y2": 105.0
+                  }
+                },
+                {
+                  "text": "increase",
+                  "confidence": 0.9134,
+                  "bbox": {
+                    "x1": 265.0,
+                    "y1": 92.0,
+                    "x2": 290.0,
+                    "y2": 105.0
+                  }
+                },
+                {
+                  "text": "compared",
+                  "confidence": 0.9134,
+                  "bbox": {
+                    "x1": 303.0,
+                    "y1": 92.0,
+                    "x2": 328.0,
+                    "y2": 105.0
+                  }
+                },
+                {
+                  "text": "to",
+                  "confidence": 0.9134,
+                  "bbox": {
+                    "x1": 342.0,
+                    "y1": 92.0,
+                    "x2": 348.0,
+                    "y2": 105.0
+                  }
+                },
+                {
+                  "text": "the",
+                  "confidence": 0.9134,
+                  "bbox": {
+                    "x1": 361.0,
+                    "y1": 92.0,
+                    "x2": 370.0,
+                    "y2": 105.0
+                  }
+                },
+                {
+                  "text": "previous",
+                  "confidence": 0.9134,
+                  "bbox": {
+                    "x1": 384.0,
+                    "y1": 92.0,
+                    "x2": 409.0,
+                    "y2": 105.0
+                  }
+                },
+                {
+                  "text": "period.This",
+                  "confidence": 0.9134,
+                  "bbox": {
+                    "x1": 422.0,
+                    "y1": 92.0,
+                    "x2": 457.0,
+                    "y2": 105.0
+                  }
+                },
+                {
+                  "text": "growth",
+                  "confidence": 0.9134,
+                  "bbox": {
+                    "x1": 470.0,
+                    "y1": 92.0,
+                    "x2": 489.0,
+                    "y2": 105.0
+                  }
+                },
+                {
+                  "text": "was",
+                  "confidence": 0.9134,
+                  "bbox": {
+                    "x1": 502.0,
+                    "y1": 92.0,
+                    "x2": 511.0,
+                    "y2": 105.0
+                  }
+                },
+                {
+                  "text": "primarily",
+                  "confidence": 0.9134,
+                  "bbox": {
+                    "x1": 525.0,
+                    "y1": 92.0,
+                    "x2": 553.0,
+                    "y2": 105.0
+                  }
+                },
+                {
+                  "text": "driven",
+                  "confidence": 0.9134,
+                  "bbox": {
+                    "x1": 566.0,
+                    "y1": 92.0,
+                    "x2": 585.0,
+                    "y2": 105.0
+                  }
+                },
+                {
+                  "text": "by",
+                  "confidence": 0.9134,
+                  "bbox": {
+                    "x1": 599.0,
+                    "y1": 92.0,
+                    "x2": 605.0,
+                    "y2": 105.0
+                  }
+                },
+                {
+                  "text": "expansion",
+                  "confidence": 0.9134,
+                  "bbox": {
+                    "x1": 618.0,
+                    "y1": 92.0,
+                    "x2": 646.0,
+                    "y2": 105.0
+                  }
+                },
+                {
+                  "text": "in",
+                  "confidence": 0.9134,
+                  "bbox": {
+                    "x1": 660.0,
+                    "y1": 92.0,
+                    "x2": 666.0,
+                    "y2": 105.0
+                  }
+                },
+                {
+                  "text": "the",
+                  "confidence": 0.9134,
+                  "bbox": {
+                    "x1": 679.0,
+                    "y1": 92.0,
+                    "x2": 688.0,
+                    "y2": 105.0
+                  }
+                },
+                {
+                  "text": "European",
+                  "confidence": 0.9134,
+                  "bbox": {
+                    "x1": 702.0,
+                    "y1": 92.0,
+                    "x2": 727.0,
+                    "y2": 105.0
+                  }
+                }
+              ],
+              "bbox": {
+                "x1": 65.0,
+                "y1": 92.0,
+                "x2": 727.0,
+                "y2": 105.0
+              }
+            },
+            {
+              "text": "marketsegment.",
+              "words": [
+                {
+                  "text": "marketsegment.",
+                  "confidence": 0.9858,
+                  "bbox": {
+                    "x1": 66.0,
+                    "y1": 104.0,
+                    "x2": 141.0,
+                    "y2": 114.0
+                  }
+                }
+              ],
+              "bbox": {
+                "x1": 66.0,
+                "y1": 104.0,
+                "x2": 141.0,
+                "y2": 114.0
+              }
+            },
+            {
+              "text": "Our engineering team completed the migrationto the new cloud infrastructure.Syatem uptime improvedfrom 99.2%to 9.8%during 2025.",
+              "words": [
+                {
+                  "text": "Our",
+                  "confidence": 0.8672,
+                  "bbox": {
+                    "x1": 65.0,
+                    "y1": 118.0,
+                    "x2": 77.0,
+                    "y2": 131.0
+                  }
+                },
+                {
+                  "text": "engineering",
+                  "confidence": 0.8672,
+                  "bbox": {
+                    "x1": 90.0,
+                    "y1": 118.0,
+                    "x2": 134.0,
+                    "y2": 131.0
+                  }
+                },
+                {
+                  "text": "team",
+                  "confidence": 0.8672,
+                  "bbox": {
+                    "x1": 147.0,
+                    "y1": 118.0,
+                    "x2": 163.0,
+                    "y2": 131.0
+                  }
+                },
+                {
+                  "text": "completed",
+                  "confidence": 0.8672,
+                  "bbox": {
+                    "x1": 175.0,
+                    "y1": 118.0,
+                    "x2": 211.0,
+                    "y2": 131.0
+                  }
+                },
+                {
+                  "text": "the",
+                  "confidence": 0.8672,
+                  "bbox": {
+                    "x1": 224.0,
+                    "y1": 118.0,
+                    "x2": 236.0,
+                    "y2": 131.0
+                  }
+                },
+                {
+                  "text": "migrationto",
+                  "confidence": 0.8672,
+                  "bbox": {
+                    "x1": 249.0,
+                    "y1": 118.0,
+                    "x2": 293.0,
+                    "y2": 131.0
+                  }
+                },
+                {
+                  "text": "the",
+                  "confidence": 0.8672,
+                  "bbox": {
+                    "x1": 306.0,
+                    "y1": 118.0,
+                    "x2": 318.0,
+                    "y2": 131.0
+                  }
+                },
+                {
+                  "text": "new",
+                  "confidence": 0.8672,
+                  "bbox": {
+                    "x1": 330.0,
+                    "y1": 118.0,
+                    "x2": 342.0,
+                    "y2": 131.0
+                  }
+                },
+                {
+                  "text": "cloud",
+                  "confidence": 0.8672,
+                  "bbox": {
+                    "x1": 355.0,
+                    "y1": 118.0,
+                    "x2": 375.0,
+                    "y2": 131.0
+                  }
+                },
+                {
+                  "text": "infrastructure.Syatem",
+                  "confidence": 0.8672,
+                  "bbox": {
+                    "x1": 388.0,
+                    "y1": 118.0,
+                    "x2": 472.0,
+                    "y2": 131.0
+                  }
+                },
+                {
+                  "text": "uptime",
+                  "confidence": 0.8672,
+                  "bbox": {
+                    "x1": 485.0,
+                    "y1": 118.0,
+                    "x2": 509.0,
+                    "y2": 131.0
+                  }
+                },
+                {
+                  "text": "improvedfrom",
+                  "confidence": 0.8672,
+                  "bbox": {
+                    "x1": 521.0,
+                    "y1": 118.0,
+                    "x2": 569.0,
+                    "y2": 131.0
+                  }
+                },
+                {
+                  "text": "99.2%to",
+                  "confidence": 0.8672,
+                  "bbox": {
+                    "x1": 582.0,
+                    "y1": 118.0,
+                    "x2": 610.0,
+                    "y2": 131.0
+                  }
+                },
+                {
+                  "text": "9.8%during",
+                  "confidence": 0.8672,
+                  "bbox": {
+                    "x1": 623.0,
+                    "y1": 118.0,
+                    "x2": 663.0,
+                    "y2": 131.0
+                  }
+                },
+                {
+                  "text": "2025.",
+                  "confidence": 0.8672,
+                  "bbox": {
+                    "x1": 676.0,
+                    "y1": 118.0,
+                    "x2": 696.0,
+                    "y2": 131.0
+                  }
+                }
+              ],
+              "bbox": {
+                "x1": 65.0,
+                "y1": 118.0,
+                "x2": 696.0,
+                "y2": 131.0
+              }
+            },
+            {
+              "text": "Customer satisfactionacores reached an all-time high of 4.7outof5.0.The support team resolved94%oftickets within 24 hours.",
+              "words": [
+                {
+                  "text": "Customer",
+                  "confidence": 0.8596,
+                  "bbox": {
+                    "x1": 65.0,
+                    "y1": 135.0,
+                    "x2": 96.0,
+                    "y2": 148.0
+                  }
+                },
+                {
+                  "text": "satisfactionacores",
+                  "confidence": 0.8596,
+                  "bbox": {
+                    "x1": 108.0,
+                    "y1": 135.0,
+                    "x2": 178.0,
+                    "y2": 148.0
+                  }
+                },
+                {
+                  "text": "reached",
+                  "confidence": 0.8596,
+                  "bbox": {
+                    "x1": 189.0,
+                    "y1": 135.0,
+                    "x2": 216.0,
+                    "y2": 148.0
+                  }
+                },
+                {
+                  "text": "an",
+                  "confidence": 0.8596,
+                  "bbox": {
+                    "x1": 228.0,
+                    "y1": 135.0,
+                    "x2": 236.0,
+                    "y2": 148.0
+                  }
+                },
+                {
+                  "text": "all-time",
+                  "confidence": 0.8596,
+                  "bbox": {
+                    "x1": 247.0,
+                    "y1": 135.0,
+                    "x2": 278.0,
+                    "y2": 148.0
+                  }
+                },
+                {
+                  "text": "high",
+                  "confidence": 0.8596,
+                  "bbox": {
+                    "x1": 290.0,
+                    "y1": 135.0,
+                    "x2": 306.0,
+                    "y2": 148.0
+                  }
+                },
+                {
+                  "text": "of",
+                  "confidence": 0.8596,
+                  "bbox": {
+                    "x1": 317.0,
+                    "y1": 135.0,
+                    "x2": 325.0,
+                    "y2": 148.0
+                  }
+                },
+                {
+                  "text": "4.7outof5.0.The",
+                  "confidence": 0.8596,
+                  "bbox": {
+                    "x1": 336.0,
+                    "y1": 135.0,
+                    "x2": 394.0,
+                    "y2": 148.0
+                  }
+                },
+                {
+                  "text": "support",
+                  "confidence": 0.8596,
+                  "bbox": {
+                    "x1": 406.0,
+                    "y1": 135.0,
+                    "x2": 433.0,
+                    "y2": 148.0
+                  }
+                },
+                {
+                  "text": "team",
+                  "confidence": 0.8596,
+                  "bbox": {
+                    "x1": 445.0,
+                    "y1": 135.0,
+                    "x2": 461.0,
+                    "y2": 148.0
+                  }
+                },
+                {
+                  "text": "resolved94%oftickets",
+                  "confidence": 0.8596,
+                  "bbox": {
+                    "x1": 472.0,
+                    "y1": 135.0,
+                    "x2": 550.0,
+                    "y2": 148.0
+                  }
+                },
+                {
+                  "text": "within",
+                  "confidence": 0.8596,
+                  "bbox": {
+                    "x1": 561.0,
+                    "y1": 135.0,
+                    "x2": 584.0,
+                    "y2": 148.0
+                  }
+                },
+                {
+                  "text": "24",
+                  "confidence": 0.8596,
+                  "bbox": {
+                    "x1": 596.0,
+                    "y1": 135.0,
+                    "x2": 604.0,
+                    "y2": 148.0
+                  }
+                },
+                {
+                  "text": "hours.",
+                  "confidence": 0.8596,
+                  "bbox": {
+                    "x1": 616.0,
+                    "y1": 135.0,
+                    "x2": 639.0,
+                    "y2": 148.0
+                  }
+                }
+              ],
+              "bbox": {
+                "x1": 65.0,
+                "y1": 135.0,
+                "x2": 639.0,
+                "y2": 148.0
+              }
+            },
+            {
+              "text": "The new productline generated $2.3Minrevenue duringitfirstquarter.Preordersforthe nextreleaseexceededinitialprojections by40%",
+              "words": [
+                {
+                  "text": "The",
+                  "confidence": 0.8193,
+                  "bbox": {
+                    "x1": 65.0,
+                    "y1": 153.0,
+                    "x2": 79.0,
+                    "y2": 166.0
+                  }
+                },
+                {
+                  "text": "new",
+                  "confidence": 0.8193,
+                  "bbox": {
+                    "x1": 91.0,
+                    "y1": 153.0,
+                    "x2": 105.0,
+                    "y2": 166.0
+                  }
+                },
+                {
+                  "text": "productline",
+                  "confidence": 0.8193,
+                  "bbox": {
+                    "x1": 117.0,
+                    "y1": 153.0,
+                    "x2": 167.0,
+                    "y2": 166.0
+                  }
+                },
+                {
+                  "text": "generated",
+                  "confidence": 0.8193,
+                  "bbox": {
+                    "x1": 179.0,
+                    "y1": 153.0,
+                    "x2": 220.0,
+                    "y2": 166.0
+                  }
+                },
+                {
+                  "text": "$2.3Minrevenue",
+                  "confidence": 0.8193,
+                  "bbox": {
+                    "x1": 232.0,
+                    "y1": 153.0,
+                    "x2": 295.0,
+                    "y2": 166.0
+                  }
+                },
+                {
+                  "text": "duringitfirstquarter.Preordersforthe",
+                  "confidence": 0.8193,
+                  "bbox": {
+                    "x1": 308.0,
+                    "y1": 153.0,
+                    "x2": 471.0,
+                    "y2": 166.0
+                  }
+                },
+                {
+                  "text": "nextreleaseexceededinitialprojections",
+                  "confidence": 0.8193,
+                  "bbox": {
+                    "x1": 483.0,
+                    "y1": 153.0,
+                    "x2": 650.0,
+                    "y2": 166.0
+                  }
+                },
+                {
+                  "text": "by40%",
+                  "confidence": 0.8193,
+                  "bbox": {
+                    "x1": 663.0,
+                    "y1": 153.0,
+                    "x2": 686.0,
+                    "y2": 166.0
+                  }
+                }
+              ],
+              "bbox": {
+                "x1": 65.0,
+                "y1": 153.0,
+                "x2": 686.0,
+                "y2": 166.0
+              }
+            },
+            {
+              "text": "Research and developmentspendingincreased to 18% of total revenue. Three patent applications were filed for novel machine learning techniques.",
+              "words": [
+                {
+                  "text": "Research",
+                  "confidence": 0.9423,
+                  "bbox": {
+                    "x1": 65.0,
+                    "y1": 170.0,
+                    "x2": 93.0,
+                    "y2": 183.0
+                  }
+                },
+                {
+                  "text": "and",
+                  "confidence": 0.9423,
+                  "bbox": {
+                    "x1": 106.0,
+                    "y1": 170.0,
+                    "x2": 116.0,
+                    "y2": 183.0
+                  }
+                },
+                {
+                  "text": "developmentspendingincreased",
+                  "confidence": 0.9423,
+                  "bbox": {
+                    "x1": 129.0,
+                    "y1": 170.0,
+                    "x2": 226.0,
+                    "y2": 183.0
+                  }
+                },
+                {
+                  "text": "to",
+                  "confidence": 0.9423,
+                  "bbox": {
+                    "x1": 240.0,
+                    "y1": 170.0,
+                    "x2": 247.0,
+                    "y2": 183.0
+                  }
+                },
+                {
+                  "text": "18%",
+                  "confidence": 0.9423,
+                  "bbox": {
+                    "x1": 260.0,
+                    "y1": 170.0,
+                    "x2": 270.0,
+                    "y2": 183.0
+                  }
+                },
+                {
+                  "text": "of",
+                  "confidence": 0.9423,
+                  "bbox": {
+                    "x1": 283.0,
+                    "y1": 170.0,
+                    "x2": 290.0,
+                    "y2": 183.0
+                  }
+                },
+                {
+                  "text": "total",
+                  "confidence": 0.9423,
+                  "bbox": {
+                    "x1": 303.0,
+                    "y1": 170.0,
+                    "x2": 320.0,
+                    "y2": 183.0
+                  }
+                },
+                {
+                  "text": "revenue.",
+                  "confidence": 0.9423,
+                  "bbox": {
+                    "x1": 334.0,
+                    "y1": 170.0,
+                    "x2": 362.0,
+                    "y2": 183.0
+                  }
+                },
+                {
+                  "text": "Three",
+                  "confidence": 0.9423,
+                  "bbox": {
+                    "x1": 375.0,
+                    "y1": 170.0,
+                    "x2": 392.0,
+                    "y2": 183.0
+                  }
+                },
+                {
+                  "text": "patent",
+                  "confidence": 0.9423,
+                  "bbox": {
+                    "x1": 405.0,
+                    "y1": 170.0,
+                    "x2": 426.0,
+                    "y2": 183.0
+                  }
+                },
+                {
+                  "text": "applications",
+                  "confidence": 0.9423,
+                  "bbox": {
+                    "x1": 439.0,
+                    "y1": 170.0,
+                    "x2": 481.0,
+                    "y2": 183.0
+                  }
+                },
+                {
+                  "text": "were",
+                  "confidence": 0.9423,
+                  "bbox": {
+                    "x1": 494.0,
+                    "y1": 170.0,
+                    "x2": 508.0,
+                    "y2": 183.0
+                  }
+                },
+                {
+                  "text": "filed",
+                  "confidence": 0.9423,
+                  "bbox": {
+                    "x1": 521.0,
+                    "y1": 170.0,
+                    "x2": 538.0,
+                    "y2": 183.0
+                  }
+                },
+                {
+                  "text": "for",
+                  "confidence": 0.9423,
+                  "bbox": {
+                    "x1": 551.0,
+                    "y1": 170.0,
+                    "x2": 561.0,
+                    "y2": 183.0
+                  }
+                },
+                {
+                  "text": "novel",
+                  "confidence": 0.9423,
+                  "bbox": {
+                    "x1": 575.0,
+                    "y1": 170.0,
+                    "x2": 592.0,
+                    "y2": 183.0
+                  }
+                },
+                {
+                  "text": "machine",
+                  "confidence": 0.9423,
+                  "bbox": {
+                    "x1": 606.0,
+                    "y1": 170.0,
+                    "x2": 630.0,
+                    "y2": 183.0
+                  }
+                },
+                {
+                  "text": "learning",
+                  "confidence": 0.9423,
+                  "bbox": {
+                    "x1": 643.0,
+                    "y1": 170.0,
+                    "x2": 671.0,
+                    "y2": 183.0
+                  }
+                },
+                {
+                  "text": "techniques.",
+                  "confidence": 0.9423,
+                  "bbox": {
+                    "x1": 684.0,
+                    "y1": 170.0,
+                    "x2": 722.0,
+                    "y2": 183.0
+                  }
+                }
+              ],
+              "bbox": {
+                "x1": 65.0,
+                "y1": 170.0,
+                "x2": 722.0,
+                "y2": 183.0
+              }
+            },
+            {
+              "text": "Lorem ipsum dolor sit amet,consectetur adipiacing elit.Sed do eiuamod tempor incididunt utlabore etdolore magna aliqua. Ut enim ad minim veniam, quis",
+              "words": [
+                {
+                  "text": "Lorem",
+                  "confidence": 0.9135,
+                  "bbox": {
+                    "x1": 65.0,
+                    "y1": 187.0,
+                    "x2": 81.0,
+                    "y2": 199.0
+                  }
+                },
+                {
+                  "text": "ipsum",
+                  "confidence": 0.9135,
+                  "bbox": {
+                    "x1": 95.0,
+                    "y1": 187.0,
+                    "x2": 111.0,
+                    "y2": 199.0
+                  }
+                },
+                {
+                  "text": "dolor",
+                  "confidence": 0.9135,
+                  "bbox": {
+                    "x1": 125.0,
+                    "y1": 187.0,
+                    "x2": 141.0,
+                    "y2": 199.0
+                  }
+                },
+                {
+                  "text": "sit",
+                  "confidence": 0.9135,
+                  "bbox": {
+                    "x1": 154.0,
+                    "y1": 187.0,
+                    "x2": 164.0,
+                    "y2": 199.0
+                  }
+                },
+                {
+                  "text": "amet,consectetur",
+                  "confidence": 0.9135,
+                  "bbox": {
+                    "x1": 178.0,
+                    "y1": 187.0,
+                    "x2": 229.0,
+                    "y2": 199.0
+                  }
+                },
+                {
+                  "text": "adipiacing",
+                  "confidence": 0.9135,
+                  "bbox": {
+                    "x1": 243.0,
+                    "y1": 187.0,
+                    "x2": 275.0,
+                    "y2": 199.0
+                  }
+                },
+                {
+                  "text": "elit.Sed",
+                  "confidence": 0.9135,
+                  "bbox": {
+                    "x1": 289.0,
+                    "y1": 187.0,
+                    "x2": 315.0,
+                    "y2": 199.0
+                  }
+                },
+                {
+                  "text": "do",
+                  "confidence": 0.9135,
+                  "bbox": {
+                    "x1": 328.0,
+                    "y1": 187.0,
+                    "x2": 334.0,
+                    "y2": 199.0
+                  }
+                },
+                {
+                  "text": "eiuamod",
+                  "confidence": 0.9135,
+                  "bbox": {
+                    "x1": 348.0,
+                    "y1": 187.0,
+                    "x2": 370.0,
+                    "y2": 199.0
+                  }
+                },
+                {
+                  "text": "tempor",
+                  "confidence": 0.9135,
+                  "bbox": {
+                    "x1": 385.0,
+                    "y1": 187.0,
+                    "x2": 404.0,
+                    "y2": 199.0
+                  }
+                },
+                {
+                  "text": "incididunt",
+                  "confidence": 0.9135,
+                  "bbox": {
+                    "x1": 418.0,
+                    "y1": 187.0,
+                    "x2": 450.0,
+                    "y2": 199.0
+                  }
+                },
+                {
+                  "text": "utlabore",
+                  "confidence": 0.9135,
+                  "bbox": {
+                    "x1": 463.0,
+                    "y1": 187.0,
+                    "x2": 489.0,
+                    "y2": 199.0
+                  }
+                },
+                {
+                  "text": "etdolore",
+                  "confidence": 0.9135,
+                  "bbox": {
+                    "x1": 503.0,
+                    "y1": 187.0,
+                    "x2": 529.0,
+                    "y2": 199.0
+                  }
+                },
+                {
+                  "text": "magna",
+                  "confidence": 0.9135,
+                  "bbox": {
+                    "x1": 542.0,
+                    "y1": 187.0,
+                    "x2": 558.0,
+                    "y2": 199.0
+                  }
+                },
+                {
+                  "text": "aliqua.",
+                  "confidence": 0.9135,
+                  "bbox": {
+                    "x1": 572.0,
+                    "y1": 187.0,
+                    "x2": 594.0,
+                    "y2": 199.0
+                  }
+                },
+                {
+                  "text": "Ut",
+                  "confidence": 0.9135,
+                  "bbox": {
+                    "x1": 608.0,
+                    "y1": 187.0,
+                    "x2": 614.0,
+                    "y2": 199.0
+                  }
+                },
+                {
+                  "text": "enim",
+                  "confidence": 0.9135,
+                  "bbox": {
+                    "x1": 628.0,
+                    "y1": 187.0,
+                    "x2": 641.0,
+                    "y2": 199.0
+                  }
+                },
+                {
+                  "text": "ad",
+                  "confidence": 0.9135,
+                  "bbox": {
+                    "x1": 655.0,
+                    "y1": 187.0,
+                    "x2": 661.0,
+                    "y2": 199.0
+                  }
+                },
+                {
+                  "text": "minim",
+                  "confidence": 0.9135,
+                  "bbox": {
+                    "x1": 675.0,
+                    "y1": 187.0,
+                    "x2": 691.0,
+                    "y2": 199.0
+                  }
+                },
+                {
+                  "text": "veniam,",
+                  "confidence": 0.9135,
+                  "bbox": {
+                    "x1": 705.0,
+                    "y1": 187.0,
+                    "x2": 727.0,
+                    "y2": 199.0
+                  }
+                },
+                {
+                  "text": "quis",
+                  "confidence": 0.9135,
+                  "bbox": {
+                    "x1": 741.0,
+                    "y1": 187.0,
+                    "x2": 754.0,
+                    "y2": 199.0
+                  }
+                }
+              ],
+              "bbox": {
+                "x1": 65.0,
+                "y1": 187.0,
+                "x2": 754.0,
+                "y2": 199.0
+              }
+            },
+            {
+              "text": "nostrud exercitationullamcolaboris nisi utaliquipexea commodoconsequat.Duis aute irure dolorin reprehenderitin voluptate velitesse cillumdolore eu",
+              "words": [
+                {
+                  "text": "nostrud",
+                  "confidence": 0.876,
+                  "bbox": {
+                    "x1": 65.0,
+                    "y1": 196.0,
+                    "x2": 92.0,
+                    "y2": 209.0
+                  }
+                },
+                {
+                  "text": "exercitationullamcolaboris",
+                  "confidence": 0.876,
+                  "bbox": {
+                    "x1": 106.0,
+                    "y1": 196.0,
+                    "x2": 207.0,
+                    "y2": 209.0
+                  }
+                },
+                {
+                  "text": "nisi",
+                  "confidence": 0.876,
+                  "bbox": {
+                    "x1": 220.0,
+                    "y1": 196.0,
+                    "x2": 236.0,
+                    "y2": 209.0
+                  }
+                },
+                {
+                  "text": "utaliquipexea",
+                  "confidence": 0.876,
+                  "bbox": {
+                    "x1": 250.0,
+                    "y1": 196.0,
+                    "x2": 300.0,
+                    "y2": 209.0
+                  }
+                },
+                {
+                  "text": "commodoconsequat.Duis",
+                  "confidence": 0.876,
+                  "bbox": {
+                    "x1": 314.0,
+                    "y1": 196.0,
+                    "x2": 395.0,
+                    "y2": 209.0
+                  }
+                },
+                {
+                  "text": "aute",
+                  "confidence": 0.876,
+                  "bbox": {
+                    "x1": 409.0,
+                    "y1": 196.0,
+                    "x2": 425.0,
+                    "y2": 209.0
+                  }
+                },
+                {
+                  "text": "irure",
+                  "confidence": 0.876,
+                  "bbox": {
+                    "x1": 438.0,
+                    "y1": 196.0,
+                    "x2": 457.0,
+                    "y2": 209.0
+                  }
+                },
+                {
+                  "text": "dolorin",
+                  "confidence": 0.876,
+                  "bbox": {
+                    "x1": 471.0,
+                    "y1": 196.0,
+                    "x2": 498.0,
+                    "y2": 209.0
+                  }
+                },
+                {
+                  "text": "reprehenderitin",
+                  "confidence": 0.876,
+                  "bbox": {
+                    "x1": 512.0,
+                    "y1": 196.0,
+                    "x2": 570.0,
+                    "y2": 209.0
+                  }
+                },
+                {
+                  "text": "voluptate",
+                  "confidence": 0.876,
+                  "bbox": {
+                    "x1": 584.0,
+                    "y1": 196.0,
+                    "x2": 619.0,
+                    "y2": 209.0
+                  }
+                },
+                {
+                  "text": "velitesse",
+                  "confidence": 0.876,
+                  "bbox": {
+                    "x1": 632.0,
+                    "y1": 196.0,
+                    "x2": 667.0,
+                    "y2": 209.0
+                  }
+                },
+                {
+                  "text": "cillumdolore",
+                  "confidence": 0.876,
+                  "bbox": {
+                    "x1": 681.0,
+                    "y1": 196.0,
+                    "x2": 728.0,
+                    "y2": 209.0
+                  }
+                },
+                {
+                  "text": "eu",
+                  "confidence": 0.876,
+                  "bbox": {
+                    "x1": 741.0,
+                    "y1": 196.0,
+                    "x2": 749.0,
+                    "y2": 209.0
+                  }
+                }
+              ],
+              "bbox": {
+                "x1": 65.0,
+                "y1": 196.0,
+                "x2": 749.0,
+                "y2": 209.0
+              }
+            },
+            {
+              "text": "fugiat nulla pariatur.Excepteur sint occaecat cupidatatnon proident,suntin culpa qui officia deseruntmollit anim id est laborum.Lorem ipsum dolor sit amet",
+              "words": [
+                {
+                  "text": "fugiat",
+                  "confidence": 0.9034,
+                  "bbox": {
+                    "x1": 66.0,
+                    "y1": 208.0,
+                    "x2": 86.0,
+                    "y2": 218.0
+                  }
+                },
+                {
+                  "text": "nulla",
+                  "confidence": 0.9034,
+                  "bbox": {
+                    "x1": 99.0,
+                    "y1": 208.0,
+                    "x2": 115.0,
+                    "y2": 218.0
+                  }
+                },
+                {
+                  "text": "pariatur.Excepteur",
+                  "confidence": 0.9034,
+                  "bbox": {
+                    "x1": 129.0,
+                    "y1": 208.0,
+                    "x2": 188.0,
+                    "y2": 218.0
+                  }
+                },
+                {
+                  "text": "sint",
+                  "confidence": 0.9034,
+                  "bbox": {
+                    "x1": 202.0,
+                    "y1": 208.0,
+                    "x2": 215.0,
+                    "y2": 218.0
+                  }
+                },
+                {
+                  "text": "occaecat",
+                  "confidence": 0.9034,
+                  "bbox": {
+                    "x1": 229.0,
+                    "y1": 208.0,
+                    "x2": 255.0,
+                    "y2": 218.0
+                  }
+                },
+                {
+                  "text": "cupidatatnon",
+                  "confidence": 0.9034,
+                  "bbox": {
+                    "x1": 268.0,
+                    "y1": 208.0,
+                    "x2": 307.0,
+                    "y2": 218.0
+                  }
+                },
+                {
+                  "text": "proident,suntin",
+                  "confidence": 0.9034,
+                  "bbox": {
+                    "x1": 321.0,
+                    "y1": 208.0,
+                    "x2": 370.0,
+                    "y2": 218.0
+                  }
+                },
+                {
+                  "text": "culpa",
+                  "confidence": 0.9034,
+                  "bbox": {
+                    "x1": 384.0,
+                    "y1": 208.0,
+                    "x2": 400.0,
+                    "y2": 218.0
+                  }
+                },
+                {
+                  "text": "qui",
+                  "confidence": 0.9034,
+                  "bbox": {
+                    "x1": 414.0,
+                    "y1": 208.0,
+                    "x2": 424.0,
+                    "y2": 218.0
+                  }
+                },
+                {
+                  "text": "officia",
+                  "confidence": 0.9034,
+                  "bbox": {
+                    "x1": 438.0,
+                    "y1": 208.0,
+                    "x2": 461.0,
+                    "y2": 218.0
+                  }
+                },
+                {
+                  "text": "deseruntmollit",
+                  "confidence": 0.9034,
+                  "bbox": {
+                    "x1": 474.0,
+                    "y1": 208.0,
+                    "x2": 520.0,
+                    "y2": 218.0
+                  }
+                },
+                {
+                  "text": "anim",
+                  "confidence": 0.9034,
+                  "bbox": {
+                    "x1": 533.0,
+                    "y1": 208.0,
+                    "x2": 546.0,
+                    "y2": 218.0
+                  }
+                },
+                {
+                  "text": "id",
+                  "confidence": 0.9034,
+                  "bbox": {
+                    "x1": 560.0,
+                    "y1": 208.0,
+                    "x2": 567.0,
+                    "y2": 218.0
+                  }
+                },
+                {
+                  "text": "est",
+                  "confidence": 0.9034,
+                  "bbox": {
+                    "x1": 581.0,
+                    "y1": 208.0,
+                    "x2": 591.0,
+                    "y2": 218.0
+                  }
+                },
+                {
+                  "text": "laborum.Lorem",
+                  "confidence": 0.9034,
+                  "bbox": {
+                    "x1": 604.0,
+                    "y1": 208.0,
+                    "x2": 646.0,
+                    "y2": 218.0
+                  }
+                },
+                {
+                  "text": "ipsum",
+                  "confidence": 0.9034,
+                  "bbox": {
+                    "x1": 660.0,
+                    "y1": 208.0,
+                    "x2": 676.0,
+                    "y2": 218.0
+                  }
+                },
+                {
+                  "text": "dolor",
+                  "confidence": 0.9034,
+                  "bbox": {
+                    "x1": 690.0,
+                    "y1": 208.0,
+                    "x2": 706.0,
+                    "y2": 218.0
+                  }
+                },
+                {
+                  "text": "sit",
+                  "confidence": 0.9034,
+                  "bbox": {
+                    "x1": 720.0,
+                    "y1": 208.0,
+                    "x2": 730.0,
+                    "y2": 218.0
+                  }
+                },
+                {
+                  "text": "amet",
+                  "confidence": 0.9034,
+                  "bbox": {
+                    "x1": 744.0,
+                    "y1": 208.0,
+                    "x2": 757.0,
+                    "y2": 218.0
+                  }
+                }
+              ],
+              "bbox": {
+                "x1": 66.0,
+                "y1": 208.0,
+                "x2": 757.0,
+                "y2": 218.0
+              }
+            },
+            {
+              "text": "laborisnisiutaliquipexeacommodoconsequat.Duisaute iruredolorinreprehenderitin voluptate velitesse cillumdoloreeufugiat nulla pariatur.Excepteur",
+              "words": [
+                {
+                  "text": "laborisnisiutaliquipexeacommodoconsequat.Duisaute",
+                  "confidence": 0.9063,
+                  "bbox": {
+                    "x1": 65.0,
+                    "y1": 227.0,
+                    "x2": 283.0,
+                    "y2": 240.0
+                  }
+                },
+                {
+                  "text": "iruredolorinreprehenderitin",
+                  "confidence": 0.9063,
+                  "bbox": {
+                    "x1": 297.0,
+                    "y1": 227.0,
+                    "x2": 417.0,
+                    "y2": 240.0
+                  }
+                },
+                {
+                  "text": "voluptate",
+                  "confidence": 0.9063,
+                  "bbox": {
+                    "x1": 430.0,
+                    "y1": 227.0,
+                    "x2": 470.0,
+                    "y2": 240.0
+                  }
+                },
+                {
+                  "text": "velitesse",
+                  "confidence": 0.9063,
+                  "bbox": {
+                    "x1": 484.0,
+                    "y1": 227.0,
+                    "x2": 524.0,
+                    "y2": 240.0
+                  }
+                },
+                {
+                  "text": "cillumdoloreeufugiat",
+                  "confidence": 0.9063,
+                  "bbox": {
+                    "x1": 538.0,
+                    "y1": 227.0,
+                    "x2": 627.0,
+                    "y2": 240.0
+                  }
+                },
+                {
+                  "text": "nulla",
+                  "confidence": 0.9063,
+                  "bbox": {
+                    "x1": 641.0,
+                    "y1": 227.0,
+                    "x2": 663.0,
+                    "y2": 240.0
+                  }
+                },
+                {
+                  "text": "pariatur.Excepteur",
+                  "confidence": 0.9063,
+                  "bbox": {
+                    "x1": 677.0,
+                    "y1": 227.0,
+                    "x2": 757.0,
+                    "y2": 240.0
+                  }
+                }
+              ],
+              "bbox": {
+                "x1": 65.0,
+                "y1": 227.0,
+                "x2": 757.0,
+                "y2": 240.0
+              }
+            },
+            {
+              "text": "consectetur adipiacing elit.Sed do eiuamod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud exercitation ull amco",
+              "words": [
+                {
+                  "text": "consectetur",
+                  "confidence": 0.9266,
+                  "bbox": {
+                    "x1": 66.0,
+                    "y1": 218.0,
+                    "x2": 99.0,
+                    "y2": 228.0
+                  }
+                },
+                {
+                  "text": "adipiacing",
+                  "confidence": 0.9266,
+                  "bbox": {
+                    "x1": 113.0,
+                    "y1": 218.0,
+                    "x2": 143.0,
+                    "y2": 228.0
+                  }
+                },
+                {
+                  "text": "elit.Sed",
+                  "confidence": 0.9266,
+                  "bbox": {
+                    "x1": 157.0,
+                    "y1": 218.0,
+                    "x2": 181.0,
+                    "y2": 228.0
+                  }
+                },
+                {
+                  "text": "do",
+                  "confidence": 0.9266,
+                  "bbox": {
+                    "x1": 195.0,
+                    "y1": 218.0,
+                    "x2": 201.0,
+                    "y2": 228.0
+                  }
+                },
+                {
+                  "text": "eiuamod",
+                  "confidence": 0.9266,
+                  "bbox": {
+                    "x1": 215.0,
+                    "y1": 218.0,
+                    "x2": 236.0,
+                    "y2": 228.0
+                  }
+                },
+                {
+                  "text": "tempor",
+                  "confidence": 0.9266,
+                  "bbox": {
+                    "x1": 250.0,
+                    "y1": 218.0,
+                    "x2": 268.0,
+                    "y2": 228.0
+                  }
+                },
+                {
+                  "text": "incididunt",
+                  "confidence": 0.9266,
+                  "bbox": {
+                    "x1": 282.0,
+                    "y1": 218.0,
+                    "x2": 312.0,
+                    "y2": 228.0
+                  }
+                },
+                {
+                  "text": "ut",
+                  "confidence": 0.9266,
+                  "bbox": {
+                    "x1": 326.0,
+                    "y1": 218.0,
+                    "x2": 332.0,
+                    "y2": 228.0
+                  }
+                },
+                {
+                  "text": "labore",
+                  "confidence": 0.9266,
+                  "bbox": {
+                    "x1": 346.0,
+                    "y1": 218.0,
+                    "x2": 364.0,
+                    "y2": 228.0
+                  }
+                },
+                {
+                  "text": "et",
+                  "confidence": 0.9266,
+                  "bbox": {
+                    "x1": 378.0,
+                    "y1": 218.0,
+                    "x2": 384.0,
+                    "y2": 228.0
+                  }
+                },
+                {
+                  "text": "dolore",
+                  "confidence": 0.9266,
+                  "bbox": {
+                    "x1": 398.0,
+                    "y1": 218.0,
+                    "x2": 416.0,
+                    "y2": 228.0
+                  }
+                },
+                {
+                  "text": "magna",
+                  "confidence": 0.9266,
+                  "bbox": {
+                    "x1": 429.0,
+                    "y1": 218.0,
+                    "x2": 444.0,
+                    "y2": 228.0
+                  }
+                },
+                {
+                  "text": "aliqua.",
+                  "confidence": 0.9266,
+                  "bbox": {
+                    "x1": 458.0,
+                    "y1": 218.0,
+                    "x2": 479.0,
+                    "y2": 228.0
+                  }
+                },
+                {
+                  "text": "Ut",
+                  "confidence": 0.9266,
+                  "bbox": {
+                    "x1": 493.0,
+                    "y1": 218.0,
+                    "x2": 499.0,
+                    "y2": 228.0
+                  }
+                },
+                {
+                  "text": "enim",
+                  "confidence": 0.9266,
+                  "bbox": {
+                    "x1": 513.0,
+                    "y1": 218.0,
+                    "x2": 525.0,
+                    "y2": 228.0
+                  }
+                },
+                {
+                  "text": "ad",
+                  "confidence": 0.9266,
+                  "bbox": {
+                    "x1": 539.0,
+                    "y1": 218.0,
+                    "x2": 545.0,
+                    "y2": 228.0
+                  }
+                },
+                {
+                  "text": "minim",
+                  "confidence": 0.9266,
+                  "bbox": {
+                    "x1": 559.0,
+                    "y1": 218.0,
+                    "x2": 574.0,
+                    "y2": 228.0
+                  }
+                },
+                {
+                  "text": "veniam,quis",
+                  "confidence": 0.9266,
+                  "bbox": {
+                    "x1": 588.0,
+                    "y1": 218.0,
+                    "x2": 621.0,
+                    "y2": 228.0
+                  }
+                },
+                {
+                  "text": "nostrud",
+                  "confidence": 0.9266,
+                  "bbox": {
+                    "x1": 635.0,
+                    "y1": 218.0,
+                    "x2": 656.0,
+                    "y2": 228.0
+                  }
+                },
+                {
+                  "text": "exercitation",
+                  "confidence": 0.9266,
+                  "bbox": {
+                    "x1": 670.0,
+                    "y1": 218.0,
+                    "x2": 706.0,
+                    "y2": 228.0
+                  }
+                },
+                {
+                  "text": "ull",
+                  "confidence": 0.9266,
+                  "bbox": {
+                    "x1": 720.0,
+                    "y1": 218.0,
+                    "x2": 729.0,
+                    "y2": 228.0
+                  }
+                },
+                {
+                  "text": "amco",
+                  "confidence": 0.9266,
+                  "bbox": {
+                    "x1": 743.0,
+                    "y1": 218.0,
+                    "x2": 755.0,
+                    "y2": 228.0
+                  }
+                }
+              ],
+              "bbox": {
+                "x1": 66.0,
+                "y1": 218.0,
+                "x2": 755.0,
+                "y2": 228.0
+              }
+            },
+            {
+              "text": "sintoccaecat cupidatat non proident,suntin culpa qui officia deseruntmollit anim id est laborum.",
+              "words": [
+                {
+                  "text": "sintoccaecat",
+                  "confidence": 0.9353,
+                  "bbox": {
+                    "x1": 65.0,
+                    "y1": 237.0,
+                    "x2": 112.0,
+                    "y2": 250.0
+                  }
+                },
+                {
+                  "text": "cupidatat",
+                  "confidence": 0.9353,
+                  "bbox": {
+                    "x1": 121.0,
+                    "y1": 237.0,
+                    "x2": 157.0,
+                    "y2": 250.0
+                  }
+                },
+                {
+                  "text": "non",
+                  "confidence": 0.9353,
+                  "bbox": {
+                    "x1": 165.0,
+                    "y1": 237.0,
+                    "x2": 177.0,
+                    "y2": 250.0
+                  }
+                },
+                {
+                  "text": "proident,suntin",
+                  "confidence": 0.9353,
+                  "bbox": {
+                    "x1": 186.0,
+                    "y1": 237.0,
+                    "x2": 245.0,
+                    "y2": 250.0
+                  }
+                },
+                {
+                  "text": "culpa",
+                  "confidence": 0.9353,
+                  "bbox": {
+                    "x1": 253.0,
+                    "y1": 237.0,
+                    "x2": 273.0,
+                    "y2": 250.0
+                  }
+                },
+                {
+                  "text": "qui",
+                  "confidence": 0.9353,
+                  "bbox": {
+                    "x1": 282.0,
+                    "y1": 237.0,
+                    "x2": 294.0,
+                    "y2": 250.0
+                  }
+                },
+                {
+                  "text": "officia",
+                  "confidence": 0.9353,
+                  "bbox": {
+                    "x1": 302.0,
+                    "y1": 237.0,
+                    "x2": 330.0,
+                    "y2": 250.0
+                  }
+                },
+                {
+                  "text": "deseruntmollit",
+                  "confidence": 0.9353,
+                  "bbox": {
+                    "x1": 338.0,
+                    "y1": 237.0,
+                    "x2": 393.0,
+                    "y2": 250.0
+                  }
+                },
+                {
+                  "text": "anim",
+                  "confidence": 0.9353,
+                  "bbox": {
+                    "x1": 402.0,
+                    "y1": 237.0,
+                    "x2": 418.0,
+                    "y2": 250.0
+                  }
+                },
+                {
+                  "text": "id",
+                  "confidence": 0.9353,
+                  "bbox": {
+                    "x1": 427.0,
+                    "y1": 237.0,
+                    "x2": 435.0,
+                    "y2": 250.0
+                  }
+                },
+                {
+                  "text": "est",
+                  "confidence": 0.9353,
+                  "bbox": {
+                    "x1": 443.0,
+                    "y1": 237.0,
+                    "x2": 455.0,
+                    "y2": 250.0
+                  }
+                },
+                {
+                  "text": "laborum.",
+                  "confidence": 0.9353,
+                  "bbox": {
+                    "x1": 463.0,
+                    "y1": 237.0,
+                    "x2": 495.0,
+                    "y2": 250.0
+                  }
+                }
+              ],
+              "bbox": {
+                "x1": 65.0,
+                "y1": 237.0,
+                "x2": 495.0,
+                "y2": 250.0
+              }
+            }
+          ],
+          "bbox": {
+            "x1": 65.0,
+            "y1": 65.0,
+            "x2": 757.0,
+            "y2": 250.0
+          }
+        }
+      ]
+    }
+  ],
+  "raw": null,
+  "latency_ms": 618.0
+}
