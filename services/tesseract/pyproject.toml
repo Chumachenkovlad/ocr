@@ -1,0 +1,95 @@
+[project]
+name = "ocr-tesseract-service"
+version = "0.1.0"
+description = "OCR microservice using Tesseract for PDF/image text extraction"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.34.0",
+    "python-multipart>=0.0.18",
+    "pydantic>=2.10.0",
+    "pydantic-settings>=2.7.0",
+    "lxml>=5.0.0",
+    "Pillow>=11.0.0",
+    "pdf2image>=1.17.0",
+    "python-magic>=0.4.27",
+    "structlog>=24.4.0",
+    "ocr-schema",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.4",
+    "pytest-asyncio>=0.25.0",
+    "httpx>=0.28.1",
+    "ruff>=0.9.0",
+    "mypy>=1.14.0",
+    "coverage>=7.6.0",
+    "bandit>=1.8.0",
+]
+
+[build-system]
+requires = ["setuptools>=75.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "N",   # pep8-naming
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "S",   # flake8-bandit
+    "T20", # flake8-print
+    "SIM", # flake8-simplify
+    "RUF", # ruff-specific
+]
+ignore = [
+    "S101", # assert usage allowed in tests
+    "S603", # subprocess calls are intentional (tesseract invocation)
+    "S607", # partial executable path is intentional (tesseract binary name)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S106"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = [
+    "pdf2image.*",
+    "magic.*",
+    "lxml.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests (require Tesseract binary)",
+]
+
+[tool.coverage.run]
+source = ["src"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true

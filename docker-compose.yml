@@ -1,0 +1,143 @@
+services:
+  paddle:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: services/paddle/Dockerfile
+      target: gpu
+    ports:
+      - "8081:8080"
+    environment:
+      - OCR_DEVICE=gpu
+      - OCR_DPI=300
+      - OCR_LOG_LEVEL=INFO
+      - OCR_MAX_CONCURRENT=2
+      - OCR_MODE=ocr
+      - FLAGS_use_mkldnn=0
+      - FLAGS_enable_pir_in_executor=0
+      - FLAGS_enable_pir_api=0
+      - FLAGS_allocator_strategy=auto_growth
+      - FLAGS_call_stack_level=2
+      - PYTHONFAULTHANDLER=1
+      - GLOG_v=0
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    volumes:
+      - model-cache-paddle:/models
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+        limits:
+          memory: 12G
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  tesseract:
+    build:
+      context: .
+      dockerfile: services/tesseract/Dockerfile
+    ports:
+      - "8082:8080"
+    environment:
+      - OCR_TESSERACT_LANG=eng
+      - OCR_TESSERACT_DPI=300
+      - OCR_LOG_LEVEL=INFO
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/healthz"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  surya:
+    build:
+      context: .
+      dockerfile: services/surya/Dockerfile
+    ports:
+      - "8083:8080"
+    environment:
+      - OCR_DEVICE=cpu
+      - OCR_LOG_LEVEL=INFO
+    volumes:
+      - model-cache-surya:/root/.cache
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+
+  doctr:
+    build:
+      context: .
+      dockerfile: services/doctr/Dockerfile
+    ports:
+      - "8084:8080"
+    environment:
+      - OCR_DEVICE=cpu
+      - OCR_LOG_LEVEL=INFO
+    volumes:
+      - model-cache-doctr:/root/.cache
+    deploy:
+      resources:
+        limits:
+          memory: 6G
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+
+  gateway:
+    build:
+      context: .
+      dockerfile: services/gateway/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - GATEWAY_PADDLE_URL=http://paddle:8080
+      - GATEWAY_TESSERACT_URL=http://tesseract:8080
+      - GATEWAY_SURYA_URL=http://surya:8080
+      - GATEWAY_DOCTR_URL=http://doctr:8080
+      - GATEWAY_REQUEST_TIMEOUT=60
+    depends_on:
+      paddle:
+        condition: service_healthy
+      tesseract:
+        condition: service_healthy
+      surya:
+        condition: service_healthy
+      doctr:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/healthz"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+volumes:
+  model-cache-paddle:
+  model-cache-surya:
+  model-cache-doctr:

@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OCR Comparison Gateway</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #333; min-height: 100vh; }
+
+    /* Header */
+    .header { padding: 12px 24px; background: #1a1a2e; color: #eee; display: flex; align-items: center; gap: 16px; }
+    .header h1 { font-size: 18px; font-weight: 600; }
+    .header .badge { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: #4ecca3; color: #111; font-weight: 600; }
+
+    /* Upload area */
+    .upload-section { padding: 16px 24px; background: #fff; border-bottom: 1px solid #ddd; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+    .drop-zone {
+      border: 2px dashed #bbb; border-radius: 8px; padding: 20px 32px; text-align: center;
+      color: #888; font-size: 14px; cursor: pointer; transition: all 0.2s; flex: 1; min-width: 200px;
+    }
+    .drop-zone.dragover { border-color: #4ecca3; background: #e8faf4; color: #333; }
+    .drop-zone input[type="file"] { display: none; }
+
+    .controls-group { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    .controls-group label { font-size: 13px; color: #555; display: flex; align-items: center; gap: 4px; }
+    .controls-group select { padding: 4px 8px; border-radius: 4px; border: 1px solid #ccc; font-size: 13px; }
+    .controls-group .checkbox-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .controls-group .checkbox-group label { font-size: 12px; cursor: pointer; padding: 3px 8px; border: 1px solid #ccc; border-radius: 4px; transition: all 0.15s; user-select: none; }
+    .controls-group .checkbox-group label.checked { background: #4ecca3; color: #111; border-color: #4ecca3; font-weight: 600; }
+
+    .btn-primary {
+      padding: 8px 20px; border: none; border-radius: 4px; background: #e94560; color: #fff;
+      font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.15s;
+    }
+    .btn-primary:hover { background: #c73a52; }
+    .btn-primary:disabled { background: #aaa; cursor: not-allowed; }
+
+    /* Status bar */
+    .status-bar { padding: 8px 24px; font-size: 13px; color: #666; min-height: 36px; display: flex; align-items: center; background: #fff; border-bottom: 1px solid #eee; }
+    .status-bar.error { color: #e94560; }
+    .status-bar.success { color: #2a9d5c; }
+
+    /* Summary bar */
+    .summary-bar { padding: 10px 24px; background: #1a1a2e; color: #ccc; font-size: 12px; display: none; flex-wrap: wrap; gap: 20px; align-items: center; }
+    .summary-bar .stat { display: flex; align-items: center; gap: 6px; }
+    .summary-bar .stat-label { color: #888; }
+    .summary-bar .stat-value { color: #eee; font-weight: 600; }
+
+    /* Tab bar */
+    .tab-bar { display: none; padding: 0 24px; background: #fff; border-bottom: 1px solid #ddd; }
+    .tab-bar button {
+      padding: 10px 20px; border: none; border-bottom: 2px solid transparent;
+      background: none; color: #888; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s;
+    }
+    .tab-bar button:hover { color: #555; }
+    .tab-bar button.active { color: #e94560; border-bottom-color: #e94560; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Results grid */
+    .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px 24px; }
+    @media (max-width: 900px) { .results-grid { grid-template-columns: 1fr; } }
+
+    .provider-panel {
+      background: #fff; border: 1px solid #ddd; border-radius: 8px; overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .provider-panel.error-panel { border-color: #e94560; }
+
+    .panel-header {
+      padding: 8px 12px; background: #fafafa; border-bottom: 1px solid #eee;
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+    .panel-header .provider-name { font-size: 14px; font-weight: 700; text-transform: capitalize; }
+    .panel-header .latency-badge { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: #eee; color: #555; }
+    .panel-header .latency-badge.fast { background: #d4edda; color: #155724; }
+    .panel-header .latency-badge.medium { background: #fff3cd; color: #856404; }
+    .panel-header .latency-badge.slow { background: #f8d7da; color: #721c24; }
+
+    .panel-toggles { display: flex; gap: 6px; margin-left: auto; }
+    .panel-toggles button {
+      padding: 2px 8px; border: 1px solid #ccc; border-radius: 3px; background: #fff;
+      font-size: 11px; cursor: pointer; transition: all 0.15s;
+    }
+    .panel-toggles button.active { font-weight: 600; }
+    .panel-toggles button.toggle-word.active { background: #dbeafe; border-color: #3b82f6; color: #1d4ed8; }
+    .panel-toggles button.toggle-line.active { background: #d1fae5; border-color: #10b981; color: #065f46; }
+    .panel-toggles button.toggle-block.active { background: #fee2e2; border-color: #ef4444; color: #991b1b; }
+
+    .panel-body { position: relative; flex: 1; min-height: 200px; }
+
+    /* Canvas overlay area */
+    .canvas-wrap { position: relative; overflow: auto; max-height: 400px; background: #f0f0f0; }
+    .canvas-wrap img { display: block; width: 100%; }
+    .canvas-overlay { position: absolute; top: 0; left: 0; pointer-events: none; }
+
+    .box { position: absolute; pointer-events: auto; }
+    .box-word { border: 1.5px solid rgba(59, 130, 246, 0.6); background: rgba(59, 130, 246, 0.06); }
+    .box-word:hover { background: rgba(59, 130, 246, 0.2); border-color: #3b82f6; z-index: 10; }
+    .box-line { border: 1px dashed rgba(16, 185, 129, 0.5); }
+    .box-line:hover { border-color: #10b981; background: rgba(16, 185, 129, 0.1); z-index: 5; }
+    .box-block { border: 2px dashed rgba(239, 68, 68, 0.5); }
+    .box-block:hover { border-color: #ef4444; background: rgba(239, 68, 68, 0.08); z-index: 3; }
+
+    .tooltip {
+      position: absolute; bottom: calc(100% + 4px); left: 50%; transform: translateX(-50%);
+      background: #1a1a2e; color: #eee; padding: 4px 8px; border-radius: 4px; font-size: 11px;
+      white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity 0.15s; z-index: 100;
+    }
+    .box:hover .tooltip { opacity: 1; }
+
+    /* Confidence color coding */
+    .conf-high { border-color: rgba(16, 185, 129, 0.7) !important; }
+    .conf-high:hover { border-color: #10b981 !important; }
+    .conf-mid { border-color: rgba(245, 158, 11, 0.7) !important; }
+    .conf-mid:hover { border-color: #f59e0b !important; }
+    .conf-low { border-color: rgba(239, 68, 68, 0.9) !important; background: rgba(239, 68, 68, 0.12) !important; }
+    .conf-low:hover { border-color: #ef4444 !important; }
+
+    .hidden { display: none !important; }
+
+    /* Text output */
+    .text-output {
+      padding: 10px 12px; font-size: 12px; line-height: 1.6; max-height: 200px;
+      overflow: auto; border-top: 1px solid #eee; background: #fafafa; white-space: pre-wrap;
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; color: #333;
+    }
+
+    /* Error panel content */
+    .error-content { padding: 20px; color: #e94560; font-size: 13px; text-align: center; }
+
+    /* JSON tab */
+    .json-section { padding: 16px 24px; }
+    .json-provider-tabs { display: flex; gap: 0; margin-bottom: 0; }
+    .json-provider-tabs button {
+      padding: 8px 16px; border: 1px solid #ddd; border-bottom: none; background: #fafafa;
+      font-size: 12px; font-weight: 600; cursor: pointer; color: #888; text-transform: capitalize;
+      border-radius: 4px 4px 0 0; margin-right: -1px;
+    }
+    .json-provider-tabs button.active { background: #fff; color: #333; border-bottom: 1px solid #fff; position: relative; z-index: 1; }
+    .json-wrap {
+      position: relative; max-height: calc(100vh - 340px); overflow: auto;
+      background: #1a1a2e; border: 1px solid #ddd; border-radius: 0 4px 4px 4px;
+    }
+    .json-wrap pre { margin: 0; padding: 16px; font-size: 12px; line-height: 1.5; color: #c5c8c6; overflow-x: auto; }
+    .copy-btn {
+      position: absolute; top: 8px; right: 8px; padding: 4px 10px;
+      border: 1px solid #444; border-radius: 4px; background: #16213e; color: #aaa;
+      font-size: 12px; cursor: pointer; z-index: 10;
+    }
+    .copy-btn:hover { color: #eee; border-color: #4ecca3; }
+
+    .json-key { color: #81a2be; }
+    .json-string { color: #b5bd68; }
+    .json-number { color: #de935f; }
+    .json-boolean { color: #cc6666; }
+    .json-null { color: #969896; }
+
+    /* Spinner */
+    .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid #ccc; border-top-color: #e94560; border-radius: 50%; animation: spin 0.6s linear infinite; margin-right: 8px; vertical-align: middle; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* No results placeholder */
+    .placeholder { padding: 40px; text-align: center; color: #aaa; font-size: 14px; }
+
+    /* ===== Analysis tab ===== */
+    .analysis-section { padding: 20px 24px; max-width: 1400px; }
+    .analysis-section h2 { font-size: 16px; font-weight: 700; color: #1a1a2e; margin: 24px 0 10px; padding-bottom: 6px; border-bottom: 2px solid #e94560; }
+    .analysis-section h2:first-child { margin-top: 0; }
+
+    /* Metrics table */
+    .metrics-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 4px; }
+    .metrics-table th { background: #1a1a2e; color: #eee; padding: 8px 12px; text-align: left; font-weight: 600; }
+    .metrics-table td { padding: 7px 12px; border-bottom: 1px solid #eee; }
+    .metrics-table tr:hover td { background: #f9f9f9; }
+    .rank-1 { color: #155724; font-weight: 700; }
+    .rank-2 { color: #856404; }
+    .rank-last { color: #721c24; }
+
+    .bar-wrap { display: flex; align-items: center; gap: 8px; }
+    .bar-track { flex: 1; height: 8px; background: #eee; border-radius: 4px; min-width: 60px; }
+    .bar-fill { height: 100%; border-radius: 4px; background: #4ecca3; transition: width 0.4s; }
+    .bar-fill.latency { background: #e94560; }
+    .bar-val { font-size: 11px; color: #666; white-space: nowrap; }
+
+    /* Text diff */
+    .diff-controls { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+    .diff-controls select { padding: 5px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; }
+    .diff-controls label { font-size: 13px; color: #555; }
+    .diff-view {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    @media (max-width: 800px) { .diff-view { grid-template-columns: 1fr; } }
+    .diff-panel { background: #fff; border: 1px solid #ddd; border-radius: 6px; overflow: hidden; }
+    .diff-panel-header { padding: 6px 12px; background: #fafafa; border-bottom: 1px solid #eee; font-size: 12px; font-weight: 600; color: #555; display: flex; justify-content: space-between; }
+    .diff-panel-body {
+      padding: 10px 12px; font-size: 12px; line-height: 1.7; max-height: 360px;
+      overflow: auto; font-family: 'SF Mono', 'Fira Code', Consolas, monospace; white-space: pre-wrap;
+    }
+    .d-add { background: #d4edda; color: #155724; border-radius: 2px; }
+    .d-del { background: #f8d7da; color: #721c24; border-radius: 2px; text-decoration: line-through; }
+    .d-same { color: #555; }
+
+    /* Similarity matrix */
+    .sim-table { width: auto; border-collapse: collapse; font-size: 13px; }
+    .sim-table th, .sim-table td { padding: 6px 14px; border: 1px solid #ddd; text-align: center; }
+    .sim-table th { background: #f0f0f0; font-weight: 600; }
+    .sim-cell-high { background: #d4edda; color: #155724; font-weight: 600; }
+    .sim-cell-mid { background: #fff3cd; color: #856404; }
+    .sim-cell-low { background: #f8d7da; color: #721c24; }
+    .sim-cell-self { background: #e8eaf6; color: #3949ab; font-style: italic; }
+
+    /* Feature matrix */
+    .feature-matrix { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 8px; }
+    .feature-matrix th { background: #1a1a2e; color: #eee; padding: 7px 10px; text-align: left; font-weight: 600; font-size: 11px; }
+    .feature-matrix td { padding: 6px 10px; border-bottom: 1px solid #eee; }
+    .feature-matrix tr:hover td { background: #fafafa; }
+    .feature-matrix .section-header td { background: #f0f4ff; font-weight: 700; font-size: 12px; color: #3949ab; padding: 8px 10px; }
+    .feat-yes { color: #155724; font-weight: 600; }
+    .feat-partial { color: #856404; }
+    .feat-no { color: #aaa; }
+    .feat-highlight { color: #e94560; font-weight: 700; }
+
+    /* Conclusion */
+    .conclusion-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-bottom: 16px; }
+    .conclusion-card { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 14px 16px; }
+    .conclusion-card .card-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .conclusion-card .card-winner { font-size: 20px; font-weight: 700; color: #1a1a2e; text-transform: capitalize; }
+    .conclusion-card .card-stat { font-size: 12px; color: #888; margin-top: 4px; }
+    .conclusion-card .card-reason { font-size: 12px; color: #555; margin-top: 6px; border-top: 1px solid #eee; padding-top: 6px; }
+
+    .rec-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .rec-table th { background: #f0f4ff; padding: 8px 12px; text-align: left; font-weight: 600; color: #3949ab; border-bottom: 2px solid #c5cae9; }
+    .rec-table td { padding: 8px 12px; border-bottom: 1px solid #eee; }
+    .rec-table tr:hover td { background: #fafafa; }
+    .rec-winner { font-weight: 700; color: #1a1a2e; }
+
+    .verdict-box { background: #e8f5e9; border-left: 4px solid #4caf50; border-radius: 4px; padding: 14px 16px; font-size: 13px; line-height: 1.6; margin-top: 12px; }
+    .verdict-box strong { color: #1b5e20; }
+
+    .notice { background: #fff8e1; border-left: 4px solid #ffc107; border-radius: 4px; padding: 10px 14px; font-size: 12px; color: #5d4037; margin-top: 8px; }
+
+    /* collapsible feature sections */
+    details.feat-group { margin-bottom: 2px; }
+    details.feat-group summary { cursor: pointer; padding: 6px 10px; background: #f0f4ff; font-weight: 700; font-size: 12px; color: #3949ab; border-radius: 4px; user-select: none; }
+    details.feat-group summary:hover { background: #e3eafd; }
+    details.feat-group[open] summary { border-radius: 4px 4px 0 0; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>OCR Comparison Gateway</h1>
+    <span class="badge">Multi-Engine</span>
+  </div>
+
+  <!-- Upload section -->
+  <div class="upload-section">
+    <div class="drop-zone" id="dropZone">
+      <input type="file" id="fileInput" accept="application/pdf,image/png,image/jpeg,image/webp,image/tiff">
+      Drop an image or PDF here, or click to select
+    </div>
+    <div class="controls-group">
+      <label>DPI:
+        <select id="dpiSelect">
+          <option value="150">150</option>
+          <option value="200">200</option>
+          <option value="300" selected>300</option>
+          <option value="600">600</option>
+        </select>
+      </label>
+      <div>
+        <div style="font-size:11px;color:#888;margin-bottom:4px;">Providers:</div>
+        <div class="checkbox-group" id="providerCheckboxes">
+          <label class="checked" data-provider="paddle"><input type="checkbox" checked hidden> Paddle</label>
+          <label class="checked" data-provider="tesseract"><input type="checkbox" checked hidden> Tesseract</label>
+          <label class="checked" data-provider="surya"><input type="checkbox" checked hidden> Surya</label>
+          <label class="checked" data-provider="doctr"><input type="checkbox" checked hidden> DocTR</label>
+        </div>
+      </div>
+      <button class="btn-primary" id="runBtn" disabled>Compare OCR</button>
+    </div>
+  </div>
+
+  <div class="status-bar" id="statusBar">Upload a PDF or image to get started.</div>
+  <div class="summary-bar" id="summaryBar"></div>
+
+  <!-- Tab bar -->
+  <div class="tab-bar" id="tabBar">
+    <button class="active" data-tab="visual">Visual Comparison</button>
+    <button data-tab="analysis">Analysis &amp; Conclusion</button>
+    <button data-tab="json">Raw JSON</button>
+  </div>
+
+  <!-- Tab: Visual grid -->
+  <div class="tab-content active" id="tab-visual">
+    <div class="results-grid" id="resultsGrid">
+      <div class="placeholder" id="gridPlaceholder">Results will appear here after running OCR comparison.</div>
+    </div>
+  </div>
+
+  <!-- Tab: Analysis & Conclusion -->
+  <div class="tab-content" id="tab-analysis">
+    <div class="analysis-section" id="analysisSection">
+      <!-- filled by JS after run, then static feature matrix appended -->
+    </div>
+  </div>
+
+  <!-- Tab: Raw JSON -->
+  <div class="tab-content" id="tab-json">
+    <div class="json-section">
+      <div class="json-provider-tabs" id="jsonProviderTabs"></div>
+      <div class="json-wrap" id="jsonWrap">
+        <button class="copy-btn" id="copyJsonBtn">Copy</button>
+        <pre id="jsonOutput"><code>No data yet.</code></pre>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function() {
+  'use strict';
+
+  // --- DOM refs ---
+  const $ = (id) => document.getElementById(id);
+  const fileInput = $('fileInput');
+  const dropZone = $('dropZone');
+  const runBtn = $('runBtn');
+  const statusBar = $('statusBar');
+  const summaryBar = $('summaryBar');
+  const tabBar = $('tabBar');
+  const resultsGrid = $('resultsGrid');
+  const dpiSelect = $('dpiSelect');
+  const providerCheckboxes = $('providerCheckboxes');
+  const jsonProviderTabs = $('jsonProviderTabs');
+  const jsonOutput = $('jsonOutput');
+  const copyJsonBtn = $('copyJsonBtn');
+  const analysisSection = $('analysisSection');
+
+  let selectedFile = null;
+  let imageDataUrl = null;
+  let responseData = null;
+
+  // --- Provider checkboxes ---
+  providerCheckboxes.querySelectorAll('label').forEach(label => {
+    label.addEventListener('click', () => label.classList.toggle('checked'));
+  });
+
+  function getSelectedProviders() {
+    return Array.from(providerCheckboxes.querySelectorAll('label.checked')).map(l => l.dataset.provider);
+  }
+
+  // --- Drop zone ---
+  dropZone.addEventListener('click', () => fileInput.click());
+  dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault(); dropZone.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file) handleFileSelect(file);
+  });
+  fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFileSelect(fileInput.files[0]); });
+
+  function handleFileSelect(file) {
+    selectedFile = file;
+    runBtn.disabled = false;
+    dropZone.textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+    if (file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = (e) => { imageDataUrl = e.target.result; };
+      reader.readAsDataURL(file);
+    } else {
+      imageDataUrl = null;
+    }
+    setStatus('File loaded. Click "Compare OCR" to process.', '');
+  }
+
+  // --- Run comparison ---
+  runBtn.addEventListener('click', runComparison);
+
+  async function runComparison() {
+    if (!selectedFile) return;
+    const providers = getSelectedProviders();
+    if (providers.length === 0) { setStatus('Select at least one provider.', 'error'); return; }
+
+    runBtn.disabled = true;
+    setStatus('<span class="spinner"></span>Running OCR comparison across ' + providers.join(', ') + '...', '');
+    summaryBar.style.display = 'none';
+    tabBar.style.display = 'none';
+
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    formData.append('dpi', dpiSelect.value);
+    formData.append('language', 'en');
+    formData.append('providers', providers.join(','));
+
+    try {
+      const resp = await fetch('/api/v1/compare', { method: 'POST', body: formData });
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({ detail: resp.statusText }));
+        setStatus('Comparison failed: ' + (err.detail || JSON.stringify(err)), 'error');
+        runBtn.disabled = false;
+        return;
+      }
+
+      responseData = await resp.json();
+      tabBar.style.display = 'flex';
+      renderResults(responseData);
+      renderSummary(responseData);
+      renderAnalysis(responseData);
+      renderJsonTab(responseData);
+
+      const okCount = Object.values(responseData.results).filter(r => r.status === 'ok').length;
+      const totalCount = Object.keys(responseData.results).length;
+      setStatus(
+        'Done — ' + okCount + '/' + totalCount + ' providers in ' + responseData.total_latency_ms.toFixed(0) + 'ms',
+        okCount > 0 ? 'success' : 'error'
+      );
+    } catch (err) {
+      setStatus('Request failed: ' + err.message, 'error');
+    }
+    runBtn.disabled = false;
+  }
+
+  function setStatus(html, cls) {
+    statusBar.innerHTML = html;
+    statusBar.className = 'status-bar' + (cls ? ' ' + cls : '');
+  }
+
+  // --- Tab switching ---
+  tabBar.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    tabBar.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+    const target = $('tab-' + btn.dataset.tab);
+    if (target) target.classList.add('active');
+  });
+
+  // ===================================================
+  // Visual tab
+  // ===================================================
+
+  function renderResults(data) {
+    resultsGrid.innerHTML = '';
+    const entries = Object.entries(data.results);
+    if (entries.length === 0) {
+      resultsGrid.innerHTML = '<div class="placeholder">No provider results.</div>';
+      return;
+    }
+    for (const [name, providerData] of entries) {
+      resultsGrid.appendChild(createProviderPanel(name, providerData));
+    }
+  }
+
+  function createProviderPanel(name, providerData) {
+    const panel = document.createElement('div');
+    panel.className = 'provider-panel' + (providerData.status === 'error' ? ' error-panel' : '');
+
+    const header = document.createElement('div');
+    header.className = 'panel-header';
+
+    const nameEl = document.createElement('span');
+    nameEl.className = 'provider-name';
+    nameEl.textContent = name;
+    header.appendChild(nameEl);
+
+    const latencyMs = providerData.gateway_latency_ms || 0;
+    const latencyBadge = document.createElement('span');
+    latencyBadge.className = 'latency-badge' + (latencyMs < 2000 ? ' fast' : latencyMs < 5000 ? ' medium' : ' slow');
+    latencyBadge.textContent = latencyMs.toFixed(0) + 'ms';
+    header.appendChild(latencyBadge);
+
+    if (providerData.status === 'ok' && providerData.result && providerData.result.latency_ms) {
+      const innerBadge = document.createElement('span');
+      innerBadge.className = 'latency-badge';
+      innerBadge.textContent = 'engine: ' + providerData.result.latency_ms.toFixed(0) + 'ms';
+      header.appendChild(innerBadge);
+    }
+
+    if (providerData.status === 'ok') {
+      const toggles = document.createElement('div');
+      toggles.className = 'panel-toggles';
+      toggles.appendChild(createToggleBtn('Words', 'toggle-word', true));
+      toggles.appendChild(createToggleBtn('Lines', 'toggle-line', false));
+      toggles.appendChild(createToggleBtn('Blocks', 'toggle-block', false));
+      header.appendChild(toggles);
+    }
+    panel.appendChild(header);
+
+    if (providerData.status === 'error') {
+      const errDiv = document.createElement('div');
+      errDiv.className = 'error-content';
+      errDiv.textContent = providerData.error || 'Unknown error';
+      panel.appendChild(errDiv);
+      return panel;
+    }
+
+    const body = document.createElement('div');
+    body.className = 'panel-body';
+    const result = providerData.result;
+    const page = result && result.pages && result.pages[0];
+
+    if (page && imageDataUrl) {
+      const canvasWrap = document.createElement('div');
+      canvasWrap.className = 'canvas-wrap';
+      const img = document.createElement('img');
+      img.src = imageDataUrl;
+      canvasWrap.appendChild(img);
+      const overlayDiv = document.createElement('div');
+      overlayDiv.className = 'canvas-overlay';
+      canvasWrap.appendChild(overlayDiv);
+      body.appendChild(canvasWrap);
+
+      const renderOv = () => renderOverlay(overlayDiv, img, page, panel);
+      if (img.complete) renderOv(); else img.addEventListener('load', renderOv);
+      new ResizeObserver(renderOv).observe(img);
+
+      const toggles = header.querySelector('.panel-toggles');
+      if (toggles) {
+        toggles.querySelectorAll('button').forEach(btn => {
+          btn.addEventListener('click', () => {
+            btn.classList.toggle('active');
+            const layerType = btn.classList.contains('toggle-word') ? 'word' :
+                              btn.classList.contains('toggle-line') ? 'line' : 'block';
+            toggleLayer(overlayDiv, layerType, btn.classList.contains('active'));
+          });
+        });
+      }
+    } else if (!imageDataUrl) {
+      const note = document.createElement('div');
+      note.className = 'placeholder';
+      note.style.padding = '20px';
+      note.textContent = 'PDF preview not available. Bounding box overlay requires image input.';
+      body.appendChild(note);
+    }
+    panel.appendChild(body);
+
+    if (page) {
+      const textDiv = document.createElement('div');
+      textDiv.className = 'text-output';
+      textDiv.textContent = extractFullText(page) || '(no text extracted)';
+      panel.appendChild(textDiv);
+    }
+
+    if (result) {
+      const jsonWrap = document.createElement('details');
+      jsonWrap.style.cssText = 'padding: 8px 12px; border-top: 1px solid #eee; font-size: 12px;';
+      const jsonSummary = document.createElement('summary');
+      jsonSummary.style.cssText = 'cursor: pointer; color: #3498db; font-weight: 500; padding: 4px 0;';
+      jsonSummary.textContent = 'Raw JSON Response';
+      jsonWrap.appendChild(jsonSummary);
+      const jsonPre = document.createElement('pre');
+      jsonPre.style.cssText = 'max-height: 300px; overflow: auto; background: #f8f9fa; padding: 8px; border-radius: 4px; font-size: 11px; white-space: pre-wrap; word-break: break-all;';
+      jsonPre.textContent = JSON.stringify(result, null, 2);
+      jsonWrap.appendChild(jsonPre);
+      panel.appendChild(jsonWrap);
+    }
+
+    return panel;
+  }
+
+  function createToggleBtn(label, cls, activeDefault) {
+    const btn = document.createElement('button');
+    btn.textContent = label;
+    btn.className = cls + (activeDefault ? ' active' : '');
+    return btn;
+  }
+
+  function renderOverlay(overlayDiv, img, page, panel) {
+    overlayDiv.innerHTML = '';
+    if (!page || !page.width || !page.height) return;
+    const scaleX = img.clientWidth / page.width;
+    const scaleY = img.clientHeight / page.height;
+    overlayDiv.style.width = img.clientWidth + 'px';
+    overlayDiv.style.height = img.clientHeight + 'px';
+
+    const toggles = panel.querySelector('.panel-toggles');
+    const showWord = toggles ? toggles.querySelector('.toggle-word.active') !== null : true;
+    const showLine = toggles ? toggles.querySelector('.toggle-line.active') !== null : false;
+    const showBlock = toggles ? toggles.querySelector('.toggle-block.active') !== null : false;
+
+    for (const block of (page.blocks || [])) {
+      if (block.bbox) addBox(overlayDiv, block.bbox, 'block', scaleX, scaleY, 'Block (' + (block.block_type || 'text') + ')', !showBlock, null);
+      for (const line of (block.lines || [])) {
+        const lineText = (line.words || []).map(w => w.text).join(' ');
+        if (line.bbox) addBox(overlayDiv, line.bbox, 'line', scaleX, scaleY, lineText.length > 60 ? lineText.slice(0, 60) + '...' : lineText, !showLine, null);
+        for (const word of (line.words || [])) {
+          if (!word.bbox) continue;
+          const conf = word.confidence;
+          const pct = conf >= 0 ? (conf * 100).toFixed(0) + '%' : 'n/a';
+          const confCls = conf >= 0.9 ? 'conf-high' : conf >= 0.7 ? 'conf-mid' : conf >= 0 ? 'conf-low' : null;
+          addBox(overlayDiv, word.bbox, 'word', scaleX, scaleY, '"' + word.text + '" — ' + pct, !showWord, confCls);
+        }
+      }
+    }
+  }
+
+  function addBox(container, bbox, type, scaleX, scaleY, tooltipText, hidden, extraClass) {
+    const x = bbox.x1, y = bbox.y1, w = bbox.x2 - bbox.x1, h = bbox.y2 - bbox.y1;
+    const div = document.createElement('div');
+    div.className = 'box box-' + type + (hidden ? ' hidden' : '') + (extraClass ? ' ' + extraClass : '');
+    div.style.left = (x * scaleX) + 'px';
+    div.style.top = (y * scaleY) + 'px';
+    div.style.width = (w * scaleX) + 'px';
+    div.style.height = (h * scaleY) + 'px';
+    if (tooltipText) {
+      const tip = document.createElement('span');
+      tip.className = 'tooltip';
+      tip.textContent = tooltipText;
+      div.appendChild(tip);
+    }
+    container.appendChild(div);
+  }
+
+  function toggleLayer(overlayDiv, type, visible) {
+    overlayDiv.querySelectorAll('.box-' + type).forEach(el => el.classList.toggle('hidden', !visible));
+  }
+
+  function extractFullText(page) {
+    const lines = [];
+    for (const block of (page.blocks || [])) {
+      for (const line of (block.lines || [])) {
+        if (line.text) lines.push(line.text);
+        else {
+          const wt = (line.words || []).map(w => w.text).join(' ');
+          if (wt) lines.push(wt);
+        }
+      }
+      lines.push('');
+    }
+    return lines.join('\n').trim();
+  }
+
+  // --- Summary bar ---
+  function renderSummary(data) {
+    const stats = [];
+    stats.push(makeStat('Total latency', data.total_latency_ms.toFixed(0) + 'ms'));
+    for (const [name, pd] of Object.entries(data.results)) {
+      if (pd.status !== 'ok' || !pd.result) continue;
+      const page = pd.result.pages && pd.result.pages[0];
+      if (!page) continue;
+      let wordCount = 0, confSum = 0, confCount = 0;
+      for (const block of (page.blocks || [])) {
+        for (const line of (block.lines || [])) {
+          for (const word of (line.words || [])) {
+            wordCount++;
+            if (word.confidence >= 0) { confSum += word.confidence; confCount++; }
+          }
+        }
+      }
+      const avgConf = confCount > 0 ? (confSum / confCount * 100).toFixed(1) + '%' : 'n/a';
+      stats.push(makeStat(capitalize(name), wordCount + ' words, avg conf ' + avgConf));
+    }
+    summaryBar.innerHTML = stats.join('');
+    summaryBar.style.display = 'flex';
+  }
+
+  function makeStat(label, value) {
+    return '<div class="stat"><span class="stat-label">' + escapeHtml(label) + ':</span><span class="stat-value">' + escapeHtml(value) + '</span></div>';
+  }
+
+  // ===================================================
+  // Analysis tab
+  // ===================================================
+
+  function renderAnalysis(data) {
+    analysisSection.innerHTML = '';
+    const entries = Object.entries(data.results);
+    const okEntries = entries.filter(([, pd]) => pd.status === 'ok' && pd.result);
+
+    // Collect metrics
+    const metrics = [];
+    for (const [name, pd] of okEntries) {
+      const page = pd.result.pages && pd.result.pages[0];
+      let wordCount = 0, lineCount = 0, blockCount = 0, confSum = 0, confCount = 0;
+      for (const block of (page ? page.blocks || [] : [])) {
+        blockCount++;
+        for (const line of (block.lines || [])) {
+          lineCount++;
+          for (const word of (line.words || [])) {
+            wordCount++;
+            if (word.confidence >= 0) { confSum += word.confidence; confCount++; }
+          }
+        }
+      }
+      metrics.push({
+        name,
+        latencyMs: pd.gateway_latency_ms || 0,
+        engineMs: pd.result.latency_ms || 0,
+        words: wordCount,
+        lines: lineCount,
+        blocks: blockCount,
+        avgConf: confCount > 0 ? confSum / confCount : -1,
+        text: page ? extractFullText(page) : '',
+      });
+    }
+
+    // Sort helpers
+    const byLatency = [...metrics].sort((a, b) => a.latencyMs - b.latencyMs);
+    const byWords = [...metrics].sort((a, b) => b.words - a.words);
+    const byConf = [...metrics].sort((a, b) => b.avgConf - a.avgConf);
+
+    function speedRank(name) { return byLatency.findIndex(m => m.name === name); }
+    function wordsRank(name) { return byWords.findIndex(m => m.name === name); }
+    function confRank(name) { return byConf.findIndex(m => m.name === name); }
+
+    const maxLatency = Math.max(...metrics.map(m => m.latencyMs), 1);
+    const maxWords = Math.max(...metrics.map(m => m.words), 1);
+
+    function rankCls(rank, total) {
+      if (rank === 0) return 'rank-1';
+      if (rank === total - 1) return 'rank-last';
+      if (rank === 1) return 'rank-2';
+      return '';
+    }
+
+    // ---- Section: Metrics summary ----
+    if (metrics.length > 0) {
+      const h2 = document.createElement('h2');
+      h2.textContent = 'Metrics summary';
+      analysisSection.appendChild(h2);
+
+      const table = document.createElement('table');
+      table.className = 'metrics-table';
+      table.innerHTML = `
+        <thead><tr>
+          <th>Provider</th>
+          <th>Latency (wall)</th>
+          <th>Engine time</th>
+          <th>Words</th>
+          <th>Lines</th>
+          <th>Blocks</th>
+          <th>Avg confidence</th>
+        </tr></thead><tbody></tbody>`;
+      const tbody = table.querySelector('tbody');
+
+      for (const m of metrics) {
+        const tr = document.createElement('tr');
+        const sRank = speedRank(m.name);
+        const wRank = wordsRank(m.name);
+        const cRank = confRank(m.name);
+        const total = metrics.length;
+
+        tr.innerHTML = `
+          <td><strong style="text-transform:capitalize">${escapeHtml(m.name)}</strong></td>
+          <td class="${rankCls(sRank, total)}">
+            <div class="bar-wrap">
+              <div class="bar-track"><div class="bar-fill latency" style="width:${(m.latencyMs / maxLatency * 100).toFixed(1)}%"></div></div>
+              <span class="bar-val">${m.latencyMs.toFixed(0)}ms</span>
+            </div>
+          </td>
+          <td>${m.engineMs > 0 ? m.engineMs.toFixed(0) + 'ms' : '—'}</td>
+          <td class="${rankCls(wRank, total)}">
+            <div class="bar-wrap">
+              <div class="bar-track"><div class="bar-fill" style="width:${(m.words / maxWords * 100).toFixed(1)}%"></div></div>
+              <span class="bar-val">${m.words}</span>
+            </div>
+          </td>
+          <td>${m.lines}</td>
+          <td>${m.blocks}</td>
+          <td class="${rankCls(cRank, total)}">${m.avgConf >= 0 ? (m.avgConf * 100).toFixed(1) + '%' : 'n/a'}</td>
+        `;
+        tbody.appendChild(tr);
+      }
+      analysisSection.appendChild(table);
+
+      const note = document.createElement('p');
+      note.style.cssText = 'font-size:11px;color:#aaa;margin:4px 0 0;';
+      note.textContent = 'Green = best in category. Red = worst.';
+      analysisSection.appendChild(note);
+    }
+
+    // ---- Section: Text similarity matrix ----
+    if (metrics.length >= 2) {
+      const h2 = document.createElement('h2');
+      h2.textContent = 'Text agreement between providers';
+      analysisSection.appendChild(h2);
+
+      const names = metrics.map(m => m.name);
+      const simMatrix = {};
+      for (let i = 0; i < names.length; i++) {
+        for (let j = 0; j < names.length; j++) {
+          const key = names[i] + '|' + names[j];
+          simMatrix[key] = i === j ? 1.0 : seqSimilarity(metrics[i].text, metrics[j].text);
+        }
+      }
+
+      const table = document.createElement('table');
+      table.className = 'sim-table';
+      let thead = '<thead><tr><th></th>' + names.map(n => `<th>${capitalize(n)}</th>`).join('') + '</tr></thead>';
+      let tbody = '<tbody>';
+      for (const n1 of names) {
+        tbody += '<tr><th>' + capitalize(n1) + '</th>';
+        for (const n2 of names) {
+          const val = simMatrix[n1 + '|' + n2];
+          if (n1 === n2) {
+            tbody += '<td class="sim-cell-self">self</td>';
+          } else {
+            const cls = val >= 0.7 ? 'sim-cell-high' : val >= 0.4 ? 'sim-cell-mid' : 'sim-cell-low';
+            tbody += `<td class="${cls}">${(val * 100).toFixed(1)}%</td>`;
+          }
+        }
+        tbody += '</tr>';
+      }
+      tbody += '</tbody>';
+      table.innerHTML = thead + tbody;
+      analysisSection.appendChild(table);
+
+      const simNote = document.createElement('p');
+      simNote.style.cssText = 'font-size:11px;color:#aaa;margin:4px 0 0;';
+      simNote.textContent = 'SequenceMatcher on extracted text (word order sensitive). Higher = more agreement.';
+      analysisSection.appendChild(simNote);
+    }
+
+    // ---- Section: Text diff ----
+    if (metrics.length >= 2) {
+      const h2 = document.createElement('h2');
+      h2.textContent = 'Text diff';
+      analysisSection.appendChild(h2);
+
+      const controls = document.createElement('div');
+      controls.className = 'diff-controls';
+
+      const selA = document.createElement('select');
+      const selB = document.createElement('select');
+      metrics.forEach((m, i) => {
+        const optA = document.createElement('option');
+        optA.value = i; optA.textContent = capitalize(m.name);
+        selA.appendChild(optA);
+        const optB = document.createElement('option');
+        optB.value = i; optB.textContent = capitalize(m.name);
+        selB.appendChild(optB);
+      });
+      if (metrics.length >= 2) selB.value = '1';
+
+      const labelA = document.createElement('label');
+      labelA.innerHTML = 'Provider A: ';
+      labelA.appendChild(selA);
+      const labelB = document.createElement('label');
+      labelB.innerHTML = 'Provider B: ';
+      labelB.appendChild(selB);
+      controls.appendChild(labelA);
+      controls.appendChild(labelB);
+      analysisSection.appendChild(controls);
+
+      const diffView = document.createElement('div');
+      diffView.className = 'diff-view';
+      analysisSection.appendChild(diffView);
+
+      function updateDiff() {
+        const idxA = parseInt(selA.value), idxB = parseInt(selB.value);
+        const mA = metrics[idxA], mB = metrics[idxB];
+        diffView.innerHTML = '';
+
+        const panelA = buildDiffPanel(mA.name, mA.text, mB.text, 'del');
+        const panelB = buildDiffPanel(mB.name, mB.text, mA.text, 'add');
+        diffView.appendChild(panelA);
+        diffView.appendChild(panelB);
+      }
+
+      selA.addEventListener('change', updateDiff);
+      selB.addEventListener('change', updateDiff);
+      updateDiff();
+    }
+
+    // ---- Section: Conclusion ----
+    if (metrics.length > 0) {
+      const h2 = document.createElement('h2');
+      h2.textContent = 'Conclusion';
+      analysisSection.appendChild(h2);
+
+      renderConclusion(metrics, byLatency, byWords, byConf);
+    }
+
+    // ---- Static section: Feature matrix ----
+    {
+      const h2 = document.createElement('h2');
+      h2.textContent = 'Provider feature matrix';
+      analysisSection.appendChild(h2);
+
+      const note = document.createElement('p');
+      note.style.cssText = 'font-size:12px;color:#888;margin-bottom:10px;';
+      note.textContent = 'Static capability comparison from docs/comparison.md. ✦ = selected in DR-001.';
+      analysisSection.appendChild(note);
+
+      analysisSection.appendChild(buildFeatureMatrix());
+    }
+  }
+
+  // ---- Conclusion panel ----
+  function renderConclusion(metrics, byLatency, byWords, byConf) {
+    const total = metrics.length;
+    if (total === 0) return;
+
+    const fastest = byLatency[0];
+    const mostWords = byWords[0];
+    const highestConf = byConf.filter(m => m.avgConf >= 0)[0] || byConf[0];
+
+    // Cards row
+    const grid = document.createElement('div');
+    grid.className = 'conclusion-grid';
+
+    function makeCard(label, winner, stat, reason) {
+      const card = document.createElement('div');
+      card.className = 'conclusion-card';
+      card.innerHTML = `
+        <div class="card-label">${escapeHtml(label)}</div>
+        <div class="card-winner">${escapeHtml(winner.name)}</div>
+        <div class="card-stat">${escapeHtml(stat)}</div>
+        <div class="card-reason">${escapeHtml(reason)}</div>
+      `;
+      return card;
+    }
+
+    grid.appendChild(makeCard('Fastest', fastest,
+      fastest.latencyMs.toFixed(0) + 'ms wall time',
+      'Best for real-time / interactive applications'));
+    grid.appendChild(makeCard('Most thorough', mostWords,
+      mostWords.words + ' words extracted',
+      'Best word coverage / recall on this document'));
+    if (highestConf && highestConf.avgConf >= 0) {
+      grid.appendChild(makeCard('Highest confidence', highestConf,
+        (highestConf.avgConf * 100).toFixed(1) + '% average',
+        'Most reliable text predictions on this document'));
+    }
+    analysisSection.appendChild(grid);
+
+    // Per-use-case recommendation table
+    const recData = buildRecommendations(metrics, byLatency, byWords, byConf);
+    const recTable = document.createElement('table');
+    recTable.className = 'rec-table';
+    recTable.innerHTML = `
+      <thead><tr><th>Use case</th><th>Recommended</th><th>Reason</th></tr></thead>
+      <tbody>${recData.map(([uc, rec, reason]) =>
+        `<tr><td>${escapeHtml(uc)}</td><td class="rec-winner">${escapeHtml(rec)}</td><td>${escapeHtml(reason)}</td></tr>`
+      ).join('')}</tbody>`;
+    analysisSection.appendChild(recTable);
+
+    // Verdict box
+    const verdict = buildVerdict(metrics, byLatency, byWords, byConf);
+    const verdictBox = document.createElement('div');
+    verdictBox.className = 'verdict-box';
+    verdictBox.innerHTML = verdict;
+    analysisSection.appendChild(verdictBox);
+  }
+
+  function buildRecommendations(metrics, byLatency, byWords, byConf) {
+    const names = new Set(metrics.map(m => m.name));
+    const fastest = byLatency[0];
+    const mostWords = byWords[0];
+    const highConf = byConf.filter(m => m.avgConf >= 0)[0];
+    const recs = [];
+
+    recs.push(['Real-time / low-latency', fastest.name, fastest.latencyMs.toFixed(0) + 'ms — fastest on this document']);
+    recs.push(['Maximum text recall', mostWords.name, mostWords.words + ' words — most words extracted']);
+    if (highConf) recs.push(['Highest precision / reliability', highConf.name, (highConf.avgConf * 100).toFixed(1) + '% avg confidence']);
+
+    // Static knowledge from comparison.md
+    if (names.has('paddle')) recs.push(['Table-heavy documents', 'paddle', 'PaddleOCR has native table detection and HTML output']);
+    if (names.has('surya')) recs.push(['Multi-language documents (90+ langs)', 'surya', 'Surya supports 90+ languages with strong CJK/RTL coverage']);
+    if (names.has('tesseract')) recs.push(['CPU-only / air-gap / zero dependency', 'tesseract', 'Pure C binary, Apache 2.0, no model download needed at runtime']);
+    if (names.has('doctr')) recs.push(['Word-level bbox accuracy', 'doctr', 'docTR provides per-word bounding boxes with per-word confidence scores']);
+    if (names.has('paddle')) recs.push(['Structured document with layout regions', 'paddle', 'PPStructureV3 provides layout detection, figure/table/header regions']);
+
+    return recs;
+  }
+
+  function buildVerdict(metrics, byLatency, byWords, byConf) {
+    const fastest = byLatency[0];
+    const mostWords = byWords[0];
+    const highConf = byConf.filter(m => m.avgConf >= 0)[0];
+
+    const allSame = fastest.name === mostWords.name && mostWords.name === (highConf && highConf.name);
+
+    if (allSame) {
+      return `<strong>Overall winner: ${capitalize(fastest.name)}</strong> — leads on speed, word coverage, and confidence for this document.`;
+    }
+
+    let text = '<strong>No single winner:</strong> trade-offs depend on your use case. ';
+
+    if (fastest.name === mostWords.name) {
+      text += `<strong>${capitalize(fastest.name)}</strong> dominates on both speed and coverage. `;
+    } else {
+      text += `<strong>${capitalize(fastest.name)}</strong> is fastest; <strong>${capitalize(mostWords.name)}</strong> extracts more text. `;
+    }
+    if (highConf && highConf.name !== fastest.name && highConf.name !== mostWords.name) {
+      text += `<strong>${capitalize(highConf.name)}</strong> has the highest confidence scores. `;
+    }
+    text += 'Choose based on whether latency, recall, or precision matters most for your workload.';
+    return text;
+  }
+
+  // ---- Text diff ----
+  function buildDiffPanel(name, textSelf, textOther, addOrDel) {
+    const panel = document.createElement('div');
+    panel.className = 'diff-panel';
+
+    const header = document.createElement('div');
+    header.className = 'diff-panel-header';
+    const wordsSelf = tokenize(textSelf);
+    header.innerHTML = `<span>${capitalize(name)}</span><span>${wordsSelf.length} tokens</span>`;
+    panel.appendChild(header);
+
+    const body = document.createElement('div');
+    body.className = 'diff-panel-body';
+
+    const diff = wordDiff(textSelf, textOther);
+    body.innerHTML = diff.map(([type, word]) => {
+      const escaped = escapeHtml(word);
+      if (type === 'same') return `<span class="d-same">${escaped} </span>`;
+      // show words unique to self as highlighted (deleted from other's perspective, or added from self's perspective)
+      if (addOrDel === 'del' && type === 'del') return `<span class="d-del">${escaped} </span>`;
+      if (addOrDel === 'add' && type === 'add') return `<span class="d-add">${escaped} </span>`;
+      return `<span class="d-same">${escaped} </span>`;
+    }).join('');
+
+    panel.appendChild(body);
+    return panel;
+  }
+
+  function tokenize(text) {
+    return text.split(/[\s\n]+/).filter(Boolean);
+  }
+
+  function wordDiff(textA, textB) {
+    // Word-level LCS diff, limited to 600 tokens each for performance
+    const a = tokenize(textA).slice(0, 600);
+    const b = tokenize(textB).slice(0, 600);
+    const m = a.length, n = b.length;
+
+    // Build DP table
+    const dp = new Uint16Array((m + 1) * (n + 1));
+    for (let i = 1; i <= m; i++) {
+      for (let j = 1; j <= n; j++) {
+        dp[i * (n + 1) + j] = a[i - 1] === b[j - 1]
+          ? dp[(i - 1) * (n + 1) + (j - 1)] + 1
+          : Math.max(dp[(i - 1) * (n + 1) + j], dp[i * (n + 1) + (j - 1)]);
+      }
+    }
+
+    // Backtrack
+    const result = [];
+    let i = m, j = n;
+    while (i > 0 || j > 0) {
+      if (i > 0 && j > 0 && a[i - 1] === b[j - 1]) {
+        result.unshift(['same', a[i - 1]]); i--; j--;
+      } else if (j > 0 && (i === 0 || dp[i * (n + 1) + (j - 1)] >= dp[(i - 1) * (n + 1) + j])) {
+        result.unshift(['add', b[j - 1]]); j--;
+      } else {
+        result.unshift(['del', a[i - 1]]); i--;
+      }
+    }
+    return result;
+  }
+
+  // ---- SequenceMatcher approximation ----
+  function seqSimilarity(a, b) {
+    if (!a && !b) return 1.0;
+    if (!a || !b) return 0.0;
+    const wa = new Set(a.toLowerCase().split(/\s+/));
+    const wb = new Set(b.toLowerCase().split(/\s+/));
+    let inter = 0;
+    for (const w of wa) { if (wb.has(w)) inter++; }
+    const union = wa.size + wb.size - inter;
+    return union === 0 ? 1.0 : inter / union;
+  }
+
+  // ====================================================
+  // Static feature matrix from comparison.md
+  // ====================================================
+
+  function buildFeatureMatrix() {
+    const PROVIDERS = ['Tesseract', 'PaddleOCR', 'docTR ✦', 'Surya ✦'];
+
+    const SECTIONS = [
+      {
+        title: 'Input handling',
+        rows: [
+          ['PDF input',                    '~', '✓', '✓', '✓'],
+          ['Multi-page docs',              '✓', '✓', '✓', '✓'],
+          ['Low DPI / noisy scan',         '~', '✓', '✓', '✓'],
+          ['Handwriting',                  '✗', '✓', '~', '~'],
+          ['Mixed print + handwriting',    '✗', '~', '✗', '✗'],
+        ],
+      },
+      {
+        title: 'Language & script',
+        rows: [
+          ['Language count',       '100+', '80+', '20+', '90+'],
+          ['RTL (Arabic, Hebrew)', '✓',    '~',   '✗',   '✓'],
+          ['CJK support',          '✓',    '✓',   '✗',   '✓'],
+          ['Math / LaTeX',         '✗',    '~',   '✗',   '~'],
+          ['Mixed-language docs',  '~',    '✓',   '✗',   '✓'],
+        ],
+      },
+      {
+        title: 'Document understanding',
+        rows: [
+          ['Layout detection',             '~', '✓', '✓', '✓'],
+          ['Reading order reconstruction', '~', '✓', '✓', '✓'],
+          ['Table detection',              '✗', '✓', '~', '~'],
+          ['Form / key-value extraction',  '✗', '~', '~', '~'],
+          ['Header / footer awareness',    '✗', '~', '✓', '✓'],
+          ['Figure region detection',      '✗', '~', '✓', '✓'],
+        ],
+      },
+      {
+        title: 'Output quality & format',
+        rows: [
+          ['Confidence scores',         '✓', '✓', '✓', '✓'],
+          ['Word-level bounding box',   '✓', '✗', '✓', '✗'],
+          ['JSON / structured output',  '~', '✓', '✓', '✓'],
+          ['Markdown output',           '✗', '✗', '~', '✓'],
+          ['Table as structured cells', '✗', '✗', '✗', '✗'],
+        ],
+      },
+      {
+        title: 'Technical stack',
+        rows: [
+          ['Open source',           '✓', '✓', '✓', '✓'],
+          ['GPU acceleration',      '✗', '✓', '✓', '✓'],
+          ['Fine-tuning support',   '~', '✓', '✓', '✓'],
+          ['Custom vocabulary',     '✓', '~', '✗', '✗'],
+          ['License',               'Apache 2.0', 'Apache 2.0', 'Apache 2.0', 'GPL-3.0 ⚠️'],
+          ['Adapter complexity',    'Medium', 'Medium', 'Medium', 'Low'],
+        ],
+      },
+    ];
+
+    const container = document.createElement('div');
+
+    for (const section of SECTIONS) {
+      const details = document.createElement('details');
+      details.className = 'feat-group';
+      details.open = false;
+
+      const summary = document.createElement('summary');
+      summary.textContent = section.title;
+      details.appendChild(summary);
+
+      const table = document.createElement('table');
+      table.className = 'feature-matrix';
+      table.innerHTML = `<thead><tr>
+        <th>Feature</th>
+        ${PROVIDERS.map(p => `<th>${p}</th>`).join('')}
+      </tr></thead>`;
+
+      const tbody = document.createElement('tbody');
+      for (const [feat, ...vals] of section.rows) {
+        const tr = document.createElement('tr');
+        const tdFeat = document.createElement('td');
+        tdFeat.textContent = feat;
+        tr.appendChild(tdFeat);
+        for (const v of vals) {
+          const td = document.createElement('td');
+          td.textContent = v;
+          if (v === '✓') td.className = 'feat-yes';
+          else if (v === '~') td.className = 'feat-partial';
+          else if (v === '✗') td.className = 'feat-no';
+          else if (v.includes('⚠️')) td.className = 'feat-highlight';
+          tr.appendChild(td);
+        }
+        tbody.appendChild(tr);
+      }
+      table.appendChild(tbody);
+      details.appendChild(table);
+      container.appendChild(details);
+    }
+
+    return container;
+  }
+
+  // ===================================================
+  // JSON tab
+  // ===================================================
+
+  function renderJsonTab(data) {
+    jsonProviderTabs.innerHTML = '';
+    const entries = Object.entries(data.results);
+
+    const allBtn = document.createElement('button');
+    allBtn.textContent = 'All';
+    allBtn.className = 'active';
+    allBtn.addEventListener('click', () => selectJsonTab(allBtn, data));
+    jsonProviderTabs.appendChild(allBtn);
+
+    for (const [name] of entries) {
+      const btn = document.createElement('button');
+      btn.textContent = name;
+      btn.addEventListener('click', () => selectJsonTab(btn, data.results[name]));
+      jsonProviderTabs.appendChild(btn);
+    }
+    renderJsonContent(data);
+  }
+
+  function selectJsonTab(activeBtn, jsonData) {
+    jsonProviderTabs.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    activeBtn.classList.add('active');
+    renderJsonContent(jsonData);
+  }
+
+  function renderJsonContent(data) {
+    const raw = JSON.stringify(data, null, 2);
+    jsonOutput.innerHTML = '<code>' + syntaxHighlight(raw) + '</code>';
+  }
+
+  copyJsonBtn.addEventListener('click', () => {
+    if (!responseData) return;
+    const activeTab = jsonProviderTabs.querySelector('button.active');
+    let data = responseData;
+    if (activeTab && activeTab.textContent !== 'All') {
+      data = responseData.results[activeTab.textContent] || responseData;
+    }
+    navigator.clipboard.writeText(JSON.stringify(data, null, 2)).then(() => {
+      copyJsonBtn.textContent = 'Copied!';
+      setTimeout(() => { copyJsonBtn.textContent = 'Copy'; }, 2000);
+    });
+  });
+
+  // ===================================================
+  // Utilities
+  // ===================================================
+
+  function syntaxHighlight(json) {
+    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return json.replace(
+      /("(\\u[\da-fA-F]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)/g,
+      (match) => {
+        let cls = 'json-number';
+        if (/^"/.test(match)) cls = /:$/.test(match) ? 'json-key' : 'json-string';
+        else if (/true|false/.test(match)) cls = 'json-boolean';
+        else if (/null/.test(match)) cls = 'json-null';
+        return '<span class="' + cls + '">' + match + '</span>';
+      }
+    );
+  }
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = String(text);
+    return div.innerHTML;
+  }
+
+  function capitalize(s) {
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
+})();
+</script>
+
+</body>
+</html>

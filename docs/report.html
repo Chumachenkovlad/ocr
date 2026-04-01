@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OCR Benchmark — Full Report</title>
+  <style>
+  :root { --accent: #e94560; --teal: #4ecca3; --dark: #1a1a2e; --mid: #16213e; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+         background: #f5f5f5; color: #333; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .topbar { background: var(--dark); color: #eee; padding: 12px 32px;
+            display: flex; align-items: center; gap: 16px; }
+  .topbar h1 { font-size: 18px; font-weight: 700; }
+  .topbar .badge { font-size: 11px; padding: 2px 8px; border-radius: 10px;
+                   background: var(--teal); color: #111; font-weight: 600; }
+  .topbar nav { margin-left: auto; display: flex; gap: 20px; }
+  .topbar nav a { color: #ccc; font-size: 13px; }
+  .topbar nav a:hover { color: #fff; }
+
+  .hero { background: var(--mid); color: #eee; padding: 40px 32px 32px; }
+  .hero h2 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+  .hero p { color: #aaa; font-size: 14px; max-width: 600px; margin-bottom: 20px; }
+  .hero .ts { font-size: 12px; color: #666; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 28px 32px; }
+
+  /* Cards */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px;
+           margin-bottom: 28px; }
+  .card { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px 18px; }
+  .card-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px;
+                margin-bottom: 4px; }
+  .card-value { font-size: 26px; font-weight: 700; color: var(--dark); }
+  .card-sub { font-size: 12px; color: #888; margin-top: 4px; }
+  .card-winner .card-value { color: var(--accent); text-transform: capitalize; }
+
+  /* Metrics table */
+  .metrics-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 24px; }
+  .metrics-table th { background: var(--dark); color: #eee; padding: 9px 14px; text-align: left; font-weight: 600; }
+  .metrics-table td { padding: 8px 14px; border-bottom: 1px solid #eee; }
+  .metrics-table tr:hover td { background: #fafafa; }
+  .best { color: #155724; font-weight: 700; }
+  .worst { color: #721c24; }
+
+  /* Bar */
+  .bar-wrap { display: flex; align-items: center; gap: 8px; }
+  .bar-track { flex: 1; height: 8px; background: #eee; border-radius: 4px; min-width: 80px; }
+  .bar-fill { height: 100%; border-radius: 4px; }
+  .bar-teal { background: var(--teal); }
+  .bar-red { background: var(--accent); }
+  .bar-val { font-size: 11px; color: #666; white-space: nowrap; }
+
+  /* Links section */
+  .links-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px;
+                margin-bottom: 32px; }
+  .link-card { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 16px 18px;
+               display: flex; flex-direction: column; gap: 6px; }
+  .link-card h3 { font-size: 14px; font-weight: 700; color: var(--dark); }
+  .link-card p { font-size: 12px; color: #666; }
+  .link-card a.btn { display: inline-block; margin-top: 6px; padding: 6px 14px;
+                     background: var(--accent); color: #fff; border-radius: 4px;
+                     font-size: 12px; font-weight: 600; width: fit-content; }
+
+  /* Report page */
+  .report-body { background: #fff; border: 1px solid #ddd; border-radius: 8px;
+                 padding: 28px 32px; max-width: 900px; }
+  .report-body h1 { font-size: 22px; font-weight: 700; margin-bottom: 16px; color: var(--dark); }
+  .report-body h2 { font-size: 16px; font-weight: 700; color: var(--dark); margin: 24px 0 10px;
+                    padding-bottom: 6px; border-bottom: 2px solid var(--accent); }
+  .report-body h3 { font-size: 14px; font-weight: 700; color: #444; margin: 18px 0 8px; }
+  .report-body p { font-size: 13px; line-height: 1.7; color: #444; margin-bottom: 8px; }
+  .report-body table { width: 100%; border-collapse: collapse; font-size: 12px; margin: 12px 0; }
+  .report-body table th { background: #f0f4ff; padding: 7px 12px; text-align: left;
+                          font-weight: 600; color: #3949ab; border-bottom: 2px solid #c5cae9; }
+  .report-body table td { padding: 6px 12px; border-bottom: 1px solid #eee; }
+  .report-body table tr:hover td { background: #fafafa; }
+  .report-body ul { padding-left: 20px; margin: 8px 0; font-size: 13px; }
+  .report-body li { margin-bottom: 4px; }
+  .report-body code { background: #f0f0f0; padding: 1px 5px; border-radius: 3px;
+                      font-size: 11px; font-family: monospace; }
+  .report-body blockquote { border-left: 3px solid var(--teal); padding: 8px 14px;
+                             background: #f9f9f9; color: #555; font-size: 12px; margin: 12px 0; }
+  .report-body hr { border: none; border-top: 1px solid #eee; margin: 20px 0; }
+  .report-body strong { font-weight: 700; }
+  .report-body em { font-style: italic; }
+</style>
+</head>
+<body>
+  
+    <div class="topbar">
+      <h1>OCR Comparison</h1>
+      <span class="badge">Benchmark Results</span>
+      <nav><a href="index.html" >Overview</a> <a href="report.html" style=color:#fff;font-weight:700>Full Report</a> <a href="resource-report.html" >Resources</a> <a href="saturation-report.html" >Saturation</a></nav>
+    </div>
+  <div class="container">
+    <div class="report-body">
+      <h1>OCR Benchmark Report</h1>
+<br>
+<ul>
+<li><strong>Date</strong>: 2026-03-31_071432</li>
+<li><strong>DPI</strong>: 300</li>
+<li><strong>Runs per fixture</strong>: 1</li>
+<li><strong>Providers</strong>: doctr, paddle, surya, tesseract</li>
+<li><strong>Fixtures</strong>: 10</li>
+</ul>
+
+<h2>Latency (ms)</h2>
+<br>
+<table>
+<tr><td>Fixture</td><td>doctr</td><td>paddle</td><td>surya</td><td>tesseract</td></tr>
+<tr><td>dense-twocol.png</td><td>2738</td><td>21611</td><td>24273</td><td>3176</td></tr>
+<tr><td>form-kvpairs.png</td><td>4050</td><td>29700</td><td>65305</td><td>2364</td></tr>
+<tr><td>low-dpi.png</td><td>5286</td><td>9046</td><td>16232</td><td>777</td></tr>
+<tr><td>mixed-content.png</td><td>3162</td><td>25294</td><td>40286</td><td>2181</td></tr>
+<tr><td>multilingual.png</td><td>2807</td><td>26849</td><td>25913</td><td>2319</td></tr>
+<tr><td>multipage.pdf</td><td>57493</td><td>77207</td><td>104256</td><td>5735</td></tr>
+<tr><td>noisy-scan.png</td><td>5595</td><td>35749</td><td>50114</td><td>11032</td></tr>
+<tr><td>simple-typed.png</td><td>4173</td><td>23701</td><td>21385</td><td>12095</td></tr>
+<tr><td>table-complex.png</td><td>2256</td><td>31404</td><td>89214</td><td>3619</td></tr>
+<tr><td>table-simple.png</td><td>4339</td><td>29734</td><td>46483</td><td>2062</td></tr>
+</table>
+<br>
+<h3>Aggregate latency</h3>
+<br>
+<table>
+<tr><td>Provider</td><td>p50</td><td>p95</td><td>mean</td></tr>
+<tr><td>doctr</td><td>4173</td><td>57493</td><td>9190</td></tr>
+<tr><td>paddle</td><td>29700</td><td>77207</td><td>31029</td></tr>
+<tr><td>surya</td><td>46483</td><td>104256</td><td>48346</td></tr>
+<tr><td>tesseract</td><td>3176</td><td>12095</td><td>4536</td></tr>
+</table>
+<br>
+<h2>Word / line / block counts</h2>
+<br>
+<table>
+<tr><td>Fixture</td><td>doctr (W/L/B)</td><td>paddle (W/L/B)</td><td>surya (W/L/B)</td><td>tesseract (W/L/B)</td></tr>
+<tr><td>dense-twocol.png</td><td>66 / 0 / 0</td><td>0 / 0 / 0</td><td>303 / 0 / 0</td><td>322 / 0 / 0</td></tr>
+<tr><td>form-kvpairs.png</td><td>78 / 0 / 0</td><td>130 / 0 / 0</td><td>134 / 0 / 0</td><td>131 / 0 / 0</td></tr>
+<tr><td>low-dpi.png</td><td>243 / 0 / 0</td><td>24 / 0 / 0</td><td>222 / 0 / 0</td><td>25 / 0 / 0</td></tr>
+<tr><td>mixed-content.png</td><td>39 / 0 / 0</td><td>57 / 0 / 0</td><td>115 / 0 / 0</td><td>76 / 0 / 0</td></tr>
+<tr><td>multilingual.png</td><td>82 / 0 / 0</td><td>79 / 0 / 0</td><td>127 / 0 / 0</td><td>132 / 0 / 0</td></tr>
+<tr><td>multipage.pdf</td><td>355 / 0 / 0</td><td>238 / 0 / 0</td><td>353 / 0 / 0</td><td>355 / 0 / 0</td></tr>
+<tr><td>noisy-scan.png</td><td>90 / 0 / 0</td><td>65 / 0 / 0</td><td>228 / 0 / 0</td><td>132 / 0 / 0</td></tr>
+<tr><td>simple-typed.png</td><td>164 / 0 / 0</td><td>21 / 0 / 0</td><td>206 / 0 / 0</td><td>254 / 0 / 0</td></tr>
+<tr><td>table-complex.png</td><td>14 / 0 / 0</td><td>95 / 0 / 0</td><td>99 / 0 / 0</td><td>86 / 0 / 0</td></tr>
+<tr><td>table-simple.png</td><td>58 / 0 / 0</td><td>48 / 0 / 0</td><td>83 / 0 / 0</td><td>80 / 0 / 0</td></tr>
+</table>
+<br>
+<h2>Confidence distribution</h2>
+<br>
+<table>
+<tr><td>Fixture</td><td>doctr</td><td>paddle</td><td>surya</td><td>tesseract</td></tr>
+<tr><td>dense-twocol.png</td><td>0.588 ±0.000 [0.00–0.00]</td><td>0.000 ±0.000 [0.00–0.00]</td><td>0.958 ±0.000 [0.00–0.00]</td><td>0.925 ±0.000 [0.00–0.00]</td></tr>
+<tr><td>form-kvpairs.png</td><td>0.807 ±0.000 [0.00–0.00]</td><td>0.971 ±0.000 [0.00–0.00]</td><td>0.929 ±0.000 [0.00–0.00]</td><td>0.919 ±0.000 [0.00–0.00]</td></tr>
+<tr><td>low-dpi.png</td><td>0.871 ±0.000 [0.00–0.00]</td><td>0.840 ±0.000 [0.00–0.00]</td><td>0.925 ±0.000 [0.00–0.00]</td><td>0.592 ±0.000 [0.00–0.00]</td></tr>
+<tr><td>mixed-content.png</td><td>0.802 ±0.000 [0.00–0.00]</td><td>0.973 ±0.000 [0.00–0.00]</td><td>0.830 ±0.000 [0.00–0.00]</td><td>0.891 ±0.000 [0.00–0.00]</td></tr>
+<tr><td>multilingual.png</td><td>0.619 ±0.000 [0.00–0.00]</td><td>0.809 ±0.000 [0.00–0.00]</td><td>0.827 ±0.000 [0.00–0.00]</td><td>0.715 ±0.000 [0.00–0.00]</td></tr>
+<tr><td>multipage.pdf</td><td>0.922 ±0.000 [0.00–0.00]</td><td>0.943 ±0.000 [0.00–0.00]</td><td>0.928 ±0.000 [0.00–0.00]</td><td>0.944 ±0.000 [0.00–0.00]</td></tr>
+<tr><td>noisy-scan.png</td><td>0.803 ±0.000 [0.00–0.00]</td><td>0.868 ±0.000 [0.00–0.00]</td><td>0.711 ±0.000 [0.00–0.00]</td><td>0.934 ±0.000 [0.00–0.00]</td></tr>
+<tr><td>simple-typed.png</td><td>0.824 ±0.000 [0.00–0.00]</td><td>0.824 ±0.000 [0.00–0.00]</td><td>0.833 ±0.000 [0.00–0.00]</td><td>0.940 ±0.000 [0.00–0.00]</td></tr>
+<tr><td>table-complex.png</td><td>0.782 ±0.000 [0.00–0.00]</td><td>0.990 ±0.000 [0.00–0.00]</td><td>0.779 ±0.000 [0.00–0.00]</td><td>0.907 ±0.000 [0.00–0.00]</td></tr>
+<tr><td>table-simple.png</td><td>0.825 ±0.000 [0.00–0.00]</td><td>0.981 ±0.000 [0.00–0.00]</td><td>0.909 ±0.000 [0.00–0.00]</td><td>0.909 ±0.000 [0.00–0.00]</td></tr>
+</table>
+<br>
+<p><em>Format: mean ±std [p10–p90]</em></p>
+<br>
+<h3>Aggregate confidence</h3>
+<br>
+<table>
+<tr><td>Provider</td><td>mean</td><td>p10</td><td>p50</td><td>p90</td></tr>
+<tr><td>doctr</td><td>0.784</td><td>0.619</td><td>0.807</td><td>0.922</td></tr>
+<tr><td>paddle</td><td>0.820</td><td>0.809</td><td>0.943</td><td>0.990</td></tr>
+<tr><td>surya</td><td>0.863</td><td>0.779</td><td>0.909</td><td>0.958</td></tr>
+<tr><td>tesseract</td><td>0.868</td><td>0.715</td><td>0.919</td><td>0.944</td></tr>
+</table>
+<br>
+<h2>Per document-type analysis</h2>
+<br>
+<table>
+<tr><td>Type</td><td>Fixtures</td><td>Speed winner</td><td>Throughput winner</td><td>Confidence winner</td></tr>
+<tr><td>dense-layout</td><td><code>dense-twocol.png</code></td><td>doctr</td><td>tesseract</td><td>surya</td></tr>
+<tr><td>form</td><td><code>form-kvpairs.png</code></td><td>tesseract</td><td>surya</td><td>paddle</td></tr>
+<tr><td>low-dpi</td><td><code>low-dpi.png</code></td><td>tesseract</td><td>doctr</td><td>surya</td></tr>
+<tr><td>mixed-content</td><td><code>mixed-content.png</code></td><td>tesseract</td><td>surya</td><td>paddle</td></tr>
+<tr><td>multipage</td><td><code>multilingual.png</code>, <code>multipage.pdf</code></td><td>tesseract</td><td>tesseract</td><td>surya</td></tr>
+<tr><td>noisy-scan</td><td><code>noisy-scan.png</code></td><td>doctr</td><td>surya</td><td>tesseract</td></tr>
+<tr><td>simple-typed</td><td><code>simple-typed.png</code></td><td>doctr</td><td>tesseract</td><td>tesseract</td></tr>
+<tr><td>table</td><td><code>table-complex.png</code>, <code>table-simple.png</code></td><td>tesseract</td><td>surya</td><td>paddle</td></tr>
+</table>
+<br>
+<h2>Conclusion</h2>
+<br>
+<h3>Observed rankings</h3>
+<br>
+<table>
+<tr><td>Metric</td><td>Ranking</td></tr>
+<tr><td>Speed</td><td>tesseract (4536ms) > doctr (9190ms) > paddle (31029ms) > surya (48346ms)</td></tr>
+<tr><td>Words extracted</td><td>surya (187) > tesseract (159) > doctr (119) > paddle (76)</td></tr>
+<tr><td>Avg confidence</td><td>tesseract (0.868) > surya (0.863) > paddle (0.820) > doctr (0.784)</td></tr>
+</table>
+<br>
+<h3>Use-case recommendations</h3>
+<br>
+<table>
+<tr><td>Use case</td><td>Recommended</td><td>Reason</td></tr>
+<tr><td>Real-time / latency-sensitive</td><td><strong>tesseract</strong></td><td>lowest mean latency (4536ms)</td></tr>
+<tr><td>Maximum text extraction (recall)</td><td><strong>surya</strong></td><td>most words on average (187)</td></tr>
+<tr><td>Highest confidence / precision</td><td><strong>tesseract</strong></td><td>best avg confidence (0.868)</td></tr>
+<tr><td>Table extraction</td><td><strong>paddle</strong></td><td>PaddleOCR has native table HTML output</td></tr>
+<tr><td>Multi-language documents (90+ langs)</td><td><strong>surya</strong></td><td>Surya supports 90+ languages</td></tr>
+<tr><td>Air-gap / CPU-only / no GPU infra</td><td><strong>tesseract</strong></td><td>pure CPU, Apache 2.0, zero model downloads at runtime</td></tr>
+<tr><td>Word-level bounding boxes</td><td><strong>doctr</strong></td><td>docTR provides per-word bbox + confidence</td></tr>
+</table>
+<br>
+<blockquote>Rankings derived from benchmark data. For document types not covered by fixtures, validate with representative samples before choosing a provider.</blockquote>
+<br>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+*.whl
+.venv/
+venv/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Docker
+.docker/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+Screenshot*.png
+
+# Models cache
+/models/
+*.onnx
+*.pt
+*.pth
+
+# Benchmark results — ignore raw JSON/CSV, keep HTML reports and markdown
+benchmark/results/*.json
+benchmark/results/*.csv
+!benchmark/results/.gitkeep
+# Visual debug outputs (generated)
+benchmark/results/visual/
+benchmark/results/visual-pdfs/
+
+# Test artifacts
+*.tmp
+.coverage
+
+# Infra secrets
+*.pem
+infra/.deploy-state
+
+# Generated test fixtures (regenerate with: python3 test-fixtures/generate.py)
+test-fixtures/*.png
+test-fixtures/*.pdf

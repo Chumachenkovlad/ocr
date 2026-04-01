@@ -1,0 +1,109 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'>
+<title>OCR Resource Benchmark</title><style>
+body { font-family: -apple-system, sans-serif; margin: 20px; background: #f5f5f5; color: #333; }
+h1 { color: #2c3e50; } h2 { color: #34495e; border-bottom: 2px solid #3498db; padding-bottom: 8px; margin-top: 40px; }
+h3 { margin-top: 24px; }
+table { border-collapse: collapse; width: 100%; margin: 16px 0; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+th { background: #2c3e50; color: white; padding: 10px 14px; text-align: left; font-size: 13px; }
+td { padding: 8px 14px; border-bottom: 1px solid #eee; font-size: 13px; }
+tr:hover { background: #f0f8ff; }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.best { background: #e8f5e9 !important; font-weight: bold; }
+.worst { background: #fce4ec !important; }
+.card { background: white; border-radius: 8px; padding: 20px; margin: 16px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 16px; }
+.subtitle { color: #888; font-size: 14px; margin-top: 2px; }
+.bar-row { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
+.bar-label { width: 120px; font-size: 13px; color: #555; }
+</style></head><body>
+    <div class="topbar">
+      <h1>OCR Comparison</h1>
+      <span class="badge">Benchmark Results</span>
+      <nav><a href="index.html" >Overview</a> <a href="report.html" >Full Report</a> <a href="resource-report.html" style=color:#fff;font-weight:700>Resources</a> <a href="saturation-report.html" >Saturation</a></nav>
+    </div>
+<h1>OCR Resource Consumption Report</h1>
+<p class='subtitle'>Instance: g5.2xlarge | GPU: 23028 MB VRAM | Cost: $1.212/hr</p>
+<p class='subtitle'>Generated: 2026-03-31 20:11 UTC</p>
+<h2>GPU VRAM Budget</h2>
+<div class='card'>
+<div class='bar-row'><span class='bar-label'>paddle</span>
+<svg width="380" height="22"><rect x="0" y="0" width="106" height="22" fill="#e74c3c" rx="3"/><rect x="0" y="0" width="300" height="22" fill="none" stroke="#ddd" rx="3"/><text x="308" y="17" font-size="12" fill="#333">8203 MB peak</text></svg>
+</div>
+<div class='bar-row'><span class='bar-label'></span>
+<svg width="380" height="22"><rect x="0" y="0" width="106" height="22" fill="#3498db" rx="3"/><rect x="0" y="0" width="300" height="22" fill="none" stroke="#ddd" rx="3"/><text x="308" y="17" font-size="12" fill="#333">8203 MB idle</text></svg>
+</div>
+<div class='bar-row'><span class='bar-label'>tesseract</span>
+<svg width="380" height="22"><rect x="0" y="0" width="0" height="22" fill="#e74c3c" rx="3"/><rect x="0" y="0" width="300" height="22" fill="none" stroke="#ddd" rx="3"/><text x="308" y="17" font-size="12" fill="#333">1 MB peak</text></svg>
+</div>
+<div class='bar-row'><span class='bar-label'></span>
+<svg width="380" height="22"><rect x="0" y="0" width="0" height="22" fill="#3498db" rx="3"/><rect x="0" y="0" width="300" height="22" fill="none" stroke="#ddd" rx="3"/><text x="308" y="17" font-size="12" fill="#333">0 MB idle</text></svg>
+</div>
+<div class='bar-row'><span class='bar-label'>surya</span>
+<svg width="380" height="22"><rect x="0" y="0" width="34" height="22" fill="#e74c3c" rx="3"/><rect x="0" y="0" width="300" height="22" fill="none" stroke="#ddd" rx="3"/><text x="308" y="17" font-size="12" fill="#333">2629 MB peak</text></svg>
+</div>
+<div class='bar-row'><span class='bar-label'></span>
+<svg width="380" height="22"><rect x="0" y="0" width="34" height="22" fill="#3498db" rx="3"/><rect x="0" y="0" width="300" height="22" fill="none" stroke="#ddd" rx="3"/><text x="308" y="17" font-size="12" fill="#333">2629 MB idle</text></svg>
+</div>
+<div class='bar-row'><span class='bar-label'>doctr</span>
+<svg width="380" height="22"><rect x="0" y="0" width="0" height="22" fill="#e74c3c" rx="3"/><rect x="0" y="0" width="300" height="22" fill="none" stroke="#ddd" rx="3"/><text x="308" y="17" font-size="12" fill="#333">1 MB peak</text></svg>
+</div>
+<div class='bar-row'><span class='bar-label'></span>
+<svg width="380" height="22"><rect x="0" y="0" width="0" height="22" fill="#3498db" rx="3"/><rect x="0" y="0" width="300" height="22" fill="none" stroke="#ddd" rx="3"/><text x="308" y="17" font-size="12" fill="#333">1 MB idle</text></svg>
+</div>
+<p style='margin-top:12px;font-size:13px;color:#666;'>Total peak (all services): 10834 MB / 23028 MB (OK)</p>
+</div>
+<h2>Resource Profiles (Isolated)</h2>
+<table>
+<tr><th>Service</th><th>VRAM Idle</th><th>VRAM Loaded</th><th>VRAM Peak</th><th>RAM Peak</th><th>CPU Peak</th><th>GPU Util Peak</th><th>Warmup</th></tr>
+<tr><td>paddle</td><td class='num'>515 MB</td><td class='num'>8203 MB</td><td class='num'>8203 MB</td><td class='num'>1377 MB</td><td class='num'>106%</td><td class='num'>100%</td><td class='num'>2.2s</td></tr>
+<tr><td>tesseract</td><td class='num'>0 MB</td><td class='num'>0 MB</td><td class='num'>1 MB</td><td class='num'>221 MB</td><td class='num'>218%</td><td class='num'>0%</td><td class='num'>2.4s</td></tr>
+<tr><td>surya</td><td class='num'>1307 MB</td><td class='num'>2629 MB</td><td class='num'>2629 MB</td><td class='num'>1560 MB</td><td class='num'>118%</td><td class='num'>62%</td><td class='num'>2.7s</td></tr>
+<tr><td>doctr</td><td class='num'>1 MB</td><td class='num'>1 MB</td><td class='num'>1 MB</td><td class='num'>1002 MB</td><td class='num'>387%</td><td class='num'>0%</td><td class='num'>2.9s</td></tr>
+</table>
+<h2>Throughput Under Concurrency</h2>
+<h3>Pages per Minute</h3><table>
+<tr><th>Service</th><th>C=1</th><th>C=2</th><th>C=4</th></tr>
+<tr><td>doctr</td><td class='num'>22.6</td><td class='num'>26.1</td><td class='num'>26.0</td></tr>
+<tr><td>paddle</td><td class='num'>16.1</td><td class='num'>26.0</td><td class='num'>31.9</td></tr>
+<tr><td>surya</td><td class='num'>27.0</td><td class='num'>31.8</td><td class='num'>31.7</td></tr>
+<tr><td>tesseract</td><td class='num'>27.7</td><td class='num'>48.3</td><td class='num'>71.7</td></tr>
+</table>
+<h3>Latency (ms)</h3><table>
+<tr><th>Service</th><th>Concurrency</th><th>p50</th><th>p95</th><th>p99</th><th>Errors</th></tr>
+<tr><td>paddle</td><td class='num'>1</td><td class='num'>2759</td><td class='num'>10383</td><td class='num'>10383</td><td class='num'>0</td></tr>
+<tr><td>paddle</td><td class='num'>2</td><td class='num'>2762</td><td class='num'>12229</td><td class='num'>12229</td><td class='num'>0</td></tr>
+<tr><td>paddle</td><td class='num'>4</td><td class='num'>5387</td><td class='num'>13840</td><td class='num'>13840</td><td class='num'>1</td></tr>
+<tr><td>tesseract</td><td class='num'>1</td><td class='num'>1414</td><td class='num'>8594</td><td class='num'>8594</td><td class='num'>0</td></tr>
+<tr><td>tesseract</td><td class='num'>2</td><td class='num'>1459</td><td class='num'>8787</td><td class='num'>8787</td><td class='num'>0</td></tr>
+<tr><td>tesseract</td><td class='num'>4</td><td class='num'>1892</td><td class='num'>8662</td><td class='num'>8662</td><td class='num'>0</td></tr>
+<tr><td>surya</td><td class='num'>1</td><td class='num'>1972</td><td class='num'>4610</td><td class='num'>4610</td><td class='num'>0</td></tr>
+<tr><td>surya</td><td class='num'>2</td><td class='num'>3128</td><td class='num'>10411</td><td class='num'>10411</td><td class='num'>0</td></tr>
+<tr><td>surya</td><td class='num'>4</td><td class='num'>5652</td><td class='num'>24638</td><td class='num'>24638</td><td class='num'>0</td></tr>
+<tr><td>doctr</td><td class='num'>1</td><td class='num'>2286</td><td class='num'>4426</td><td class='num'>4426</td><td class='num'>0</td></tr>
+<tr><td>doctr</td><td class='num'>2</td><td class='num'>4172</td><td class='num'>11378</td><td class='num'>11378</td><td class='num'>0</td></tr>
+<tr><td>doctr</td><td class='num'>4</td><td class='num'>7311</td><td class='num'>28409</td><td class='num'>28409</td><td class='num'>0</td></tr>
+</table>
+<h3>Cost per 1000 Pages (C=1)</h3><table>
+<tr><th>Service</th><th>Pages/min</th><th>Words/sec</th><th>$/1000 pages</th></tr>
+<tr><td>doctr</td><td class='num'>22.6</td><td class='num'>34.9</td><td class='num'>$0.89</td></tr>
+<tr><td>paddle</td><td class='num'>16.1</td><td class='num'>15.8</td><td class='num'>$1.26</td></tr>
+<tr><td>surya</td><td class='num'>27.0</td><td class='num'>73.9</td><td class='num'>$0.75</td></tr>
+<tr><td>tesseract</td><td class='num'>27.7</td><td class='num'>63.5</td><td class='num'>$0.73</td></tr>
+</table>
+<h2>Production Pricing: 500,000 Pages/Month</h2>
+<p class='subtitle'>Based on g5.2xlarge on-demand pricing: $1.212/hr | Assumes single-service per instance, C=1 sequential processing</p>
+<table>
+<tr><th>Service</th><th>Pages/min (C=1)</th><th>Hours for 500K</th><th>Instances needed</th><th>Monthly cost (g5.2xlarge)</th><th>Cost on g4dn.xlarge</th><th>VRAM needed</th><th>Recommended</th></tr>
+<tr><td>doctr</td><td class='num'>22.6</td><td class='num'>369</td><td class='num'>0.51</td><td class='num'>$447</td><td class='num'>$194</td><td class='num'>1 MB</td><td>g4dn.xlarge (T4)<br><b>$194/mo</b></td></tr>
+<tr><td>paddle</td><td class='num'>16.1</td><td class='num'>518</td><td class='num'>0.71</td><td class='num'>$627</td><td class='num'>$272</td><td class='num'>8203 MB</td><td>g4dn.xlarge (T4)<br><b>$272/mo</b></td></tr>
+<tr><td>surya</td><td class='num'>27.0</td><td class='num'>309</td><td class='num'>0.42</td><td class='num'>$374</td><td class='num'>$162</td><td class='num'>2629 MB</td><td>g4dn.xlarge (T4)<br><b>$162/mo</b></td></tr>
+<tr><td>tesseract</td><td class='num'>27.7</td><td class='num'>301</td><td class='num'>0.41</td><td class='num'>$365</td><td class='num'>$158</td><td class='num'>1 MB</td><td>c5.2xlarge (CPU)<br><b>$102/mo</b></td></tr>
+</table>
+<div class='card' style='border-left: 4px solid #27ae60;'>
+<h3 style='margin-top:0;color:#27ae60;'>Recommendation for 500K pages/month</h3>
+<table style='box-shadow:none;margin:8px 0;'>
+<tr><th>Option</th><th>Service</th><th>Instance</th><th>Count</th><th>Monthly Cost</th><th>Notes</th></tr>
+<tr><td><b>Cheapest</b></td><td>tesseract</td><td>c5.2xlarge</td><td class='num'>0.41</td><td class='num'><b>$102/mo</b></td><td>CPU-only, fastest, no GPU needed</td></tr>
+<tr><td><b>Best quality</b></td><td>surya</td><td>g4dn.xlarge</td><td class='num'>0.42</td><td class='num'><b>$162/mo</b></td><td>Best word recall, VRAM: ~2.6 GB (fits T4)</td></tr>
+<tr><td><b>Best tables</b></td><td>paddle</td><td>g5.2xlarge</td><td class='num'>0.71</td><td class='num'><b>$627/mo</b></td><td>Best for structured docs, VRAM: ~8 GB (needs A10G)</td></tr>
+</table></div>

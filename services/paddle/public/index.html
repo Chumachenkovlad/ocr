@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OCR Viewer</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #1a1a2e; color: #eee; min-height: 100vh; }
+    .header { padding: 16px 24px; background: #16213e; border-bottom: 1px solid #0f3460; display: flex; align-items: center; gap: 16px; }
+    .header h1 { font-size: 18px; font-weight: 600; }
+    .header .badge { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: #4ecca3; color: #111; font-weight: 600; }
+    .controls { padding: 16px 24px; background: #16213e; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; border-bottom: 1px solid #0f3460; }
+    .controls label { font-size: 13px; color: #aaa; }
+    .controls input[type="file"] { font-size: 13px; }
+    .controls button { padding: 6px 16px; border: none; border-radius: 4px; background: #e94560; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
+    .controls button:hover { background: #c73a52; }
+    .controls button:disabled { background: #555; cursor: not-allowed; }
+    .toggle-group { display: flex; gap: 12px; margin-left: auto; }
+    .toggle-group label { display: flex; align-items: center; gap: 4px; font-size: 12px; cursor: pointer; }
+    .toggle-group input[type="checkbox"] { accent-color: #e94560; }
+    .status { padding: 8px 24px; font-size: 13px; color: #aaa; min-height: 32px; display: flex; align-items: center; }
+    .status.error { color: #e94560; }
+    .status.success { color: #4ecca3; }
+    .canvas-wrap { position: relative; overflow: auto; margin: 16px 24px; border: 1px solid #0f3460; border-radius: 4px; background: #111; max-height: calc(100vh - 220px); }
+    .canvas-wrap img { display: block; max-width: 100%; }
+    .overlay { position: absolute; top: 0; left: 0; pointer-events: none; }
+
+    .box { position: absolute; pointer-events: auto; }
+    .box-word { border: 1.5px solid rgba(233, 69, 96, 0.6); background: rgba(233, 69, 96, 0.08); }
+    .box-word:hover { background: rgba(233, 69, 96, 0.3); border-color: #e94560; z-index: 10; }
+    .box-line { border: 1px dashed rgba(78, 204, 163, 0.5); }
+    .box-line:hover { border-color: #4ecca3; background: rgba(78, 204, 163, 0.1); z-index: 5; }
+    .box-block { border: 2px dashed rgba(83, 131, 236, 0.5); }
+    .box-block:hover { border-color: #5383ec; background: rgba(83, 131, 236, 0.08); z-index: 3; }
+
+    .tooltip { position: absolute; bottom: calc(100% + 4px); left: 50%; transform: translateX(-50%); background: #16213e; color: #eee; padding: 4px 8px; border-radius: 4px; font-size: 11px; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity 0.15s; border: 1px solid #0f3460; z-index: 100; }
+    .box:hover .tooltip { opacity: 1; }
+
+    .stats { padding: 8px 24px; font-size: 12px; color: #666; display: flex; gap: 16px; flex-wrap: wrap; }
+    .hidden { display: none !important; }
+    .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid #555; border-top-color: #e94560; border-radius: 50%; animation: spin 0.6s linear infinite; margin-right: 8px; vertical-align: middle; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .conf-high { border-color: rgba(78, 204, 163, 0.7); }
+    .conf-high:hover { border-color: #4ecca3; }
+    .conf-mid { border-color: rgba(255, 193, 7, 0.7); }
+    .conf-mid:hover { border-color: #ffc107; }
+    .conf-low { border-color: rgba(233, 69, 96, 0.9); background: rgba(233, 69, 96, 0.15); }
+    .conf-low:hover { border-color: #e94560; }
+
+    /* Tab bar */
+    .tab-bar { display: flex; gap: 0; padding: 0 24px; background: #16213e; border-bottom: 1px solid #0f3460; }
+    .tab { padding: 8px 20px; border: none; border-bottom: 2px solid transparent; background: none; color: #888; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+    .tab:hover { color: #ccc; }
+    .tab.active { color: #e94560; border-bottom-color: #e94560; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Mode select */
+    .controls select { padding: 4px 8px; border-radius: 4px; border: 1px solid #0f3460; background: #1a1a2e; color: #eee; font-size: 13px; }
+
+    /* Version badge */
+    .version-badge { background: #0f3460 !important; color: #aaa !important; font-weight: 400 !important; }
+
+    /* JSON panel */
+    .json-wrap { position: relative; margin: 16px 24px; max-height: calc(100vh - 260px); overflow: auto; background: #111; border: 1px solid #0f3460; border-radius: 4px; }
+    .json-wrap pre { margin: 0; padding: 16px; font-size: 12px; line-height: 1.5; overflow-x: auto; color: #c5c8c6; }
+    .copy-btn { position: absolute; top: 8px; right: 8px; padding: 4px 10px; border: 1px solid #0f3460; border-radius: 4px; background: #16213e; color: #aaa; font-size: 12px; cursor: pointer; z-index: 10; }
+    .copy-btn:hover { color: #eee; border-color: #4ecca3; }
+
+    /* JSON syntax highlighting */
+    .json-key { color: #81a2be; }
+    .json-string { color: #b5bd68; }
+    .json-number { color: #de935f; }
+    .json-boolean { color: #cc6666; }
+    .json-null { color: #969896; }
+
+    /* Markdown panel */
+    .markdown-wrap { margin: 16px 24px; padding: 20px; max-height: calc(100vh - 260px); overflow: auto; background: #111; border: 1px solid #0f3460; border-radius: 4px; font-size: 14px; line-height: 1.7; }
+    .markdown-wrap h1, .markdown-wrap h2, .markdown-wrap h3 { color: #e94560; margin: 16px 0 8px; }
+    .markdown-wrap p { margin: 8px 0; }
+    .markdown-wrap .placeholder { color: #555; font-style: italic; }
+
+    /* Tables & Formulas panel */
+    .tables-wrap { margin: 16px 24px; padding: 16px; max-height: calc(100vh - 260px); overflow: auto; background: #111; border: 1px solid #0f3460; border-radius: 4px; }
+    .tables-wrap .placeholder { color: #555; font-style: italic; }
+    .tables-wrap .block-section { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #0f3460; }
+    .tables-wrap .block-section:last-child { border-bottom: none; margin-bottom: 0; }
+    .tables-wrap .block-label { font-size: 12px; font-weight: 600; color: #5383ec; margin-bottom: 8px; text-transform: uppercase; }
+    .tables-wrap table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+    .tables-wrap th, .tables-wrap td { border: 1px solid #0f3460; padding: 6px 10px; font-size: 13px; text-align: left; }
+    .tables-wrap th { background: #16213e; color: #aaa; }
+    .tables-wrap .formula-block { background: #16213e; padding: 12px 16px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 14px; color: #b5bd68; margin: 8px 0; }
+    .tables-wrap .seal-block { display: inline-flex; gap: 8px; flex-wrap: wrap; }
+    .tables-wrap .seal-tag { background: #0f3460; padding: 4px 10px; border-radius: 12px; font-size: 12px; color: #4ecca3; }
+
+    /* Backend capability warning */
+    .backend-warning { margin: 0 24px; padding: 10px 16px; background: #2a1a00; border: 1px solid #664400; border-radius: 4px; font-size: 12px; color: #ffb347; display: none; }
+    .backend-warning strong { color: #ffc107; }
+    .backend-warning a { color: #81a2be; text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>OCR Viewer</h1>
+    <span class="badge" id="backendBadge">—</span>
+    <span class="badge version-badge" id="versionBadge">v—</span>
+  </div>
+
+  <div class="controls">
+    <label>File: <input type="file" id="fileInput" accept="application/pdf,image/png,image/jpeg,image/webp,image/tiff"></label>
+    <label>Mode:
+      <select id="modeSelect">
+        <option value="structure">Structure</option>
+        <option value="ocr">OCR only</option>
+      </select>
+    </label>
+    <button id="runBtn" disabled>Run OCR</button>
+
+    <div class="toggle-group">
+      <label><input type="checkbox" id="toggleWords" checked> <span style="color:#e94560">&#9632;</span> Words</label>
+      <label><input type="checkbox" id="toggleLines"> <span style="color:#4ecca3">&#9644;</span> Lines</label>
+      <label><input type="checkbox" id="toggleBlocks"> <span style="color:#5383ec">&#9644;</span> Blocks</label>
+      <label><input type="checkbox" id="toggleConfidence"> &#127912; Confidence</label>
+    </div>
+  </div>
+
+  <div class="status" id="status">Upload a PDF or image to get started.</div>
+
+  <!-- Backend capability warning -->
+  <div class="backend-warning" id="backendWarning">
+    <strong>⚠️ RapidOCR backend</strong> — text detection only. Table recognition, formula detection, layout analysis, and markdown require the full <strong>PaddleOCR</strong> backend via <code>docker compose up</code> on x86.
+  </div>
+
+  <!-- Tab bar -->
+  <div class="tab-bar" id="tabBar" style="display:none">
+    <button class="tab active" data-tab="visual">Visual</button>
+    <button class="tab" data-tab="json">Raw JSON</button>
+    <button class="tab" data-tab="markdown">Markdown</button>
+    <button class="tab" data-tab="tables">Tables &amp; Formulas</button>
+  </div>
+
+  <!-- Tab: Visual overlay -->
+  <div class="tab-content active" id="tab-visual">
+    <div class="canvas-wrap" id="canvasWrap" style="display:none">
+      <img id="preview" alt="Uploaded image">
+      <div class="overlay" id="overlay"></div>
+    </div>
+  </div>
+
+  <!-- Tab: Raw JSON -->
+  <div class="tab-content" id="tab-json">
+    <div class="json-wrap">
+      <button class="copy-btn" id="copyJsonBtn" title="Copy JSON">&#128203; Copy</button>
+      <pre id="jsonOutput"><code>No data yet.</code></pre>
+    </div>
+  </div>
+
+  <!-- Tab: Markdown -->
+  <div class="tab-content" id="tab-markdown">
+    <div class="markdown-wrap" id="markdownOutput">
+      <p class="placeholder">No markdown output yet.</p>
+    </div>
+  </div>
+
+  <!-- Tab: Tables & Formulas -->
+  <div class="tab-content" id="tab-tables">
+    <div class="tables-wrap" id="tablesOutput">
+      <p class="placeholder">No tables or formulas detected.</p>
+    </div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const fileInput = $('fileInput');
+  const runBtn = $('runBtn');
+  const statusEl = $('status');
+  const canvasWrap = $('canvasWrap');
+  const preview = $('preview');
+  const overlay = $('overlay');
+  const statsEl = $('stats');
+  const toggleWords = $('toggleWords');
+  const toggleLines = $('toggleLines');
+  const toggleBlocks = $('toggleBlocks');
+  const toggleConfidence = $('toggleConfidence');
+  const backendBadge = $('backendBadge');
+  const versionBadge = $('versionBadge');
+  const tabBar = $('tabBar');
+  const modeSelect = $('modeSelect');
+  const jsonOutput = $('jsonOutput');
+  const copyJsonBtn = $('copyJsonBtn');
+  const markdownOutput = $('markdownOutput');
+  const tablesOutput = $('tablesOutput');
+
+  let ocrData = null;
+  let selectedFile = null;
+  let pageData = null;
+  let currentBackend = 'unknown';
+
+  // Fetch backend info
+  fetch('/healthz').then(r => r.json()).then(d => {
+    currentBackend = d.backend || 'unknown';
+    const label = d.backend ? d.backend : (d.models_loaded ? 'ready' : 'no models');
+    backendBadge.textContent = d.models_loaded ? label : 'no models';
+    backendBadge.style.background = d.models_loaded ? '#4ecca3' : '#e94560';
+    if (d.version) versionBadge.textContent = 'v' + d.version;
+
+    // Show warning and disable structure mode for non-paddle backends
+    if (currentBackend !== 'paddle') {
+      $('backendWarning').style.display = 'block';
+      modeSelect.value = 'ocr';
+      modeSelect.disabled = true;
+      modeSelect.title = 'Structure mode requires PaddleOCR backend (docker compose up)';
+    }
+  }).catch(() => { backendBadge.textContent = 'offline'; backendBadge.style.background = '#e94560'; });
+
+  // Tab switching
+  tabBar.addEventListener('click', (e) => {
+    const btn = e.target.closest('.tab');
+    if (!btn) return;
+    tabBar.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+    const target = $('tab-' + btn.dataset.tab);
+    if (target) target.classList.add('active');
+  });
+
+  // Copy JSON button
+  copyJsonBtn.addEventListener('click', () => {
+    if (!ocrData) return;
+    navigator.clipboard.writeText(JSON.stringify(ocrData, null, 2)).then(() => {
+      copyJsonBtn.textContent = '\u2705 Copied!';
+      setTimeout(() => { copyJsonBtn.innerHTML = '&#128203; Copy'; }, 2000);
+    });
+  });
+
+  fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    selectedFile = file;
+    runBtn.disabled = false;
+
+    // Show preview for images, placeholder for PDFs
+    if (file.type === 'application/pdf') {
+      canvasWrap.style.display = 'block';
+      preview.src = '';
+      preview.alt = 'PDF file — preview after OCR';
+      overlay.innerHTML = '';
+    } else {
+      const url = URL.createObjectURL(file);
+      preview.onload = () => {
+        canvasWrap.style.display = 'block';
+        overlay.innerHTML = '';
+      };
+      preview.src = url;
+    }
+    statsEl.textContent = '';
+    ocrData = null;
+    pageData = null;
+    tabBar.style.display = 'none';
+    setStatus('File loaded. Click "Run OCR" to process.', '');
+  });
+
+  runBtn.addEventListener('click', async () => {
+    if (!selectedFile) return;
+    runBtn.disabled = true;
+    setStatus('<span class="spinner"></span>Running OCR\u2026', '');
+    overlay.innerHTML = '';
+    statsEl.textContent = '';
+
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    formData.append('mode', modeSelect.value);
+
+    try {
+      const resp = await fetch('/api/v1/ocr', { method: 'POST', body: formData });
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({ detail: resp.statusText }));
+        setStatus('OCR failed: ' + (err.detail || JSON.stringify(err)), 'error');
+        runBtn.disabled = false;
+        return;
+      }
+
+      ocrData = await resp.json();
+      pageData = ocrData.pages && ocrData.pages[0];
+
+      if (!pageData) {
+        setStatus('No page data returned.', 'error');
+        runBtn.disabled = false;
+        return;
+      }
+
+      // Show tabs
+      tabBar.style.display = 'flex';
+
+      // Use the backend-provided image for overlay (guaranteed coordinate match).
+      // Falls back to the already-loaded preview for regular images.
+      if (pageData.page_image_base64) {
+        preview.onload = () => {
+          canvasWrap.style.display = 'block';
+          renderOverlay();
+        };
+        preview.src = 'data:image/png;base64,' + pageData.page_image_base64;
+      } else {
+        canvasWrap.style.display = 'block';
+        renderOverlay();
+      }
+
+      // Render JSON tab (strip base64 image to keep JSON readable)
+      renderJson();
+
+      // Render Markdown tab
+      renderMarkdown();
+
+      // Render Tables & Formulas tab
+      renderTables();
+
+      // Stats
+      const wordCount = pageData.blocks.reduce((s, b) => s + b.lines.reduce((s2, l) => s2 + l.words.length, 0), 0);
+      const lineCount = pageData.blocks.reduce((s, b) => s + b.lines.length, 0);
+      const time = ocrData.processing_time_ms;
+      const blockTypes = {};
+      pageData.blocks.forEach(b => { blockTypes[b.block_type] = (blockTypes[b.block_type] || 0) + 1; });
+      const typeSummary = Object.entries(blockTypes).map(([t, c]) => `${c} ${t}`).join(', ');
+      const tableCount = pageData.blocks.filter(b => b.table_html).length;
+      const formulaCount = pageData.blocks.filter(b => b.formula_latex).length;
+      const sealCount = pageData.blocks.filter(b => b.seal_texts && b.seal_texts.length).length;
+
+      setStatus(`Done \u2014 ${pageData.blocks.length} blocks, ${lineCount} lines, ${wordCount} words in ${time}ms`, 'success');
+
+      let statsHtml = `<span>Page: ${pageData.width_px}\u00d7${pageData.height_px}px @ ${pageData.dpi} DPI</span>` +
+        `<span>Language: ${pageData.language}</span>` +
+        `<span>Blocks: ${typeSummary}</span>`;
+      if (pageData.rotation_angle) statsHtml += `<span>Rotation: ${pageData.rotation_angle.toFixed(1)}\u00b0</span>`;
+      if (tableCount) statsHtml += `<span>Tables: ${tableCount}</span>`;
+      if (formulaCount) statsHtml += `<span>Formulas: ${formulaCount}</span>`;
+      if (sealCount) statsHtml += `<span>Seals: ${sealCount}</span>`;
+      if (pageData.markdown) statsHtml += `<span>\u2705 Markdown</span>`;
+      statsEl.innerHTML = statsHtml;
+    } catch (err) {
+      setStatus('Request failed: ' + err.message, 'error');
+    }
+    runBtn.disabled = false;
+  });
+
+  toggleWords.addEventListener('change', () => toggleLayer('word', toggleWords.checked));
+  toggleLines.addEventListener('change', () => toggleLayer('line', toggleLines.checked));
+  toggleBlocks.addEventListener('change', () => toggleLayer('block', toggleBlocks.checked));
+  toggleConfidence.addEventListener('change', renderOverlay);
+
+  new ResizeObserver(() => { if (pageData) renderOverlay(); }).observe(preview);
+
+  function setStatus(html, cls) {
+    statusEl.innerHTML = html;
+    statusEl.className = 'status' + (cls ? ' ' + cls : '');
+  }
+
+  function toggleLayer(type, visible) {
+    overlay.querySelectorAll('.box-' + type).forEach(el => el.classList.toggle('hidden', !visible));
+  }
+
+  function confClass(confidence) {
+    if (confidence >= 0.9) return 'conf-high';
+    if (confidence >= 0.7) return 'conf-mid';
+    return 'conf-low';
+  }
+
+  function renderOverlay() {
+    overlay.innerHTML = '';
+    if (!pageData) return;
+
+    const scaleX = preview.clientWidth / pageData.width_px;
+    const scaleY = preview.clientHeight / pageData.height_px;
+    overlay.style.width = preview.clientWidth + 'px';
+    overlay.style.height = preview.clientHeight + 'px';
+
+    const useConf = toggleConfidence.checked;
+
+    for (const block of pageData.blocks) {
+      const blockTip = `Block #${block.block_index} (${block.block_type})` +
+        (block.font_size_estimate_pt ? ` ~${block.font_size_estimate_pt.toFixed(1)}pt` : '');
+      addBox(block.bbox, 'block', scaleX, scaleY, blockTip, !toggleBlocks.checked, null);
+
+      for (const line of block.lines) {
+        const lineText = line.words.map(w => w.text).join(' ');
+        const lineTip = `Line #${line.line_index}: "${lineText.length > 50 ? lineText.slice(0, 50) + '\u2026' : lineText}"`;
+        addBox(line.bbox, 'line', scaleX, scaleY, lineTip, !toggleLines.checked, null);
+
+        for (const word of line.words) {
+          const pct = (word.confidence * 100).toFixed(0);
+          const tip = `"${word.text}" \u2014 ${pct}%`;
+          const extra = useConf ? confClass(word.confidence) : null;
+          addBox(word.bbox, 'word', scaleX, scaleY, tip, !toggleWords.checked, extra);
+        }
+      }
+    }
+  }
+
+  function addBox(bbox, type, scaleX, scaleY, tooltip, hidden, extraClass) {
+    const div = document.createElement('div');
+    div.className = 'box box-' + type + (hidden ? ' hidden' : '') + (extraClass ? ' ' + extraClass : '');
+    div.style.left = (bbox.x * scaleX) + 'px';
+    div.style.top = (bbox.y * scaleY) + 'px';
+    div.style.width = (bbox.w * scaleX) + 'px';
+    div.style.height = (bbox.h * scaleY) + 'px';
+
+    if (tooltip) {
+      const tip = document.createElement('span');
+      tip.className = 'tooltip';
+      tip.textContent = tooltip;
+      div.appendChild(tip);
+    }
+
+    overlay.appendChild(div);
+  }
+
+  // --- JSON rendering with syntax highlighting ---
+  function renderJson() {
+    if (!ocrData) return;
+    // Strip base64 images from JSON display to keep it readable
+    const displayData = JSON.parse(JSON.stringify(ocrData));
+    if (displayData.pages) {
+      displayData.pages.forEach(p => { if (p.page_image_base64) p.page_image_base64 = '(base64 image omitted)'; });
+    }
+    const raw = JSON.stringify(displayData, null, 2);
+    jsonOutput.innerHTML = '<code>' + syntaxHighlight(raw) + '</code>';
+  }
+
+  function syntaxHighlight(json) {
+    // Escape HTML entities first — prevents XSS from OCR output
+    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return json.replace(
+      /("(\\u[\da-fA-F]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)/g,
+      (match) => {
+        let cls = 'json-number';
+        if (/^"/.test(match)) {
+          cls = /:$/.test(match) ? 'json-key' : 'json-string';
+        } else if (/true|false/.test(match)) {
+          cls = 'json-boolean';
+        } else if (/null/.test(match)) {
+          cls = 'json-null';
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+      }
+    );
+  }
+
+  // --- Markdown rendering ---
+  function renderMarkdown() {
+    if (!pageData) {
+      markdownOutput.innerHTML = '<p class="placeholder">No markdown output yet.</p>';
+      return;
+    }
+
+    const md = pageData.markdown;
+    if (!md) {
+      // Fallback: build simple text from blocks
+      const lines = pageData.blocks.map(b => {
+        const text = b.lines.map(l => l.words.map(w => w.text).join(' ')).join('\n');
+        if (b.block_type === 'title') return '<h3>' + escapeHtml(text) + '</h3>';
+        if (b.block_type === 'table' && b.table_html) return b.table_html;
+        return '<p>' + escapeHtml(text) + '</p>';
+      }).filter(Boolean);
+      markdownOutput.innerHTML = lines.join('\n') || '<p class="placeholder">No text content.</p>';
+      return;
+    }
+
+    // Simple markdown-to-HTML (headings, paragraphs, code blocks, bold, italic)
+    markdownOutput.innerHTML = simpleMarkdownToHtml(md);
+  }
+
+  function simpleMarkdownToHtml(md) {
+    const lines = md.split('\n');
+    let html = '';
+    let inCode = false;
+    for (const line of lines) {
+      if (line.startsWith('```') || line.startsWith('$$')) {
+        inCode = !inCode;
+        html += inCode ? '<pre><code>' : '</code></pre>';
+        continue;
+      }
+      if (inCode) {
+        html += escapeHtml(line) + '\n';
+        continue;
+      }
+      if (line.startsWith('### ')) { html += '<h3>' + escapeHtml(line.slice(4)) + '</h3>'; continue; }
+      if (line.startsWith('## ')) { html += '<h2>' + escapeHtml(line.slice(3)) + '</h2>'; continue; }
+      if (line.startsWith('# ')) { html += '<h1>' + escapeHtml(line.slice(2)) + '</h1>'; continue; }
+      if (line.trim() === '') { html += '<br>'; continue; }
+      html += '<p>' + escapeHtml(line) + '</p>';
+    }
+    if (inCode) html += '</code></pre>';
+    return html;
+  }
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  // --- Tables & Formulas rendering ---
+  function renderTables() {
+    if (!pageData) {
+      tablesOutput.innerHTML = '<p class="placeholder">No tables or formulas detected.</p>';
+      return;
+    }
+
+    const sections = [];
+
+    for (const block of pageData.blocks) {
+      if (block.table_html) {
+        // Sanitize: create from text, then allow only table elements
+        sections.push(
+          `<div class="block-section">` +
+          `<div class="block-label">Table \u2014 Block #${block.block_index}</div>` +
+          sanitizeTableHtml(block.table_html) +
+          `</div>`
+        );
+      }
+      if (block.formula_latex) {
+        sections.push(
+          `<div class="block-section">` +
+          `<div class="block-label">Formula \u2014 Block #${block.block_index}</div>` +
+          `<div class="formula-block">${escapeHtml(block.formula_latex)}</div>` +
+          `</div>`
+        );
+      }
+      if (block.seal_texts && block.seal_texts.length) {
+        const tags = block.seal_texts.map(t => `<span class="seal-tag">${escapeHtml(t)}</span>`).join('');
+        sections.push(
+          `<div class="block-section">` +
+          `<div class="block-label">Seal \u2014 Block #${block.block_index}</div>` +
+          `<div class="seal-block">${tags}</div>` +
+          `</div>`
+        );
+      }
+    }
+
+    tablesOutput.innerHTML = sections.length
+      ? sections.join('')
+      : '<p class="placeholder">No tables, formulas, or seals detected in this document.</p>';
+  }
+
+  function sanitizeTableHtml(html) {
+    // Parse and re-serialize to strip non-table elements (XSS prevention)
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const table = doc.querySelector('table');
+    if (!table) return '<p class="placeholder">Table data could not be rendered.</p>';
+    // Only allow table-related elements
+    const allowed = new Set(['TABLE', 'THEAD', 'TBODY', 'TFOOT', 'TR', 'TH', 'TD', 'CAPTION', 'COLGROUP', 'COL']);
+    function clean(el) {
+      for (const child of Array.from(el.children)) {
+        if (!allowed.has(child.tagName)) {
+          child.remove();
+        } else {
+          // Remove all attributes except colspan/rowspan
+          for (const attr of Array.from(child.attributes)) {
+            if (attr.name !== 'colspan' && attr.name !== 'rowspan') {
+              child.removeAttribute(attr.name);
+            }
+          }
+          clean(child);
+        }
+      }
+    }
+    clean(table);
+    return table.outerHTML;
+  }
+</script>
+</body>
+</html>

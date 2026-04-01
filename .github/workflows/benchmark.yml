@@ -1,0 +1,59 @@
+name: Run benchmark suite
+
+on:
+  workflow_dispatch:
+    inputs:
+      host:
+        description: "EC2 public IP or hostname of deployed services"
+        required: true
+      runs:
+        description: "Runs per fixture per service"
+        default: "1"
+      dpi_sweep:
+        description: "DPI values to sweep (e.g. 150,300,600). Leave empty for single 300 DPI."
+        default: ""
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install httpx
+
+      - name: Generate test fixtures
+        run: |
+          pip install Pillow reportlab numpy
+          python3 test-fixtures/generate.py
+
+      - name: Run benchmark
+        env:
+          HOST: ${{ inputs.host }}
+          RUNS: ${{ inputs.runs }}
+        run: |
+          ARGS="--host $HOST --runs $RUNS"
+          if [ -n "${{ inputs.dpi_sweep }}" ]; then
+            ARGS="$ARGS --dpi-sweep ${{ inputs.dpi_sweep }}"
+          fi
+          python3 benchmark/run.py $ARGS
+
+      - name: Generate analysis report
+        run: |
+          LATEST=$(ls -t benchmark/results/*.json | head -1)
+          python3 benchmark/analyze.py "$LATEST"
+
+      - name: Generate static site
+        run: python3 benchmark/generate_site.py
+
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add benchmark/results/*.html benchmark/results/*.md docs/
+          git diff --staged --quiet || git commit -m "chore: benchmark results $(date -u +%Y-%m-%d)"
+          git push

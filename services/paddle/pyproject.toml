@@ -1,0 +1,108 @@
+[project]
+name = "ocr-paddle-service"
+version = "0.1.0"
+description = "OCR microservice using PaddleOCR for PDF/image text extraction"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.115.6",
+    "uvicorn[standard]>=0.34.0",
+    "python-multipart>=0.0.18",
+    "pydantic>=2.10.0",
+    "pydantic-settings>=2.7.0",
+    "pdf2image>=1.17.0",
+    "Pillow>=11.1.0",
+    "structlog>=24.4.0",
+    "python-magic>=0.4.27",
+    "slowapi>=0.1.9",
+    "ocr-schema",
+]
+
+[project.optional-dependencies]
+gpu = [
+    "paddlepaddle-gpu==3.2.0",
+]
+cpu = [
+    "paddlepaddle==3.2.0",
+]
+ocr = [
+    "paddleocr[doc-parser]==3.4.0",
+]
+rapid = [
+    "rapidocr-onnxruntime>=1.2.0",
+]
+dev = [
+    "pytest>=8.3.4",
+    "pytest-asyncio>=0.25.0",
+    "httpx>=0.28.1",
+    "ruff>=0.9.0",
+    "mypy>=1.14.0",
+    "coverage>=7.6.0",
+    "bandit>=1.8.0",
+]
+
+[build-system]
+requires = ["setuptools>=75.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "N",   # pep8-naming
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "S",   # flake8-bandit
+    "T20", # flake8-print
+    "SIM", # flake8-simplify
+    "RUF", # ruff-specific
+]
+ignore = [
+    "S101", # assert usage allowed in tests
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S106"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = [
+    "paddleocr.*",
+    "paddle.*",
+    "rapidocr_onnxruntime.*",
+    "pdf2image.*",
+    "magic.*",
+    "slowapi.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests (require OCR models)",
+]
+
+[tool.coverage.run]
+source = ["src"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true
