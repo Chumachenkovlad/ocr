@@ -147,10 +147,10 @@ ensure_security_group() {
       --query 'GroupId' --output text)
 
     aws ec2 authorize-security-group-ingress \
-      --group-id "${sg_id}" --protocol tcp --port 22 --cidr 0.0.0.0/0
+      --group-id "${sg_id}" --protocol tcp --port 22 --cidr 0.0.0.0/0 >/dev/null
     # Gateway (8080) + individual services (8081-8084)
     aws ec2 authorize-security-group-ingress \
-      --group-id "${sg_id}" --protocol tcp --port 8080-8084 --cidr 0.0.0.0/0
+      --group-id "${sg_id}" --protocol tcp --port 8080-8084 --cidr 0.0.0.0/0 >/dev/null
   fi
 
   ok "Security group: ${sg_id}" >&2

@@ -101,9 +101,9 @@
       <h1>OCR Benchmark Report</h1>
 <br>
 <ul>
-<li><strong>Date</strong>: 2026-03-31_071432</li>
+<li><strong>Date</strong>: 2026-04-01_172930</li>
 <li><strong>DPI</strong>: 300</li>
-<li><strong>Runs per fixture</strong>: 1</li>
+<li><strong>Runs per fixture</strong>: 3</li>
 <li><strong>Providers</strong>: doctr, paddle, surya, tesseract</li>
 <li><strong>Fixtures</strong>: 10</li>
 </ul>
@@ -112,58 +112,58 @@
 <br>
 <table>
 <tr><td>Fixture</td><td>doctr</td><td>paddle</td><td>surya</td><td>tesseract</td></tr>
-<tr><td>dense-twocol.png</td><td>2738</td><td>21611</td><td>24273</td><td>3176</td></tr>
-<tr><td>form-kvpairs.png</td><td>4050</td><td>29700</td><td>65305</td><td>2364</td></tr>
-<tr><td>low-dpi.png</td><td>5286</td><td>9046</td><td>16232</td><td>777</td></tr>
-<tr><td>mixed-content.png</td><td>3162</td><td>25294</td><td>40286</td><td>2181</td></tr>
-<tr><td>multilingual.png</td><td>2807</td><td>26849</td><td>25913</td><td>2319</td></tr>
-<tr><td>multipage.pdf</td><td>57493</td><td>77207</td><td>104256</td><td>5735</td></tr>
-<tr><td>noisy-scan.png</td><td>5595</td><td>35749</td><td>50114</td><td>11032</td></tr>
-<tr><td>simple-typed.png</td><td>4173</td><td>23701</td><td>21385</td><td>12095</td></tr>
-<tr><td>table-complex.png</td><td>2256</td><td>31404</td><td>89214</td><td>3619</td></tr>
-<tr><td>table-simple.png</td><td>4339</td><td>29734</td><td>46483</td><td>2062</td></tr>
+<tr><td>dense-twocol.png</td><td>2295</td><td>3621</td><td>2998</td><td>2422</td></tr>
+<tr><td>form-kvpairs.png</td><td>2393</td><td>3347</td><td>3418</td><td>1840</td></tr>
+<tr><td>low-dpi.png</td><td>4297</td><td>1358</td><td>2019</td><td>529</td></tr>
+<tr><td>mixed-content.png</td><td>1737</td><td>3275</td><td>3074</td><td>1748</td></tr>
+<tr><td>multilingual.png</td><td>2275</td><td>3194</td><td>2664</td><td>1844</td></tr>
+<tr><td>multipage.pdf</td><td>7592</td><td>9214</td><td>ERR</td><td>5171</td></tr>
+<tr><td>noisy-scan.png</td><td>4195</td><td>11890</td><td>4691</td><td>9538</td></tr>
+<tr><td>simple-typed.png</td><td>4680</td><td>3356</td><td>3200</td><td>2343</td></tr>
+<tr><td>table-complex.png</td><td>1617</td><td>3376</td><td>4549</td><td>1664</td></tr>
+<tr><td>table-simple.png</td><td>2072</td><td>3047</td><td>2601</td><td>1703</td></tr>
 </table>
 <br>
 <h3>Aggregate latency</h3>
 <br>
 <table>
 <tr><td>Provider</td><td>p50</td><td>p95</td><td>mean</td></tr>
-<tr><td>doctr</td><td>4173</td><td>57493</td><td>9190</td></tr>
-<tr><td>paddle</td><td>29700</td><td>77207</td><td>31029</td></tr>
-<tr><td>surya</td><td>46483</td><td>104256</td><td>48346</td></tr>
-<tr><td>tesseract</td><td>3176</td><td>12095</td><td>4536</td></tr>
+<tr><td>doctr</td><td>2798</td><td>7592</td><td>3316</td></tr>
+<tr><td>paddle</td><td>3517</td><td>11890</td><td>4633</td></tr>
+<tr><td>surya</td><td>3157</td><td>5463</td><td>3414</td></tr>
+<tr><td>tesseract</td><td>2079</td><td>9538</td><td>2930</td></tr>
 </table>
 <br>
 <h2>Word / line / block counts</h2>
 <br>
 <table>
 <tr><td>Fixture</td><td>doctr (W/L/B)</td><td>paddle (W/L/B)</td><td>surya (W/L/B)</td><td>tesseract (W/L/B)</td></tr>
-<tr><td>dense-twocol.png</td><td>66 / 0 / 0</td><td>0 / 0 / 0</td><td>303 / 0 / 0</td><td>322 / 0 / 0</td></tr>
-<tr><td>form-kvpairs.png</td><td>78 / 0 / 0</td><td>130 / 0 / 0</td><td>134 / 0 / 0</td><td>131 / 0 / 0</td></tr>
-<tr><td>low-dpi.png</td><td>243 / 0 / 0</td><td>24 / 0 / 0</td><td>222 / 0 / 0</td><td>25 / 0 / 0</td></tr>
-<tr><td>mixed-content.png</td><td>39 / 0 / 0</td><td>57 / 0 / 0</td><td>115 / 0 / 0</td><td>76 / 0 / 0</td></tr>
-<tr><td>multilingual.png</td><td>82 / 0 / 0</td><td>79 / 0 / 0</td><td>127 / 0 / 0</td><td>132 / 0 / 0</td></tr>
-<tr><td>multipage.pdf</td><td>355 / 0 / 0</td><td>238 / 0 / 0</td><td>353 / 0 / 0</td><td>355 / 0 / 0</td></tr>
-<tr><td>noisy-scan.png</td><td>90 / 0 / 0</td><td>65 / 0 / 0</td><td>228 / 0 / 0</td><td>132 / 0 / 0</td></tr>
-<tr><td>simple-typed.png</td><td>164 / 0 / 0</td><td>21 / 0 / 0</td><td>206 / 0 / 0</td><td>254 / 0 / 0</td></tr>
-<tr><td>table-complex.png</td><td>14 / 0 / 0</td><td>95 / 0 / 0</td><td>99 / 0 / 0</td><td>86 / 0 / 0</td></tr>
-<tr><td>table-simple.png</td><td>58 / 0 / 0</td><td>48 / 0 / 0</td><td>83 / 0 / 0</td><td>80 / 0 / 0</td></tr>
+<tr><td>dense-twocol.png</td><td>66 / 14 / 1</td><td>300 / 17 / 1</td><td>303 / 17 / 2</td><td>322 / 17 / 3</td></tr>
+<tr><td>form-kvpairs.png</td><td>78 / 60 / 1</td><td>128 / 66 / 1</td><td>134 / 66 / 7</td><td>131 / 28 / 5</td></tr>
+<tr><td>low-dpi.png</td><td>243 / 19 / 1</td><td>178 / 13 / 1</td><td>222 / 12 / 1</td><td>25 / 9 / 4</td></tr>
+<tr><td>mixed-content.png</td><td>39 / 9 / 1</td><td>75 / 36 / 1</td><td>115 / 36 / 10</td><td>76 / 18 / 16</td></tr>
+<tr><td>multilingual.png</td><td>82 / 18 / 1</td><td>85 / 18 / 1</td><td>127 / 18 / 6</td><td>132 / 18 / 12</td></tr>
+<tr><td>multipage.pdf</td><td>355 / 89 / 3</td><td>354 / 89 / 3</td><td>ERR</td><td>355 / 40 / 15</td></tr>
+<tr><td>noisy-scan.png</td><td>90 / 14 / 1</td><td>101 / 28 / 1</td><td>190 / 34 / 18</td><td>132 / 14 / 12</td></tr>
+<tr><td>simple-typed.png</td><td>164 / 10 / 1</td><td>144 / 10 / 1</td><td>206 / 10 / 7</td><td>254 / 10 / 6</td></tr>
+<tr><td>table-complex.png</td><td>14 / 8 / 1</td><td>100 / 88 / 1</td><td>99 / 88 / 4</td><td>86 / 13 / 5</td></tr>
+<tr><td>table-simple.png</td><td>58 / 42 / 1</td><td>83 / 43 / 1</td><td>83 / 43 / 11</td><td>80 / 11 / 4</td></tr>
 </table>
 <br>
 <h2>Confidence distribution</h2>
 <br>
 <table>
 <tr><td>Fixture</td><td>doctr</td><td>paddle</td><td>surya</td><td>tesseract</td></tr>
-<tr><td>dense-twocol.png</td><td>0.588 ±0.000 [0.00–0.00]</td><td>0.000 ±0.000 [0.00–0.00]</td><td>0.958 ±0.000 [0.00–0.00]</td><td>0.925 ±0.000 [0.00–0.00]</td></tr>
-<tr><td>form-kvpairs.png</td><td>0.807 ±0.000 [0.00–0.00]</td><td>0.971 ±0.000 [0.00–0.00]</td><td>0.929 ±0.000 [0.00–0.00]</td><td>0.919 ±0.000 [0.00–0.00]</td></tr>
-<tr><td>low-dpi.png</td><td>0.871 ±0.000 [0.00–0.00]</td><td>0.840 ±0.000 [0.00–0.00]</td><td>0.925 ±0.000 [0.00–0.00]</td><td>0.592 ±0.000 [0.00–0.00]</td></tr>
-<tr><td>mixed-content.png</td><td>0.802 ±0.000 [0.00–0.00]</td><td>0.973 ±0.000 [0.00–0.00]</td><td>0.830 ±0.000 [0.00–0.00]</td><td>0.891 ±0.000 [0.00–0.00]</td></tr>
-<tr><td>multilingual.png</td><td>0.619 ±0.000 [0.00–0.00]</td><td>0.809 ±0.000 [0.00–0.00]</td><td>0.827 ±0.000 [0.00–0.00]</td><td>0.715 ±0.000 [0.00–0.00]</td></tr>
-<tr><td>multipage.pdf</td><td>0.922 ±0.000 [0.00–0.00]</td><td>0.943 ±0.000 [0.00–0.00]</td><td>0.928 ±0.000 [0.00–0.00]</td><td>0.944 ±0.000 [0.00–0.00]</td></tr>
-<tr><td>noisy-scan.png</td><td>0.803 ±0.000 [0.00–0.00]</td><td>0.868 ±0.000 [0.00–0.00]</td><td>0.711 ±0.000 [0.00–0.00]</td><td>0.934 ±0.000 [0.00–0.00]</td></tr>
-<tr><td>simple-typed.png</td><td>0.824 ±0.000 [0.00–0.00]</td><td>0.824 ±0.000 [0.00–0.00]</td><td>0.833 ±0.000 [0.00–0.00]</td><td>0.940 ±0.000 [0.00–0.00]</td></tr>
-<tr><td>table-complex.png</td><td>0.782 ±0.000 [0.00–0.00]</td><td>0.990 ±0.000 [0.00–0.00]</td><td>0.779 ±0.000 [0.00–0.00]</td><td>0.907 ±0.000 [0.00–0.00]</td></tr>
-<tr><td>table-simple.png</td><td>0.825 ±0.000 [0.00–0.00]</td><td>0.981 ±0.000 [0.00–0.00]</td><td>0.909 ±0.000 [0.00–0.00]</td><td>0.909 ±0.000 [0.00–0.00]</td></tr>
+<tr><td>dense-twocol.png</td><td>0.588 ±0.249 [0.22–0.99]</td><td>0.943 ±0.022 [0.93–0.96]</td><td>0.958 ±0.066 [0.95–0.99]</td><td>0.925 ±0.073 [0.88–0.96]</td></tr>
+<tr><td>form-kvpairs.png</td><td>0.807 ±0.190 [0.54–1.00]</td><td>0.958 ±0.060 [0.92–1.00]</td><td>0.858 ±0.115 [0.70–0.99]</td><td>0.919 ±0.065 [0.87–0.96]</td></tr>
+<tr><td>low-dpi.png</td><td>0.871 ±0.170 [0.61–1.00]</td><td>0.904 ±0.032 [0.86–0.94]</td><td>0.925 ±0.066 [0.84–0.98]</td><td>0.592 ±0.289 [0.19–0.92]</td></tr>
+<tr><td>mixed-content.png</td><td>0.802 ±0.184 [0.55–1.00]</td><td>0.965 ±0.045 [0.94–0.99]</td><td>0.803 ±0.095 [0.68–0.91]</td><td>0.891 ±0.113 [0.71–0.96]</td></tr>
+<tr><td>multilingual.png</td><td>0.619 ±0.226 [0.33–0.97]</td><td>0.854 ±0.085 [0.75–0.92]</td><td>0.827 ±0.100 [0.74–0.91]</td><td>0.715 ±0.327 [0.15–0.96]</td></tr>
+<tr><td>multipage.pdf</td><td>0.922 ±0.124 [0.71–1.00]</td><td>0.980 ±0.014 [0.96–1.00]</td><td>ERR</td><td>0.944 ±0.038 [0.91–0.96]</td></tr>
+<tr><td>noisy-scan.png</td><td>0.803 ±0.193 [0.54–1.00]</td><td>0.876 ±0.192 [0.57–0.96]</td><td>0.754 ±0.244 [0.33–0.96]</td><td>0.934 ±0.095 [0.92–0.96]</td></tr>
+<tr><td>simple-typed.png</td><td>0.824 ±0.183 [0.54–0.99]</td><td>0.956 ±0.054 [0.95–0.98]</td><td>0.841 ±0.084 [0.72–0.93]</td><td>0.940 ±0.041 [0.91–0.96]</td></tr>
+<tr><td>table-complex.png</td><td>0.782 ±0.225 [0.41–1.00]</td><td>0.994 ±0.013 [0.98–1.00]</td><td>0.671 ±0.110 [0.53–0.83]</td><td>0.907 ±0.083 [0.83–0.96]</td></tr>
+<tr><td>table-simple.png</td><td>0.825 ±0.178 [0.53–1.00]</td><td>0.973 ±0.024 [0.94–1.00]</td><td>0.841 ±0.146 [0.63–1.00]</td><td>0.909 ±0.114 [0.84–0.96]</td></tr>
 </table>
 <br>
 <p><em>Format: mean ±std [p10–p90]</em></p>
@@ -173,9 +173,52 @@
 <table>
 <tr><td>Provider</td><td>mean</td><td>p10</td><td>p50</td><td>p90</td></tr>
 <tr><td>doctr</td><td>0.784</td><td>0.619</td><td>0.807</td><td>0.922</td></tr>
-<tr><td>paddle</td><td>0.820</td><td>0.809</td><td>0.943</td><td>0.990</td></tr>
-<tr><td>surya</td><td>0.863</td><td>0.779</td><td>0.909</td><td>0.958</td></tr>
+<tr><td>paddle</td><td>0.940</td><td>0.876</td><td>0.958</td><td>0.994</td></tr>
+<tr><td>surya</td><td>0.830</td><td>0.671</td><td>0.841</td><td>0.958</td></tr>
 <tr><td>tesseract</td><td>0.868</td><td>0.715</td><td>0.919</td><td>0.944</td></tr>
+</table>
+<br>
+<h2>Text similarity (SequenceMatcher, 0.0–1.0)</h2>
+<br>
+<table>
+<tr><td>Fixture</td><td>doctr_vs_paddle</td><td>doctr_vs_surya</td><td>doctr_vs_tesseract</td><td>paddle_vs_surya</td><td>paddle_vs_tesseract</td><td>surya_vs_tesseract</td></tr>
+<tr><td>dense-twocol.png</td><td>0.191</td><td>0.199</td><td>0.120</td><td>0.693</td><td>0.507</td><td>0.547</td></tr>
+<tr><td>form-kvpairs.png</td><td>0.827</td><td>0.672</td><td>0.694</td><td>0.801</td><td>0.843</td><td>0.734</td></tr>
+<tr><td>low-dpi.png</td><td>0.536</td><td>0.555</td><td>0.144</td><td>0.537</td><td>0.145</td><td>0.166</td></tr>
+<tr><td>mixed-content.png</td><td>0.052</td><td>0.038</td><td>0.069</td><td>0.623</td><td>0.189</td><td>0.274</td></tr>
+<tr><td>multilingual.png</td><td>0.308</td><td>0.227</td><td>0.487</td><td>0.313</td><td>0.370</td><td>0.293</td></tr>
+<tr><td>multipage.pdf</td><td>0.997</td><td>—</td><td>0.975</td><td>—</td><td>0.969</td><td>—</td></tr>
+<tr><td>noisy-scan.png</td><td>0.477</td><td>0.623</td><td>0.592</td><td>0.780</td><td>0.847</td><td>0.866</td></tr>
+<tr><td>simple-typed.png</td><td>0.400</td><td>0.248</td><td>0.580</td><td>0.537</td><td>0.708</td><td>0.551</td></tr>
+<tr><td>table-complex.png</td><td>0.366</td><td>0.274</td><td>0.169</td><td>0.474</td><td>0.341</td><td>0.235</td></tr>
+<tr><td>table-simple.png</td><td>0.679</td><td>0.519</td><td>0.436</td><td>0.760</td><td>0.658</td><td>0.672</td></tr>
+</table>
+<br>
+<h3>Mean similarity</h3>
+<br>
+<ul>
+<li><strong>doctr_vs_paddle</strong>: 0.483</li>
+<li><strong>doctr_vs_surya</strong>: 0.373</li>
+<li><strong>doctr_vs_tesseract</strong>: 0.427</li>
+<li><strong>paddle_vs_surya</strong>: 0.613</li>
+<li><strong>paddle_vs_tesseract</strong>: 0.558</li>
+<li><strong>surya_vs_tesseract</strong>: 0.482</li>
+</ul>
+
+<h2>Run-to-run variance (multi-run mode)</h2>
+<br>
+<table>
+<tr><td>Fixture</td><td>doctr</td><td>paddle</td><td>surya</td><td>tesseract</td></tr>
+<tr><td>dense-twocol.png</td><td>σ=318ms CV=13.07%</td><td>σ=350ms CV=9.28%</td><td>σ=356ms CV=11.85%</td><td>σ=273ms CV=10.90%</td></tr>
+<tr><td>form-kvpairs.png</td><td>σ=301ms CV=11.74%</td><td>σ=308ms CV=8.82%</td><td>σ=277ms CV=7.81%</td><td>σ=329ms CV=16.27%</td></tr>
+<tr><td>low-dpi.png</td><td>σ=412ms CV=9.31%</td><td>σ=267ms CV=18.52%</td><td>σ=228ms CV=10.92%</td><td>σ=190ms CV=32.95%</td></tr>
+<tr><td>mixed-content.png</td><td>σ=279ms CV=15.11%</td><td>σ=284ms CV=8.55%</td><td>σ=310ms CV=9.72%</td><td>σ=261ms CV=14.54%</td></tr>
+<tr><td>multilingual.png</td><td>σ=361ms CV=14.67%</td><td>σ=314ms CV=9.45%</td><td>σ=301ms CV=10.69%</td><td>σ=262ms CV=13.71%</td></tr>
+<tr><td>multipage.pdf</td><td>σ=105ms CV=1.39%</td><td>σ=201ms CV=2.16%</td><td>ERR</td><td>σ=230ms CV=4.34%</td></tr>
+<tr><td>noisy-scan.png</td><td>σ=635ms CV=16.51%</td><td>σ=674ms CV=5.82%</td><td>σ=2113ms CV=38.51%</td><td>σ=563ms CV=6.09%</td></tr>
+<tr><td>simple-typed.png</td><td>σ=669ms CV=15.21%</td><td>σ=328ms CV=9.40%</td><td>σ=398ms CV=13.63%</td><td>σ=280ms CV=11.23%</td></tr>
+<tr><td>table-complex.png</td><td>σ=229ms CV=15.34%</td><td>σ=212ms CV=6.16%</td><td>σ=574ms CV=11.95%</td><td>σ=196ms CV=11.87%</td></tr>
+<tr><td>table-simple.png</td><td>σ=279ms CV=13.01%</td><td>σ=325ms CV=10.24%</td><td>σ=269ms CV=9.91%</td><td>σ=251ms CV=14.01%</td></tr>
 </table>
 <br>
 <h2>Per document-type analysis</h2>
@@ -186,10 +229,10 @@
 <tr><td>form</td><td><code>form-kvpairs.png</code></td><td>tesseract</td><td>surya</td><td>paddle</td></tr>
 <tr><td>low-dpi</td><td><code>low-dpi.png</code></td><td>tesseract</td><td>doctr</td><td>surya</td></tr>
 <tr><td>mixed-content</td><td><code>mixed-content.png</code></td><td>tesseract</td><td>surya</td><td>paddle</td></tr>
-<tr><td>multipage</td><td><code>multilingual.png</code>, <code>multipage.pdf</code></td><td>tesseract</td><td>tesseract</td><td>surya</td></tr>
+<tr><td>multipage</td><td><code>multilingual.png</code>, <code>multipage.pdf</code></td><td>surya</td><td>tesseract</td><td>paddle</td></tr>
 <tr><td>noisy-scan</td><td><code>noisy-scan.png</code></td><td>doctr</td><td>surya</td><td>tesseract</td></tr>
-<tr><td>simple-typed</td><td><code>simple-typed.png</code></td><td>doctr</td><td>tesseract</td><td>tesseract</td></tr>
-<tr><td>table</td><td><code>table-complex.png</code>, <code>table-simple.png</code></td><td>tesseract</td><td>surya</td><td>paddle</td></tr>
+<tr><td>simple-typed</td><td><code>simple-typed.png</code></td><td>tesseract</td><td>tesseract</td><td>paddle</td></tr>
+<tr><td>table</td><td><code>table-complex.png</code>, <code>table-simple.png</code></td><td>tesseract</td><td>paddle</td><td>paddle</td></tr>
 </table>
 <br>
 <h2>Conclusion</h2>
@@ -198,18 +241,25 @@
 <br>
 <table>
 <tr><td>Metric</td><td>Ranking</td></tr>
-<tr><td>Speed</td><td>tesseract (4536ms) > doctr (9190ms) > paddle (31029ms) > surya (48346ms)</td></tr>
-<tr><td>Words extracted</td><td>surya (187) > tesseract (159) > doctr (119) > paddle (76)</td></tr>
-<tr><td>Avg confidence</td><td>tesseract (0.868) > surya (0.863) > paddle (0.820) > doctr (0.784)</td></tr>
+<tr><td>Speed</td><td>tesseract (2930ms) > doctr (3316ms) > surya (3414ms) > paddle (4633ms)</td></tr>
+<tr><td>Words extracted</td><td>surya (163) > tesseract (159) > paddle (155) > doctr (119)</td></tr>
+<tr><td>Avg confidence</td><td>paddle (0.940) > tesseract (0.868) > surya (0.830) > doctr (0.784)</td></tr>
 </table>
 <br>
+<h3>Text agreement between providers</h3>
+<br>
+<ul>
+<li><strong>Most agreeing pair</strong>: paddle_vs_surya (0.613)</li>
+<li><strong>Least agreeing pair</strong>: doctr_vs_surya (0.373)</li>
+</ul>
+
 <h3>Use-case recommendations</h3>
 <br>
 <table>
 <tr><td>Use case</td><td>Recommended</td><td>Reason</td></tr>
-<tr><td>Real-time / latency-sensitive</td><td><strong>tesseract</strong></td><td>lowest mean latency (4536ms)</td></tr>
-<tr><td>Maximum text extraction (recall)</td><td><strong>surya</strong></td><td>most words on average (187)</td></tr>
-<tr><td>Highest confidence / precision</td><td><strong>tesseract</strong></td><td>best avg confidence (0.868)</td></tr>
+<tr><td>Real-time / latency-sensitive</td><td><strong>tesseract</strong></td><td>lowest mean latency (2930ms)</td></tr>
+<tr><td>Maximum text extraction (recall)</td><td><strong>surya</strong></td><td>most words on average (163)</td></tr>
+<tr><td>Highest confidence / precision</td><td><strong>paddle</strong></td><td>best avg confidence (0.940)</td></tr>
 <tr><td>Table extraction</td><td><strong>paddle</strong></td><td>PaddleOCR has native table HTML output</td></tr>
 <tr><td>Multi-language documents (90+ langs)</td><td><strong>surya</strong></td><td>Surya supports 90+ languages</td></tr>
 <tr><td>Air-gap / CPU-only / no GPU infra</td><td><strong>tesseract</strong></td><td>pure CPU, Apache 2.0, zero model downloads at runtime</td></tr>
@@ -218,6 +268,24 @@
 <br>
 <blockquote>Rankings derived from benchmark data. For document types not covered by fixtures, validate with representative samples before choosing a provider.</blockquote>
 <br>
+<h2>Errors</h2>
+<br>
+<ul>
+<li><strong>surya</strong> on <code>multipage.pdf</code>: Server error '500 Internal Server Error' for url 'http://3.237.3.2:8083/api/v1/ocr'</li>
+</ul>
+<p>For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500</p>
+<ul>
+<li><strong>surya</strong> on <code>multipage.pdf</code>: Server error '500 Internal Server Error' for url 'http://3.237.3.2:8083/api/v1/ocr'</li>
+</ul>
+<p>For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500</p>
+<ul>
+<li><strong>surya</strong> on <code>multipage.pdf</code>: Server error '500 Internal Server Error' for url 'http://3.237.3.2:8083/api/v1/ocr'</li>
+</ul>
+<p>For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500</p>
+<ul>
+<li><strong>surya</strong> on <code>simple-typed.png</code>: [Errno 61] Connection refused</li>
+</ul>
+
     </div>
   </div>
 </body>
