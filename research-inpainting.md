@@ -1,7 +1,11 @@
 # Text Removal and Image Inpainting for Scanned Document Editing
 
 > Research document -- April 2026
-> Context: FakeEdit v2 needs to cleanly erase original text from scanned document images before re-rendering edited text. This is Step 3 of the editing pipeline: OCR detect -> user edits -> **erase original text** -> render new text.
+> Context: FakeEdit v2 needs to cleanly erase original text from scanned document images before re-rendering edited text. This is Step 4 of the editing pipeline: OCR detect -> user edits -> **erase original text** -> render new text.
+>
+> **Pipeline step**: Problem 4 in the [editing pipeline](./README.md). Consumes text masks derived from OCR bounding boxes (Problem 1, [DR-001](./DR-001-ocr-adapter.md)). Runs before text re-rendering (Problem 5).
+>
+> **Related**: [research-font-estimation.md](./research-font-estimation.md) (font metadata for re-rendering after inpainting) · [research-benchmark-gaps.md](./research-benchmark-gaps.md) (bbox accuracy affects mask quality) · [cost-performance.md](./cost-performance.md) (inpainting cost: $3-5/month at 500K pages)
 
 ---
 

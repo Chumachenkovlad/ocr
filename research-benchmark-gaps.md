@@ -2,6 +2,10 @@
 
 > **Date**: 2026-04-02
 > **Context**: FakeEdit v2 document editing use case. Current benchmarks cover latency, resource usage, throughput, and word extraction. This document covers five identified gaps with concrete, actionable recommendations for each.
+>
+> **Pipeline step**: Cross-cutting — covers evaluation gaps that affect multiple pipeline steps in the [editing pipeline](./README.md). Layout/reading order (Problem 2), bbox accuracy (Problem 1), browser-side OCR (architectural alternative).
+>
+> **Related**: [DR-001-ocr-adapter.md](./DR-001-ocr-adapter.md) (engine selection these gaps inform) · [tech-overview.md](./tech-overview.md) (benchmark platform) · [research-font-estimation.md](./research-font-estimation.md) (font detection depends on bbox quality) · [research-inpainting.md](./research-inpainting.md) (mask generation depends on bbox quality)
 
 ---
 

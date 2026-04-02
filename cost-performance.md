@@ -1,8 +1,10 @@
 # OCR cost and performance
 
-Cost model and throughput estimates for the five evaluated providers.
+Cost model and throughput estimates for the full editing pipeline: OCR, font detection, and inpainting.
 
-Related: [DR-001-ocr-adapter.md](./DR-001-ocr-adapter.md) · [comparison.md](./comparison.md)
+Related: [DR-001-ocr-adapter.md](./DR-001-ocr-adapter.md) · [comparison.md](./comparison.md) · [research-font-estimation.md](./research-font-estimation.md) · [research-inpainting.md](./research-inpainting.md)
+
+> **Updated 2026-04-02:** Added font detection and inpainting cost estimates. Added full pipeline total at 500K pages/month. PaddleOCR now primary per [DR-001](./DR-001-ocr-adapter.md#decision-log).
 
 ---
 
@@ -182,3 +184,65 @@ For latency-sensitive synchronous use cases (e.g. real-time document preview), s
 ```
 
 Poll interval: 2–5 seconds. Typical PDF completion: 5–15 seconds for < 10 pages.
+
+---
+
+## Full editing pipeline cost (beyond OCR)
+
+The document editing pipeline adds two steps after OCR: font detection and background inpainting. Both are lightweight relative to OCR itself.
+
+### Font detection
+
+Runs on the same instance as OCR. Negligible marginal cost.
+
+| Component | Method | Latency per block | Hardware | Notes |
+|-----------|--------|-------------------|----------|-------|
+| Font size | bbox height / DPI * 72 | <1ms | CPU | Already implemented |
+| Font family | Storia AI ONNX classifier | ~5ms | CPU | 3K Google Fonts, 174 MB model |
+| Serif/sans/mono | ResNet-18 coarse classifier | ~3ms | CPU | ~95% accuracy |
+| Bold / italic | Stroke Width Transform | ~2ms | CPU | Rule-based, no model |
+
+Total per page (~20 blocks): **~200ms CPU**. At 500K pages/month this is ~28 compute-hours — fits within the OCR instance idle time.
+
+**Monthly cost: $0** (bundled with OCR compute)
+
+See [research-font-estimation.md](./research-font-estimation.md) for model details and architecture.
+
+### Inpainting (text removal)
+
+Only runs on pages the user actually edits, not on every scanned page. Assuming 5% edit rate (25K pages/month of 500K scanned):
+
+| Method | Use case | Latency per page | Hardware | Model size |
+|--------|----------|-------------------|----------|------------|
+| OpenCV Telea | White / solid backgrounds | <10ms | CPU | 0 (built-in) |
+| LaMa | Paper texture, moderate bg | ~50ms | GPU | 174 MB |
+| GaRNet | Complex backgrounds (fallback) | ~80ms | GPU | ~200 MB |
+
+At 25K edited pages/month with LaMa on GPU: ~0.35 GPU-hours.
+
+**Monthly cost: $3–5** (g4dn.xlarge on-demand) or **$0** (fits within OCR instance idle time)
+
+See [research-inpainting.md](./research-inpainting.md) for model comparison and pipeline architecture.
+
+---
+
+## Full pipeline cost at 500K pages/month
+
+| Component | Configuration | Monthly cost |
+|-----------|--------------|-------------|
+| **OCR + layout** | PaddleOCR GPU (g4dn.xlarge spot) | $50–80 |
+| **OCR + layout** | PaddleOCR GPU (g4dn.xlarge on-demand) | $158 |
+| **Font detection** | CPU (same instance) | $0 |
+| **Inpainting** | LaMa GPU (5% edit rate) | $3–5 |
+| **Infra overhead** | ECR, storage, monitoring | $5–10 |
+
+```
+  Total (spot instances):      $58–95 /month
+  Total (on-demand):           $166–173 /month
+
+  Compare:
+    Textract text-only:        $750 /month    (5–13x more)
+    Textract tables+forms:     $7,500 /month  (50–130x more)
+```
+
+**OCR dominates the cost.** Font detection and inpainting combined are <5% of the total. The choice between spot and on-demand instances is the biggest cost lever.

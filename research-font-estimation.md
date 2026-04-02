@@ -2,6 +2,10 @@
 
 > Research document -- April 2026
 > Context: FakeEdit v2 downstream consumer needs font metadata to re-render text over scanned images.
+>
+> **Pipeline step**: Problem 3 in the [editing pipeline](./README.md). Depends on OCR bounding boxes from Problem 1 ([DR-001](./DR-001-ocr-adapter.md)). Output feeds into text re-rendering (Problem 5).
+>
+> **Related**: [research-inpainting.md](./research-inpainting.md) (background cleanup before re-rendering) · [research-benchmark-gaps.md](./research-benchmark-gaps.md) (bbox accuracy affects font crop quality) · [cost-performance.md](./cost-performance.md) (font detection cost: $0 marginal)
 
 ---
 
