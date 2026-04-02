@@ -185,6 +185,68 @@ def _section_confidence(results: list[dict], providers: list[str], fixtures: lis
     return lines
 
 
+def _section_accuracy(accuracy: list[dict], providers: list[str]) -> list[str]:
+    """Render CER/WER accuracy table from majority-vote pseudo-ground-truth."""
+    if not accuracy:
+        return []
+
+    lines = [
+        "## Text accuracy (vs. majority-vote reference)",
+        "",
+        "*CER = Character Error Rate, WER = Word Error Rate. Lower is better.*",
+        "*Reference text is the provider output most similar to all others (centroid).*",
+        "",
+    ]
+
+    # Per-fixture table
+    cer_keys = [f"{p}_cer" for p in providers]
+    wer_keys = [f"{p}_wer" for p in providers]
+
+    lines += [
+        "### Character Error Rate (CER)",
+        "",
+        f"| Fixture | {' | '.join(providers)} |",
+        f"| --- | {' | '.join(['---'] * len(providers))} |",
+    ]
+    for rec in sorted(accuracy, key=lambda x: x["fixture"]):
+        row = [rec["fixture"]]
+        for p in providers:
+            val = rec.get(f"{p}_cer")
+            row.append(f"{val:.3f}" if val is not None else "—")
+        lines.append("| " + " | ".join(row) + " |")
+
+    lines += [
+        "",
+        "### Word Error Rate (WER)",
+        "",
+        f"| Fixture | {' | '.join(providers)} |",
+        f"| --- | {' | '.join(['---'] * len(providers))} |",
+    ]
+    for rec in sorted(accuracy, key=lambda x: x["fixture"]):
+        row = [rec["fixture"]]
+        for p in providers:
+            val = rec.get(f"{p}_wer")
+            row.append(f"{val:.3f}" if val is not None else "—")
+        lines.append("| " + " | ".join(row) + " |")
+
+    # Aggregate per provider
+    lines += [
+        "",
+        "### Aggregate accuracy",
+        "",
+        "| Provider | Mean CER | Mean WER |",
+        "| --- | --- | --- |",
+    ]
+    for p in providers:
+        cers = [rec[f"{p}_cer"] for rec in accuracy if f"{p}_cer" in rec]
+        wers = [rec[f"{p}_wer"] for rec in accuracy if f"{p}_wer" in rec]
+        mean_cer = statistics.mean(cers) if cers else 0
+        mean_wer = statistics.mean(wers) if wers else 0
+        lines.append(f"| {p} | {mean_cer:.3f} | {mean_wer:.3f} |")
+    lines.append("")
+    return lines
+
+
 def _section_similarity(similarities: list[dict], providers: list[str]) -> list[str]:
     if not similarities:
         return []
@@ -435,6 +497,7 @@ def analyze(data: dict) -> str:
     providers = _providers(data)
     fixtures = _fixtures(data)
     similarities = data.get("similarities", [])
+    accuracy = data.get("accuracy", [])
 
     lines: list[str] = [
         "# OCR Benchmark Report",
@@ -450,6 +513,7 @@ def analyze(data: dict) -> str:
     lines += _section_latency(ok, providers, fixtures)
     lines += _section_word_counts(ok, providers, fixtures)
     lines += _section_confidence(ok, providers, fixtures)
+    lines += _section_accuracy(accuracy, providers)
     lines += _section_similarity(similarities, providers)
     lines += _section_variance(ok, providers, fixtures)
     lines += _section_doc_types(ok, providers)

@@ -128,6 +128,90 @@ def send_to_service(
         return {"status": "error", "error": str(e), "wall_ms": round(wall_ms, 1)}
 
 
+def _word_error_rate(hypothesis: str, reference: str) -> float:
+    """Compute Word Error Rate (WER) between hypothesis and reference texts."""
+    if not reference:
+        return 0.0 if not hypothesis else 1.0
+    ref_words = reference.lower().split()
+    hyp_words = hypothesis.lower().split()
+    # Levenshtein distance at word level via dynamic programming
+    n, m = len(ref_words), len(hyp_words)
+    dp = list(range(m + 1))
+    for i in range(1, n + 1):
+        prev, dp[0] = dp[0], i
+        for j in range(1, m + 1):
+            cost = 0 if ref_words[i - 1] == hyp_words[j - 1] else 1
+            dp[j], prev = min(dp[j] + 1, dp[j - 1] + 1, prev + cost), dp[j]
+    return round(dp[m] / max(len(ref_words), 1), 4)
+
+
+def _char_error_rate(hypothesis: str, reference: str) -> float:
+    """Compute Character Error Rate (CER) between hypothesis and reference texts."""
+    if not reference:
+        return 0.0 if not hypothesis else 1.0
+    ref = reference.lower()
+    hyp = hypothesis.lower()
+    # Limit to first 5000 chars for performance
+    ref, hyp = ref[:5000], hyp[:5000]
+    n, m = len(ref), len(hyp)
+    dp = list(range(m + 1))
+    for i in range(1, n + 1):
+        prev, dp[0] = dp[0], i
+        for j in range(1, m + 1):
+            cost = 0 if ref[i - 1] == hyp[j - 1] else 1
+            dp[j], prev = min(dp[j] + 1, dp[j - 1] + 1, prev + cost), dp[j]
+    return round(dp[m] / max(len(ref), 1), 4)
+
+
+def _build_majority_reference(texts: list[str]) -> str:
+    """Build a pseudo-ground-truth reference from majority vote across providers.
+
+    Uses pairwise SequenceMatcher alignment: picks the text that has the
+    highest average similarity to all others (the "centroid" text).
+    """
+    import difflib
+
+    if not texts:
+        return ""
+    if len(texts) == 1:
+        return texts[0]
+
+    # Pick the text closest to all others as reference
+    best_idx, best_avg = 0, -1.0
+    for i, t1 in enumerate(texts):
+        avg_sim = sum(
+            difflib.SequenceMatcher(None, t1[:3000], t2[:3000]).ratio()
+            for j, t2 in enumerate(texts) if j != i
+        ) / (len(texts) - 1)
+        if avg_sim > best_avg:
+            best_avg = avg_sim
+            best_idx = i
+
+    return texts[best_idx]
+
+
+def compute_fixture_accuracy(
+    fixture_results: list[dict],
+) -> dict[str, dict[str, float]]:
+    """Compute CER and WER per provider using majority-vote pseudo-ground-truth."""
+    provider_texts: dict[str, str] = {}
+    for r in fixture_results:
+        if r["status"] == "ok" and r.get("full_text"):
+            provider_texts[r["provider"]] = r["full_text"]
+
+    if len(provider_texts) < 2:
+        return {}
+
+    reference = _build_majority_reference(list(provider_texts.values()))
+    accuracy: dict[str, dict[str, float]] = {}
+    for provider, text in provider_texts.items():
+        accuracy[provider] = {
+            "cer": _char_error_rate(text, reference),
+            "wer": _word_error_rate(text, reference),
+        }
+    return accuracy
+
+
 def _text_similarity(a: str, b: str) -> float:
     """Word-level Jaccard similarity between two texts (0.0–1.0)."""
     if not a and not b:
@@ -224,7 +308,22 @@ def run_benchmark(
                 **pairs,
             })
 
-    return results, similarity_records
+    # Compute per-fixture accuracy (CER/WER) using majority-vote reference
+    accuracy_records: list[dict] = []
+    for fixture_name, current_dpi in sorted(fixture_dpi_pairs):
+        fixture_results = [
+            r for r in results
+            if r["fixture"] == fixture_name and r["dpi"] == current_dpi and r["run"] == 1
+        ]
+        accuracy = compute_fixture_accuracy(fixture_results)
+        if accuracy:
+            record = {"fixture": fixture_name, "dpi": current_dpi}
+            for provider, metrics in accuracy.items():
+                record[f"{provider}_cer"] = metrics["cer"]
+                record[f"{provider}_wer"] = metrics["wer"]
+            accuracy_records.append(record)
+
+    return results, similarity_records, accuracy_records
 
 
 def main():
@@ -270,7 +369,7 @@ def main():
     print(f"DPI:       {dpi_sweep or args.dpi}")
     print(f"Runs:      {args.runs}")
 
-    results, similarities = run_benchmark(
+    results, similarities, accuracy = run_benchmark(
         args.fixtures_dir, services,
         dpi=args.dpi, runs=args.runs, dpi_sweep=dpi_sweep,
     )
@@ -280,7 +379,7 @@ def main():
     output_path = args.output_dir / f"{timestamp}.json"
 
     # Strip full_text from saved JSON to keep file size reasonable;
-    # keep it for similarity (already computed above).
+    # keep it for similarity and accuracy (already computed above).
     results_slim = [{k: v for k, v in r.items() if k != "full_text"} for r in results]
 
     output = {
@@ -291,6 +390,7 @@ def main():
         "services": list(services.keys()),
         "results": results_slim,
         "similarities": similarities,
+        "accuracy": accuracy,
     }
     output_path.write_text(json.dumps(output, indent=2))
     print(f"\nResults written to {output_path}")

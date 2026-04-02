@@ -99,7 +99,7 @@
   <div class="hero">
     <h2>OCR Engine Benchmark Results</h2>
     <p>Side-by-side comparison of PaddleOCR, Tesseract, Surya, and docTR across 10 document types.</p>
-    <div class="ts">Last run: 2026-03-31 071432 UTC</div>
+    <div class="ts">Last run: 2026-04-02 102446 UTC</div>
   </div>
   <div class="container">
     
@@ -107,17 +107,17 @@
       <div class="card card-winner">
         <div class="card-label">Fastest (mean latency)</div>
         <div class="card-value">tesseract</div>
-        <div class="card-sub">4536 ms average</div>
+        <div class="card-sub">2922 ms average</div>
       </div>
       <div class="card card-winner">
         <div class="card-label">Most words extracted</div>
         <div class="card-value">surya</div>
-        <div class="card-sub">187 words average</div>
+        <div class="card-sub">172 words average</div>
       </div>
       <div class="card card-winner">
         <div class="card-label">Highest confidence</div>
         <div class="card-value">paddle</div>
-        <div class="card-sub">91.1% average</div>
+        <div class="card-sub">94.0% average</div>
       </div>
       <div class="card">
         <div class="card-label">Providers tested</div>
@@ -134,13 +134,13 @@
           <td><strong style="text-transform:capitalize">tesseract</strong></td>
           <td class="best">
             <div class="bar-wrap">
-              <div class="bar-track"><div class="bar-fill bar-red" style="width:9.4%"></div></div>
-              <span class="bar-val">4536 ms</span>
+              <div class="bar-track"><div class="bar-fill bar-red" style="width:61.6%"></div></div>
+              <span class="bar-val">2922 ms</span>
             </div>
           </td>
           <td>
             <div class="bar-wrap">
-              <div class="bar-track"><div class="bar-fill bar-teal" style="width:85.2%"></div></div>
+              <div class="bar-track"><div class="bar-fill bar-teal" style="width:92.3%"></div></div>
               <span class="bar-val">159</span>
             </div>
           </td>
@@ -148,16 +148,33 @@
           <td>—</td>
         </tr>
         <tr>
-          <td><strong style="text-transform:capitalize">doctr</strong></td>
+          <td><strong style="text-transform:capitalize">surya</strong></td>
           <td class="">
             <div class="bar-wrap">
-              <div class="bar-track"><div class="bar-fill bar-red" style="width:19.0%"></div></div>
-              <span class="bar-val">9190 ms</span>
+              <div class="bar-track"><div class="bar-fill bar-red" style="width:64.6%"></div></div>
+              <span class="bar-val">3063 ms</span>
             </div>
           </td>
           <td>
             <div class="bar-wrap">
-              <div class="bar-track"><div class="bar-fill bar-teal" style="width:63.6%"></div></div>
+              <div class="bar-track"><div class="bar-fill bar-teal" style="width:100.0%"></div></div>
+              <span class="bar-val">172</span>
+            </div>
+          </td>
+          <td>85.1%</td>
+          <td><span style="color:#e94560">6</span></td>
+        </tr>
+        <tr>
+          <td><strong style="text-transform:capitalize">doctr</strong></td>
+          <td class="">
+            <div class="bar-wrap">
+              <div class="bar-track"><div class="bar-fill bar-red" style="width:66.9%"></div></div>
+              <span class="bar-val">3175 ms</span>
+            </div>
+          </td>
+          <td>
+            <div class="bar-wrap">
+              <div class="bar-track"><div class="bar-fill bar-teal" style="width:68.9%"></div></div>
               <span class="bar-val">119</span>
             </div>
           </td>
@@ -166,36 +183,19 @@
         </tr>
         <tr>
           <td><strong style="text-transform:capitalize">paddle</strong></td>
-          <td class="">
-            <div class="bar-wrap">
-              <div class="bar-track"><div class="bar-fill bar-red" style="width:64.2%"></div></div>
-              <span class="bar-val">31029 ms</span>
-            </div>
-          </td>
-          <td>
-            <div class="bar-wrap">
-              <div class="bar-track"><div class="bar-fill bar-teal" style="width:40.5%"></div></div>
-              <span class="bar-val">76</span>
-            </div>
-          </td>
-          <td>91.1%</td>
-          <td>—</td>
-        </tr>
-        <tr>
-          <td><strong style="text-transform:capitalize">surya</strong></td>
           <td class="worst">
             <div class="bar-wrap">
               <div class="bar-track"><div class="bar-fill bar-red" style="width:100.0%"></div></div>
-              <span class="bar-val">48346 ms</span>
+              <span class="bar-val">4743 ms</span>
             </div>
           </td>
           <td>
             <div class="bar-wrap">
-              <div class="bar-track"><div class="bar-fill bar-teal" style="width:100.0%"></div></div>
-              <span class="bar-val">187</span>
+              <div class="bar-track"><div class="bar-fill bar-teal" style="width:89.7%"></div></div>
+              <span class="bar-val">155</span>
             </div>
           </td>
-          <td>86.3%</td>
+          <td>94.0%</td>
           <td>—</td>
         </tr></tbody>
     </table>
@@ -216,11 +216,6 @@
         <h3>Saturation Benchmark</h3>
         <p>RPS vs concurrency sweep (1–16). Throughput curves, GPU utilization under load, queue saturation points.</p>
         <a class="btn" href="saturation-report.html">View report →</a>
-      </div>
-      <div class="link-card">
-        <h3>Visual Accuracy Report</h3>
-        <p>Annotated bounding-box overlays on real PDF documents. See exactly which regions each engine detects.</p>
-        <a class="btn" href="visual-report.html">View report →</a>
       </div>
     </div>
   </div>

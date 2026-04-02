@@ -9,220 +9,6 @@
     "surya",
     "doctr"
   ],
-  "similarities": [
-    {
-      "fixture": "dense-twocol.png",
-      "dpi": 300,
-      "doctr_vs_paddle": 0.1908,
-      "doctr_vs_surya": 0.199,
-      "doctr_vs_tesseract": 0.1202,
-      "paddle_vs_surya": 0.6926,
-      "paddle_vs_tesseract": 0.5067,
-      "surya_vs_tesseract": 0.5473
-    },
-    {
-      "fixture": "form-kvpairs.png",
-      "dpi": 300,
-      "doctr_vs_paddle": 0.8274,
-      "doctr_vs_surya": 0.6724,
-      "doctr_vs_tesseract": 0.6938,
-      "paddle_vs_surya": 0.801,
-      "paddle_vs_tesseract": 0.8432,
-      "surya_vs_tesseract": 0.7337
-    },
-    {
-      "fixture": "low-dpi.png",
-      "dpi": 300,
-      "doctr_vs_paddle": 0.5362,
-      "doctr_vs_surya": 0.555,
-      "doctr_vs_tesseract": 0.1444,
-      "paddle_vs_surya": 0.5374,
-      "paddle_vs_tesseract": 0.1452,
-      "surya_vs_tesseract": 0.1658
-    },
-    {
-      "fixture": "mixed-content.png",
-      "dpi": 300,
-      "doctr_vs_paddle": 0.0525,
-      "doctr_vs_surya": 0.0383,
-      "doctr_vs_tesseract": 0.069,
-      "paddle_vs_surya": 0.6229,
-      "paddle_vs_tesseract": 0.1894,
-      "surya_vs_tesseract": 0.2742
-    },
-    {
-      "fixture": "multilingual.png",
-      "dpi": 300,
-      "doctr_vs_paddle": 0.3084,
-      "doctr_vs_surya": 0.2265,
-      "doctr_vs_tesseract": 0.4868,
-      "paddle_vs_surya": 0.3128,
-      "paddle_vs_tesseract": 0.3697,
-      "surya_vs_tesseract": 0.2931
-    },
-    {
-      "fixture": "multipage.pdf",
-      "dpi": 300,
-      "doctr_vs_paddle": 0.997,
-      "doctr_vs_tesseract": 0.975,
-      "paddle_vs_tesseract": 0.9685
-    },
-    {
-      "fixture": "noisy-scan.png",
-      "dpi": 300,
-      "doctr_vs_paddle": 0.4774,
-      "doctr_vs_surya": 0.6228,
-      "doctr_vs_tesseract": 0.5915,
-      "paddle_vs_surya": 0.7802,
-      "paddle_vs_tesseract": 0.8473,
-      "surya_vs_tesseract": 0.8661
-    },
-    {
-      "fixture": "simple-typed.png",
-      "dpi": 300,
-      "doctr_vs_paddle": 0.4003,
-      "doctr_vs_surya": 0.248,
-      "doctr_vs_tesseract": 0.5795,
-      "paddle_vs_surya": 0.5369,
-      "paddle_vs_tesseract": 0.7084,
-      "surya_vs_tesseract": 0.5515
-    },
-    {
-      "fixture": "table-complex.png",
-      "dpi": 300,
-      "doctr_vs_paddle": 0.3656,
-      "doctr_vs_tesseract": 0.1692,
-      "paddle_vs_tesseract": 0.3413
-    },
-    {
-      "fixture": "table-simple.png",
-      "dpi": 300,
-      "doctr_vs_paddle": 0.6788,
-      "doctr_vs_surya": 0.5193,
-      "doctr_vs_tesseract": 0.4364,
-      "paddle_vs_surya": 0.7599,
-      "paddle_vs_tesseract": 0.6577,
-      "surya_vs_tesseract": 0.6717
-    }
-  ],
-  "accuracy": [
-    {
-      "fixture": "dense-twocol.png",
-      "dpi": 300,
-      "paddle_cer": 0.1289,
-      "paddle_wer": 0.2277,
-      "tesseract_cer": 0.5231,
-      "tesseract_wer": 0.6304,
-      "surya_cer": 0.0,
-      "surya_wer": 0.0,
-      "doctr_cer": 0.6038,
-      "doctr_wer": 0.9703
-    },
-    {
-      "fixture": "form-kvpairs.png",
-      "dpi": 300,
-      "paddle_cer": 0.0,
-      "paddle_wer": 0.0,
-      "tesseract_cer": 0.0909,
-      "tesseract_wer": 0.2109,
-      "surya_cer": 0.2518,
-      "surya_wer": 0.3594,
-      "doctr_cer": 0.2466,
-      "doctr_wer": 0.7266
-    },
-    {
-      "fixture": "low-dpi.png",
-      "dpi": 300,
-      "paddle_cer": 0.2683,
-      "paddle_wer": 0.5405,
-      "tesseract_cer": 0.9013,
-      "tesseract_wer": 0.9505,
-      "surya_cer": 0.0,
-      "surya_wer": 0.0,
-      "doctr_cer": 0.2257,
-      "doctr_wer": 0.5315
-    },
-    {
-      "fixture": "mixed-content.png",
-      "dpi": 300,
-      "paddle_cer": 0.3263,
-      "paddle_wer": 0.5478,
-      "tesseract_cer": 0.6737,
-      "tesseract_wer": 0.7913,
-      "surya_cer": 0.0,
-      "surya_wer": 0.0,
-      "doctr_cer": 0.7189,
-      "doctr_wer": 0.9391
-    },
-    {
-      "fixture": "multilingual.png",
-      "dpi": 300,
-      "paddle_cer": 0.4917,
-      "paddle_wer": 0.7197,
-      "tesseract_cer": 0.0,
-      "tesseract_wer": 0.0,
-      "surya_cer": 0.6339,
-      "surya_wer": 0.6742,
-      "doctr_cer": 0.3626,
-      "doctr_wer": 0.8788
-    },
-    {
-      "fixture": "multipage.pdf",
-      "dpi": 300,
-      "paddle_cer": 0.0047,
-      "paddle_wer": 0.0451,
-      "tesseract_cer": 0.0224,
-      "tesseract_wer": 0.0085,
-      "doctr_cer": 0.0,
-      "doctr_wer": 0.0
-    },
-    {
-      "fixture": "noisy-scan.png",
-      "dpi": 300,
-      "paddle_cer": 0.107,
-      "paddle_wer": 0.5379,
-      "tesseract_cer": 0.0,
-      "tesseract_wer": 0.0,
-      "surya_cer": 0.3077,
-      "surya_wer": 0.4697,
-      "doctr_cer": 0.131,
-      "doctr_wer": 0.6667
-    },
-    {
-      "fixture": "simple-typed.png",
-      "dpi": 300,
-      "paddle_cer": 0.3686,
-      "paddle_wer": 0.4567,
-      "tesseract_cer": 0.0,
-      "tesseract_wer": 0.0,
-      "surya_cer": 0.3145,
-      "surya_wer": 0.5118,
-      "doctr_cer": 0.1253,
-      "doctr_wer": 0.7874
-    },
-    {
-      "fixture": "table-complex.png",
-      "dpi": 300,
-      "paddle_cer": 0.4627,
-      "paddle_wer": 0.2791,
-      "tesseract_cer": 0.0,
-      "tesseract_wer": 0.0,
-      "doctr_cer": 0.7522,
-      "doctr_wer": 0.9767
-    },
-    {
-      "fixture": "table-simple.png",
-      "dpi": 300,
-      "paddle_cer": 0.0,
-      "paddle_wer": 0.0,
-      "tesseract_cer": 0.1071,
-      "tesseract_wer": 0.1325,
-      "surya_cer": 0.2218,
-      "surya_wer": 0.253,
-      "doctr_cer": 0.1015,
-      "doctr_wer": 0.5542
-    }
-  ],
   "results": [
     {
       "status": "ok",
@@ -2329,6 +2115,220 @@
       "provider": "doctr",
       "run": 3,
       "dpi": 300
+    }
+  ],
+  "similarities": [
+    {
+      "fixture": "dense-twocol.png",
+      "dpi": 300,
+      "doctr_vs_paddle": 0.1908,
+      "doctr_vs_surya": 0.199,
+      "doctr_vs_tesseract": 0.1202,
+      "paddle_vs_surya": 0.6926,
+      "paddle_vs_tesseract": 0.5067,
+      "surya_vs_tesseract": 0.5473
+    },
+    {
+      "fixture": "form-kvpairs.png",
+      "dpi": 300,
+      "doctr_vs_paddle": 0.8274,
+      "doctr_vs_surya": 0.6724,
+      "doctr_vs_tesseract": 0.6938,
+      "paddle_vs_surya": 0.801,
+      "paddle_vs_tesseract": 0.8432,
+      "surya_vs_tesseract": 0.7337
+    },
+    {
+      "fixture": "low-dpi.png",
+      "dpi": 300,
+      "doctr_vs_paddle": 0.5362,
+      "doctr_vs_surya": 0.555,
+      "doctr_vs_tesseract": 0.1444,
+      "paddle_vs_surya": 0.5374,
+      "paddle_vs_tesseract": 0.1452,
+      "surya_vs_tesseract": 0.1658
+    },
+    {
+      "fixture": "mixed-content.png",
+      "dpi": 300,
+      "doctr_vs_paddle": 0.0525,
+      "doctr_vs_surya": 0.0383,
+      "doctr_vs_tesseract": 0.069,
+      "paddle_vs_surya": 0.6229,
+      "paddle_vs_tesseract": 0.1894,
+      "surya_vs_tesseract": 0.2742
+    },
+    {
+      "fixture": "multilingual.png",
+      "dpi": 300,
+      "doctr_vs_paddle": 0.3084,
+      "doctr_vs_surya": 0.2265,
+      "doctr_vs_tesseract": 0.4868,
+      "paddle_vs_surya": 0.3128,
+      "paddle_vs_tesseract": 0.3697,
+      "surya_vs_tesseract": 0.2931
+    },
+    {
+      "fixture": "multipage.pdf",
+      "dpi": 300,
+      "doctr_vs_paddle": 0.997,
+      "doctr_vs_tesseract": 0.975,
+      "paddle_vs_tesseract": 0.9685
+    },
+    {
+      "fixture": "noisy-scan.png",
+      "dpi": 300,
+      "doctr_vs_paddle": 0.4774,
+      "doctr_vs_surya": 0.6228,
+      "doctr_vs_tesseract": 0.5915,
+      "paddle_vs_surya": 0.7802,
+      "paddle_vs_tesseract": 0.8473,
+      "surya_vs_tesseract": 0.8661
+    },
+    {
+      "fixture": "simple-typed.png",
+      "dpi": 300,
+      "doctr_vs_paddle": 0.4003,
+      "doctr_vs_surya": 0.248,
+      "doctr_vs_tesseract": 0.5795,
+      "paddle_vs_surya": 0.5369,
+      "paddle_vs_tesseract": 0.7084,
+      "surya_vs_tesseract": 0.5515
+    },
+    {
+      "fixture": "table-complex.png",
+      "dpi": 300,
+      "doctr_vs_paddle": 0.3656,
+      "doctr_vs_tesseract": 0.1692,
+      "paddle_vs_tesseract": 0.3413
+    },
+    {
+      "fixture": "table-simple.png",
+      "dpi": 300,
+      "doctr_vs_paddle": 0.6788,
+      "doctr_vs_surya": 0.5193,
+      "doctr_vs_tesseract": 0.4364,
+      "paddle_vs_surya": 0.7599,
+      "paddle_vs_tesseract": 0.6577,
+      "surya_vs_tesseract": 0.6717
+    }
+  ],
+  "accuracy": [
+    {
+      "fixture": "dense-twocol.png",
+      "dpi": 300,
+      "paddle_cer": 0.1289,
+      "paddle_wer": 0.2277,
+      "tesseract_cer": 0.5231,
+      "tesseract_wer": 0.6304,
+      "surya_cer": 0.0,
+      "surya_wer": 0.0,
+      "doctr_cer": 0.6038,
+      "doctr_wer": 0.9703
+    },
+    {
+      "fixture": "form-kvpairs.png",
+      "dpi": 300,
+      "paddle_cer": 0.0,
+      "paddle_wer": 0.0,
+      "tesseract_cer": 0.0909,
+      "tesseract_wer": 0.2109,
+      "surya_cer": 0.2518,
+      "surya_wer": 0.3594,
+      "doctr_cer": 0.2466,
+      "doctr_wer": 0.7266
+    },
+    {
+      "fixture": "low-dpi.png",
+      "dpi": 300,
+      "paddle_cer": 0.2683,
+      "paddle_wer": 0.5405,
+      "tesseract_cer": 0.9013,
+      "tesseract_wer": 0.9505,
+      "surya_cer": 0.0,
+      "surya_wer": 0.0,
+      "doctr_cer": 0.2257,
+      "doctr_wer": 0.5315
+    },
+    {
+      "fixture": "mixed-content.png",
+      "dpi": 300,
+      "paddle_cer": 0.3263,
+      "paddle_wer": 0.5478,
+      "tesseract_cer": 0.6737,
+      "tesseract_wer": 0.7913,
+      "surya_cer": 0.0,
+      "surya_wer": 0.0,
+      "doctr_cer": 0.7189,
+      "doctr_wer": 0.9391
+    },
+    {
+      "fixture": "multilingual.png",
+      "dpi": 300,
+      "paddle_cer": 0.4917,
+      "paddle_wer": 0.7197,
+      "tesseract_cer": 0.0,
+      "tesseract_wer": 0.0,
+      "surya_cer": 0.6339,
+      "surya_wer": 0.6742,
+      "doctr_cer": 0.3626,
+      "doctr_wer": 0.8788
+    },
+    {
+      "fixture": "multipage.pdf",
+      "dpi": 300,
+      "paddle_cer": 0.0047,
+      "paddle_wer": 0.0451,
+      "tesseract_cer": 0.0224,
+      "tesseract_wer": 0.0085,
+      "doctr_cer": 0.0,
+      "doctr_wer": 0.0
+    },
+    {
+      "fixture": "noisy-scan.png",
+      "dpi": 300,
+      "paddle_cer": 0.107,
+      "paddle_wer": 0.5379,
+      "tesseract_cer": 0.0,
+      "tesseract_wer": 0.0,
+      "surya_cer": 0.3077,
+      "surya_wer": 0.4697,
+      "doctr_cer": 0.131,
+      "doctr_wer": 0.6667
+    },
+    {
+      "fixture": "simple-typed.png",
+      "dpi": 300,
+      "paddle_cer": 0.3686,
+      "paddle_wer": 0.4567,
+      "tesseract_cer": 0.0,
+      "tesseract_wer": 0.0,
+      "surya_cer": 0.3145,
+      "surya_wer": 0.5118,
+      "doctr_cer": 0.1253,
+      "doctr_wer": 0.7874
+    },
+    {
+      "fixture": "table-complex.png",
+      "dpi": 300,
+      "paddle_cer": 0.4627,
+      "paddle_wer": 0.2791,
+      "tesseract_cer": 0.0,
+      "tesseract_wer": 0.0,
+      "doctr_cer": 0.7522,
+      "doctr_wer": 0.9767
+    },
+    {
+      "fixture": "table-simple.png",
+      "dpi": 300,
+      "paddle_cer": 0.0,
+      "paddle_wer": 0.0,
+      "tesseract_cer": 0.1071,
+      "tesseract_wer": 0.1325,
+      "surya_cer": 0.2218,
+      "surya_wer": 0.253,
+      "doctr_cer": 0.1015,
+      "doctr_wer": 0.5542
     }
   ]
 }
