@@ -46,7 +46,9 @@ Without an abstraction layer:
 
 ## Provider selection
 
-Three providers selected for the initial experiment. Full evaluation matrix in [comparison.md](./comparison.md). Selection rationale below.
+> **Update (2026-04-02):** After benchmarking all four self-hosted engines (see [tech-overview.md](./tech-overview.md)), the initial selection has been revised. PaddleOCR replaces Surya as the primary self-hosted pick due to superior layout analysis and reading order reconstruction. See [Decision log](#decision-log) for details.
+
+Four providers selected for the evaluation. Full evaluation matrix in [comparison.md](./comparison.md). Selection rationale below.
 
 ### Selection criteria
 
@@ -116,12 +118,30 @@ Strongest available option for table and form extraction. Used as the cloud-side
 
 ---
 
-### Providers evaluated but not selected
+### Added (2026-04-02): PaddleOCR
+
+**Role: open-source primary — layout + reading order**
+
+| Aspect | Detail |
+|--------|--------|
+| License | Apache 2.0 |
+| Deployment | Self-hosted, Docker, CPU + GPU |
+| Adapter complexity | Medium — quadrilateral bbox, structure mode has layout regions |
+| Table support | Native HTML output via PP-StructureV3 |
+| Languages | 80+ |
+| Reading order | **Best available** — 6-layer transformer pointer network |
+
+Benchmark results (2026-04-02) showed PaddleOCR with PP-StructureV3 is the only engine with native reading order recovery and layout block classification (14 element types). This is critical for the document editing use case where paragraph grouping and multi-column reconstruction are requirements.
+
+**Trade-off vs Surya:** PaddleOCR is slower per-page (~200ms GPU vs ~150ms) but produces structured layout output that Surya lacks entirely. For the editing pipeline, layout quality outweighs raw OCR speed.
+
+---
+
+### Providers evaluated but not selected for primary
 
 | Provider | Reason |
 |----------|--------|
-| Tesseract | No table support, poor layout detection, accuracy lags modern models. Only advantage: 100+ languages. |
-| PaddleOCR | Covers same OSS slot as docTR, but table output is raw HTML string rather than structured cells. |
+| Tesseract | No table support, poor layout detection. Retained as CPU-only fallback. |
 | EasyOCR | No layout or table support. Suitable for line-level only use cases. |
 | Google Vision | Strong accuracy but 5-level nesting + symbol-level output raises adapter cost without benefit over Textract. |
 | ABBYY | Character-level XML, async polling, no Python SDK — highest adapter cost. Revisit in phase 2 if degraded-scan accuracy is critical. |
@@ -353,38 +373,49 @@ ocr/
 
 ## Experiment plan
 
-### Phase 1 — adapter scaffolding (week 1–2)
+> **Status (2026-04-02):** Phases 1-3 complete. Adapters implemented for all four self-hosted engines plus gateway. Benchmarks run against 10 fixture types. PaddleOCR selected as primary. See [tech-overview.md](./tech-overview.md) for results.
 
-- Implement canonical model and base adapter
-- Implement Surya adapter + unit tests against fixture documents
-- Implement docTR adapter + unit tests
-- Gate Textract behind `OCR_PROVIDER=textract` env flag
-- Validate Surya GPL-3.0 licence compatibility
+### Phase 1 — adapter scaffolding (week 1–2) DONE
 
-### Phase 2 — accuracy benchmarking (week 3–4)
+- ~~Implement canonical model and base adapter~~ Done — `shared/ocr_schema/models.py`
+- ~~Implement Surya adapter~~ Done — `services/surya/src/adapter.py`
+- ~~Implement docTR adapter~~ Done — `services/doctr/src/adapter.py`
+- ~~Implement Tesseract adapter (Python rewrite)~~ Done — `services/tesseract/src/adapter.py`
+- ~~Implement PaddleOCR adapter~~ Done — `services/paddle/src/core/adapter.py`
+- Validate Surya GPL-3.0 licence compatibility — **still open**
 
-- Collect 30–50 real documents across types: invoices, forms, scanned PDFs, mixed-language
-- Run `EvaluationAdapter` across all three
-- Measure CER per document type, table extraction accuracy, latency p50/p95
-- Record results in `experiment/results.csv`
+### Phase 2 — accuracy benchmarking (week 3–4) DONE
 
-### Phase 3 — decision (week 5)
+- ~~Deploy all 4 engines on g4dn.2xlarge~~ Done (2026-03-31, 2026-04-02)
+- ~~Benchmark: latency, word count, confidence, CER/WER~~ Done — 10 fixtures, 3 runs each
+- ~~Resource consumption profiling~~ Done — CPU/GPU/memory per service
+- ~~Saturation testing~~ Done — concurrency sweep 1-16
+- ~~Text similarity matrix~~ Done — pairwise SequenceMatcher
+- ~~CER/WER via majority-vote pseudo-ground-truth~~ Done (2026-04-02)
+- Results published at GitHub Pages
 
-- Review benchmark data
-- Select primary provider + optional fallback per document type
-- Retain `EvaluationAdapter` for regression testing only
+### Phase 3 — decision (week 5) DONE
+
+- Primary: **PaddleOCR** (layout + reading order + table HTML)
+- CPU fallback: **Tesseract** (lightest footprint, no GPU)
+- Throughput: **docTR** (30K pages/hr on T4, best batch throughput)
+- Multilingual: **Surya** (90+ languages, but GPL-3.0 + OOM risk)
+
+### Phase 4 — editing pipeline integration (planned)
+
+- See [README.md](./README.md) for the full pipeline plan and implementation phases
 
 ---
 
 ## Open questions
 
-| # | Question | Owner | Due |
-|---|----------|-------|-----|
-| 1 | Is GPL-3.0 (Surya) acceptable for our distribution model? | Legal / Arch | Before phase 1 |
-| 2 | Do we send documents to AWS for any customer tier? Data residency implications? | Security | Before phase 1 |
-| 3 | What document types are the primary use case — scanned PDFs, digital PDFs, photos? | Product | Week 1 |
-| 4 | Is GPU available in self-hosted deployment targets? Significantly affects Surya/docTR throughput. | Infra | Week 1 |
-| 5 | Should the adapter interface be sync or async-first? Textract polling affects the interface design. | Arch | Week 1 |
+| # | Question | Owner | Status |
+|---|----------|-------|--------|
+| 1 | Is GPL-3.0 (Surya) acceptable for our distribution model? | Legal / Arch | **Open.** Mitigated — PaddleOCR (Apache-2.0) is now primary. Surya only needed for 90+ language edge case. |
+| 2 | Do we send documents to AWS for any customer tier? | Security | **Open.** Textract deferred — self-hosted covers all current needs. |
+| 3 | What document types are the primary use case? | Product | **Answered.** Scanned PDFs (all 7 test PDFs were pure image scans, zero embedded text layers). |
+| 4 | Is GPU available in self-hosted deployment targets? | Infra | **Answered.** g4dn.xlarge (T4) benchmarked. GPU gives 5-10x speedup for PaddleOCR/docTR/Surya. |
+| 5 | Should the adapter interface be sync or async-first? | Arch | **Answered.** Sync. Textract dropped from initial scope; all self-hosted engines are synchronous. |
 
 ---
 
@@ -396,3 +427,6 @@ ocr/
 | 2026-03-30 | Canonical model uses pixel coordinates | Lowest common denominator; normalisation handled per adapter |
 | 2026-03-30 | `OcrResult.raw` preserved | Debugging and future normalisation without re-running inference |
 | 2026-03-30 | Provider selection via env var | Zero code change to switch providers |
+| 2026-04-02 | Add PaddleOCR as primary self-hosted pick | Benchmark showed PP-StructureV3 is the only engine with native reading order + layout classification. Critical for document editing pipeline. See [tech-overview.md](./tech-overview.md). |
+| 2026-04-02 | Demote Surya to secondary | GPL-3.0 risk unresolved. Surya OOMs on multi-page PDFs under GPU contention. No native layout/reading order. |
+| 2026-04-02 | Retain Tesseract as CPU fallback | Lightest resource footprint (2 GB, no GPU). Best for simple single-column docs. |
