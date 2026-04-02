@@ -1,39 +1,67 @@
-<!DOCTYPE html><html><head><meta charset='utf-8'>
-<title>OCR Resource Benchmark</title><style>
-  :root { --accent: #e94560; --teal: #4ecca3; --dark: #1a1a2e; }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OCR Benchmark — Resource Consumption Report</title>
+  <style>
+:root { --accent: #e94560; --teal: #4ecca3; --dark: #1a1a2e; --mid: #16213e; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+       background: #f5f5f5; color: #333; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
 
-body { font-family: -apple-system, sans-serif; background: #f5f5f5; color: #333; }
-h1 { color: #2c3e50; } h2 { color: #34495e; border-bottom: 2px solid #3498db; padding-bottom: 8px; margin-top: 40px; }
-h3 { margin-top: 24px; }
-table { border-collapse: collapse; width: 100%; margin: 16px 0; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-th { background: #2c3e50; color: white; padding: 10px 14px; text-align: left; font-size: 13px; }
+.topbar { background: var(--dark); color: #eee; padding: 12px 32px;
+          display: flex; align-items: center; gap: 16px; }
+.topbar h1 { font-size: 18px; font-weight: 700; }
+.topbar .badge { font-size: 11px; padding: 2px 8px; border-radius: 10px;
+                 background: var(--teal); color: #111; font-weight: 600; }
+.topbar nav { margin-left: auto; display: flex; gap: 20px; }
+.topbar nav a { color: #ccc; font-size: 13px; text-decoration: none; }
+.topbar nav a:hover, .topbar nav a.active { color: #fff; font-weight: 700; }
+
+.hero { background: var(--mid); color: #eee; padding: 28px 32px 20px; }
+.hero h2 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+.hero .subtitle { color: #aaa; font-size: 13px; margin: 0; }
+
+.container { max-width: 1100px; margin: 0 auto; padding: 28px 32px; }
+
+table { border-collapse: collapse; width: 100%; margin: 16px 0;
+        background: white; border-radius: 8px; overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+th { background: var(--dark); color: #eee; padding: 9px 14px;
+     text-align: left; font-size: 13px; font-weight: 600; }
 td { padding: 8px 14px; border-bottom: 1px solid #eee; font-size: 13px; }
-tr:hover { background: #f0f8ff; }
+tr:hover td { background: #fafafa; }
 .num { text-align: right; font-variant-numeric: tabular-nums; }
 .best { background: #e8f5e9 !important; font-weight: bold; }
 .worst { background: #fce4ec !important; }
-.card { background: white; border-radius: 8px; padding: 20px; margin: 16px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 16px; }
-.subtitle { color: #888; font-size: 14px; margin-top: 2px; }
+h2 { color: var(--dark); font-size: 16px; font-weight: 700;
+     margin: 28px 0 12px; padding-bottom: 6px;
+     border-bottom: 2px solid var(--accent); }
+h3 { color: #444; font-size: 14px; margin: 18px 0 8px; }
+.card { background: white; border-radius: 8px; padding: 20px; margin: 16px 0;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
 .bar-row { display: flex; align-items: center; gap: 8px; margin: 6px 0; }
 .bar-label { width: 120px; font-size: 13px; color: #555; }
-  .topbar { background: var(--dark); color: #eee; padding: 12px 32px;
-            display: flex; align-items: center; gap: 16px; }
-  .topbar h1 { font-size: 18px; font-weight: 700; }
-  .topbar .badge { font-size: 11px; padding: 2px 8px; border-radius: 10px;
-                   background: var(--teal); color: #111; font-weight: 600; }
-  .topbar nav { margin-left: auto; display: flex; gap: 20px; }
-  .topbar nav a { color: #ccc; font-size: 13px; text-decoration: none; }
-  .topbar nav a:hover, .topbar nav a.active { color: #fff; font-weight: 700; }
-</style></head><body>
-    <div class="topbar">
-      <h1>OCR Comparison</h1>
-      <span class="badge">Benchmark Results</span>
-      <nav><a href="index.html">Overview</a> <a href="report.html">Full Report</a> <a href="resource-report.html" class="active">Resources</a> <a href="saturation-report.html">Saturation</a> <a href="visual-report.html">Visual</a></nav>
-    </div>
-<h1>OCR Resource Consumption Report</h1>
-<p class='subtitle'>Instance: g5.2xlarge | GPU: 23028 MB VRAM | Cost: $1.212/hr</p>
-<p class='subtitle'>Generated: 2026-03-31 20:11 UTC</p>
+.optimal { background: #27ae60; color: white; padding: 2px 8px;
+           border-radius: 4px; font-size: 11px; font-weight: bold; }
+
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <h1>OCR Comparison</h1>
+  <span class="badge">Benchmark Results</span>
+  <nav><a href="index.html">Overview</a> <a href="report.html">Full Report</a> <a href="resource-report.html" class="active">Resources</a> <a href="saturation-report.html">Saturation</a> <a href="visual-report.html">Visual</a></nav>
+</div>
+<div class="hero">
+  <h2>Resource Consumption Report</h2>
+  <p class="subtitle">Instance: g5.2xlarge | GPU: 23028 MB VRAM | Cost: $1.212/hr 
+ Generated: 2026-03-31 20:11 UTC</p>
+</div>
+<div class="container">
 <h2>GPU VRAM Budget</h2>
 <div class='card'>
 <div class='bar-row'><span class='bar-label'>paddle</span>
@@ -117,3 +145,6 @@ tr:hover { background: #f0f8ff; }
 <tr><td><b>Best quality</b></td><td>surya</td><td>g4dn.xlarge</td><td class='num'>0.42</td><td class='num'><b>$162/mo</b></td><td>Best word recall, VRAM: ~2.6 GB (fits T4)</td></tr>
 <tr><td><b>Best tables</b></td><td>paddle</td><td>g5.2xlarge</td><td class='num'>0.71</td><td class='num'><b>$627/mo</b></td><td>Best for structured docs, VRAM: ~8 GB (needs A10G)</td></tr>
 </table></div>
+</div>
+</body>
+</html>
