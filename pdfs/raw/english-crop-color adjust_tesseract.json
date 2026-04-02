@@ -1,8 +1,0 @@
-{
-  "provider": "tesseract",
-  "pages": [],
-  "raw": {
-    "hocr": []
-  },
-  "latency_ms": 628.65
-}
