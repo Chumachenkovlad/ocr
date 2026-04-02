@@ -64,11 +64,11 @@ Published as interactive HTML reports on GitHub Pages:
 
 | Report | What it shows |
 |--------|---------------|
-| [Overview](https://chumachenkovlad.github.io/ocr/) | Summary cards, provider metrics table |
-| [Full Report](https://chumachenkovlad.github.io/ocr/report.html) | Latency, word counts, confidence, **CER/WER accuracy**, text similarity matrix |
-| [Resource Report](https://chumachenkovlad.github.io/ocr/resource-report.html) | CPU, memory, GPU utilization per service |
-| [Saturation Report](https://chumachenkovlad.github.io/ocr/saturation-report.html) | Throughput and error rates under concurrency |
-| [Visual Report](https://chumachenkovlad.github.io/ocr/visual-report.html) | Side-by-side bbox overlays on real scanned PDFs |
+| [Overview](benchmark-overview.md) | Summary cards, provider metrics table |
+| [Full Report](benchmark-report.md) | Latency, word counts, confidence, **CER/WER accuracy**, text similarity matrix |
+| [Resource Report](resource-report.md) | CPU, memory, GPU utilization per service |
+| [Saturation Report](saturation-report.md) | Throughput and error rates under concurrency |
+| [Visual Report](visual-report.html) | Side-by-side bbox overlays on real scanned PDFs (HTML with embedded images) |
 
 ## Key Findings
 
