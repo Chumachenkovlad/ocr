@@ -378,10 +378,10 @@ ocr/
 ### Phase 1 — adapter scaffolding (week 1–2) DONE
 
 - ~~Implement canonical model and base adapter~~ Done — `shared/ocr_schema/models.py`
-- ~~Implement Surya adapter~~ Done — `services/surya/src/adapter.py`
-- ~~Implement docTR adapter~~ Done — `services/doctr/src/adapter.py`
-- ~~Implement Tesseract adapter (Python rewrite)~~ Done — `services/tesseract/src/adapter.py`
-- ~~Implement PaddleOCR adapter~~ Done — `services/paddle/src/core/adapter.py`
+- ~~Implement Surya adapter~~ Done
+- ~~Implement docTR adapter~~ Done
+- ~~Implement Tesseract adapter (Python rewrite)~~ Done
+- ~~Implement PaddleOCR adapter~~ Done
 - Validate Surya GPL-3.0 licence compatibility — **still open**
 
 ### Phase 2 — accuracy benchmarking (week 3–4) DONE

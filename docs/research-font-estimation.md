@@ -39,7 +39,7 @@ At 72 DPI the conversion is identity (1 px = 1 pt). At the standard scan resolut
 
 ### Our Current Implementation
 
-The PaddleOCR adapter already implements this in `services/paddle/src/utils/font_estimator.py`:
+The PaddleOCR adapter already implements this:
 
 ```python
 def estimate_font_size_pt(bbox_height_px: int, dpi: int) -> float:
@@ -53,7 +53,7 @@ def estimate_block_font_size(line_heights: list[int], dpi: int) -> float:
 
 The approach is sound. Using the **median** line height across lines in a block is a good choice -- it resists outliers from unusually tall/short lines (subscripts, superscripts, or single-character lines).
 
-The Tesseract hOCR parser (`services/tesseract/src/hocr_parser.py`) independently applies the same formula at the word level:
+The Tesseract hOCR parser independently applies the same formula at the word level:
 
 ```python
 font_size_estimate = (bbox.height * 72) / dpi if bbox.height > 0 else 0.0
@@ -345,7 +345,7 @@ Tesseract can output font attributes via two mechanisms:
 - Font name detection depends on training data -- LSTM models (default in v4/v5) have degraded font attribute support compared to the legacy engine.
 - The font name, when returned, is the name of the training font that best matched, not necessarily the actual document font.
 
-**Our hOCR parser** (`services/tesseract/src/hocr_parser.py`) does not currently parse `x_font` attributes. It could be extended, but the data would be unreliable.
+**Our hOCR parser** does not currently parse `x_font` attributes. It could be extended, but the data would be unreliable.
 
 ### 4.6 PaddleOCR / Surya / docTR (Open Source)
 

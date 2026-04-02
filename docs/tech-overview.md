@@ -22,18 +22,17 @@ AWS Textract was excluded from the live benchmark — managed cloud service, can
 Python monorepo with a unified REST interface:
 
 ```
-ocr/
-├── services/
-│   ├── paddle/       # PaddleOCR wrapper (FastAPI) — primary
-│   ├── tesseract/    # Tesseract + hOCR parser (FastAPI) — CPU fallback
-│   ├── surya/        # Surya wrapper (FastAPI) — multilingual
-│   ├── doctr/        # docTR wrapper (FastAPI) — throughput
-│   └── gateway/      # Orchestrator — fans out to all engines
-├── shared/           # Pydantic v2 unified output schema (OcrResult)
-├── benchmark/        # Benchmark runner, analysis, report generation
-├── test-fixtures/    # Shared test images and PDFs (10 synthetic + 7 real PDFs)
-├── infra/            # EC2 deploy/teardown scripts
-└── docker-compose.yml
+services/
+  paddle/        PaddleOCR wrapper (FastAPI) — primary
+  tesseract/     Tesseract + hOCR parser (FastAPI) — CPU fallback
+  surya/         Surya wrapper (FastAPI) — multilingual
+  doctr/         docTR wrapper (FastAPI) — throughput
+  gateway/       Orchestrator — fans out to all engines
+
+shared/          Pydantic v2 unified output schema (OcrResult)
+benchmark/       Benchmark runner, analysis, report generation
+test-fixtures/   10 synthetic fixtures + 7 real scanned PDFs
+infra/           EC2 deploy/teardown scripts
 ```
 
 Each service exposes `POST /api/v1/ocr` and `GET /healthz`. The gateway provides `POST /api/v1/compare` which fans out to all engines in parallel and returns results in the shared `OcrResult` schema.
@@ -50,13 +49,13 @@ Total resource allocation: ~29 GB RAM across all containers (Paddle 12G, Surya 8
 
 Three benchmark types conducted against 10 test fixtures (forms, tables, noisy scans, multilingual text, multi-page PDFs):
 
-1. **Accuracy & latency** (`benchmark/run.py`) — per-fixture latency, word/line/block counts, confidence, CER/WER via majority-vote pseudo-ground-truth, pairwise text similarity matrix
-2. **Resource consumption** (`benchmark/resource_bench.py`) — CPU/memory/GPU utilization under load
-3. **Saturation** (`benchmark/saturation_bench.py`) — throughput ceiling under concurrent requests (C=1 to C=16)
+1. **Accuracy & latency** — per-fixture latency, word/line/block counts, confidence, CER/WER via majority-vote pseudo-ground-truth, pairwise text similarity matrix
+2. **Resource consumption** — CPU/memory/GPU utilization under load
+3. **Saturation** — throughput ceiling under concurrent requests (C=1 to C=16)
 
 Additional analysis:
-- **Text layer extraction** (`benchmark/text_layer.py`) — checks for embedded OCR text layers in PDF fixtures. Finding: all 7 real PDFs are pure image scans with zero text layers.
-- **Visual accuracy** (`benchmark/visualize.py`) — bbox overlay images for visual inspection
+- **Text layer extraction** — checks for embedded OCR text layers in PDF fixtures. Finding: all 7 real PDFs are pure image scans with zero text layers.
+- **Visual accuracy** — bbox overlay images for visual inspection
 
 ## Results
 

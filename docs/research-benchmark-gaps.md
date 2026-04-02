@@ -23,7 +23,7 @@
 
 ### Problem
 
-Multi-column documents, mixed text/table layouts, and documents with headers/footers require correct reading order reconstruction. Our current benchmark (`benchmark/run.py`) captures `block_count` and pairwise text similarity (Jaccard and SequenceMatcher) but does not evaluate whether blocks are ordered correctly.
+Multi-column documents, mixed text/table layouts, and documents with headers/footers require correct reading order reconstruction. Our current benchmark captures `block_count` and pairwise text similarity (Jaccard and SequenceMatcher) but does not evaluate whether blocks are ordered correctly.
 
 ### Metrics
 
@@ -83,8 +83,8 @@ def reading_order_kendall(predicted_order: list[int], gt_order: list[int]) -> fl
 ### Implementation Plan
 
 1. **Phase 1**: Add OmniDocBench evaluation harness (pip install omnidocbench, configure YAML for our 4 engines)
-2. **Phase 2**: Extend `benchmark/run.py` to capture `reading_order` array from each engine's response
-3. **Phase 3**: Implement Kendall's tau + NED metrics in `benchmark/analyze.py`
+2. **Phase 2**: Extend the benchmark runner to capture `reading_order` array from each engine's response
+3. **Phase 3**: Implement Kendall's tau + NED metrics in the analysis pipeline
 4. **Phase 4**: Test on `dense-twocol.png` fixture and a subset of OmniDocBench (academic + financial documents)
 
 ---
@@ -105,13 +105,13 @@ Render documents with known text at known pixel positions, then OCR and compare.
 
 | Tool | What it generates | BBox ground truth? | Language support | Link |
 |------|------------------|-------------------|-----------------|------|
-| **Our existing `generate.py`** | PNG/PDF fixtures using Pillow + ReportLab | **Not yet** - but positions are computable from ReportLab/Pillow draw calls | English | `test-fixtures/generate.py` |
+| **Our existing fixture generator** | PNG/PDF fixtures using Pillow + ReportLab | **Not yet** - but positions are computable from ReportLab/Pillow draw calls | English | Custom script |
 | **SynthDOG** | Wikipedia-based document images with bounding boxes | Yes - line-level and word-level bbox annotations in JSON | 6+ languages | [github.com/clovaai/donut](https://github.com/clovaai/donut) (under `synthdog/`) |
 | **TextRecognitionDataGenerator (TRDG)** | Single-line text images | Word-level bbox (implicit: full image = bbox) | 20+ languages | [github.com/Belval/TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator) |
 | **docTR synthetic** | Document-like page images | Normalized bbox in docTR format | Configurable | [github.com/mindee/doctr](https://github.com/mindee/doctr) (data generation utils) |
 | **Genalog** | Degraded synthetic documents from text | Character and word-level annotations | English | [github.com/microsoft/genalog](https://github.com/microsoft/genalog) |
 
-**Recommended approach**: Extend our existing `test-fixtures/generate.py` to record ground-truth bounding boxes during generation. Since we already use Pillow `ImageDraw.text()` and ReportLab `drawString()`, we can capture the exact `(x, y, width, height)` of every rendered word. This gives us a perfect ground-truth dataset matching our existing fixtures.
+**Recommended approach**: Extend the existing fixture generator to record ground-truth bounding boxes during generation. Since we already use Pillow `ImageDraw.text()` and ReportLab `drawString()`, we can capture the exact `(x, y, width, height)` of every rendered word. This gives us a perfect ground-truth dataset matching our existing fixtures.
 
 ```python
 # Sketch: extend generate.py to emit ground truth
@@ -173,8 +173,8 @@ Research on document analysis IoU thresholds:
 
 ### Implementation Plan
 
-1. Extend `test-fixtures/generate.py` to emit `<fixture-name>.gt.json` sidecar files
-2. Add `benchmark/bbox_eval.py` that loads GT + engine results, matches words by text, computes IoU
+1. Extend the fixture generator to emit `<fixture-name>.gt.json` sidecar files
+2. Add a bbox evaluation script that loads GT + engine results, matches words by text, computes IoU
 3. Report per-engine: mean IoU, IoU@0.75 recall, IoU@0.9 recall
 4. Optionally generate SynthDOG fixtures for multi-language bbox evaluation
 
@@ -417,14 +417,14 @@ Without ground-truth text transcriptions, we cannot measure actual OCR accuracy 
 
 ### Building a Ground-Truth Dataset from Our Fixtures
 
-Our `test-fixtures/` directory contains 10 synthetic fixtures + 1 multipage PDF, generated with known text. We can build ground truth in two ways:
+Our test fixtures directory contains 10 synthetic fixtures + 1 multipage PDF, generated with known text. We can build ground truth in two ways:
 
 #### Option A: Record Ground Truth During Generation (Recommended)
 
-Since `test-fixtures/generate.py` renders all text programmatically, we can record every word + position at generation time:
+Since the fixture generator renders all text programmatically, we can record every word + position at generation time:
 
 ```python
-# Output format: test-fixtures/<name>.gt.json
+# Output format: <fixture-name>.gt.json
 {
     "fixture": "simple-typed.png",
     "width": 2480,
@@ -483,7 +483,7 @@ Use a high-accuracy commercial OCR service as a pseudo-ground-truth reference:
 | **1 - NED** (Normalized Edit Distance) | `1 - levenshtein(pred, gt) / max(len(pred), len(gt))` | Normalized accuracy (0-1 scale) |
 
 ```python
-# Add to benchmark/analyze.py
+# Add to the analysis pipeline
 import Levenshtein
 
 def cer(predicted: str, ground_truth: str) -> float:
@@ -505,8 +505,8 @@ def wer(predicted: str, ground_truth: str) -> float:
 
 ### Implementation Plan
 
-1. **Phase 1**: Extend `test-fixtures/generate.py` to emit `.gt.json` files for all synthetic fixtures
-2. **Phase 2**: Add `benchmark/accuracy_eval.py` with CER, WER, BoW F1 metrics
+1. **Phase 1**: Extend the fixture generator to emit `.gt.json` files for all synthetic fixtures
+2. **Phase 2**: Add an accuracy evaluation script with CER, WER, BoW F1 metrics
 3. **Phase 3**: Run all 4 engines against fixtures with ground truth; add accuracy columns to the benchmark report
 4. **Phase 4**: Download FUNSD + OmniDocBench subsets; integrate into benchmark pipeline
 5. **Phase 5** (optional): Run Google Cloud Vision on fixtures for reference comparison
